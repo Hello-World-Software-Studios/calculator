@@ -11,7 +11,11 @@ body {
  }
  
  p {
+<<<<<<< Updated upstream
   color: rgb(255, 255, 255);
+=======
+  color: 'black';
+>>>>>>> Stashed changes
   font-size: 20px;
   text-align: left;
  }
@@ -35,7 +39,7 @@ body {
  
  .button {
   background-color: black;
-  color: white;
+  color: green;
   border: none;
   margin: 10px 0;
   padding: 5px 10px;
