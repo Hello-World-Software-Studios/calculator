@@ -1,9 +1,6 @@
 import React, {useState,} from 'react';
 
 const Calculator = () => {
-<<<<<<< Updated upstream
-    //const unitOfMeasure = [unit, setUnit] = useState();
-=======
     
     const [output, setOutput] = useState({
         studNum: 0,
@@ -12,7 +9,7 @@ const Calculator = () => {
     const [unit, setUnit] = useState(true);
     var OC = unit ? 16: 406;
     var studOffset = unit ? 3/4: 19;
->>>>>>> Stashed changes
+    
     const [userValues, setUserValues] = useState({
         wallLength: 0,
         // door: {
@@ -38,28 +35,12 @@ const Calculator = () => {
             }
             else newArray.push((i*OC)-studOffset + ', ');
         }
-<<<<<<< Updated upstream
-    });
-    return (
-        <div>
-                <p>Wall Stud Calculator</p>
-                <p></p>
-                <form>
-                    <div>
-                        <label>Wall length</label>
-                        <input type="number" name="wallX" required />
-                        <label>Wall height</label>
-                        <input type="number" name="wallY" required />
-                    </div>
-                    <div>
-=======
         newArray.push(userValues.wallLength-(2*studOffset));
         return newArray;
     }
     function toggleUnits() {
         setUnit(prevUnit => !prevUnit);
     }
-    //console.log(unitOfMeasure);
     const unitStyle = {
         backgroundColor: 'darkgrey',
     }
@@ -87,7 +68,6 @@ const Calculator = () => {
                         value={userValues.wallLength} onChange={handleInputChange} required />
                     </div>
                     {/* <div>
->>>>>>> Stashed changes
                         <label>Door center</label>
                         <input type="number" name="doorC" />
                         <label>Door width</label>
@@ -102,20 +82,6 @@ const Calculator = () => {
                         <input type="number" name="windowX" />
                         <label>Window height</label>
                         <input type="number" name="windowY" />
-<<<<<<< Updated upstream
-                    </div>
-                    <button type="submit">Layout wall</button>
-                </form>
-                <button onClick={() => {
-                    console.log('TODO')
-                }}>
-                    Swap Units
-                </button> 
-                <p>
-                    now measuring in 
-                </p>
-        </div>
-=======
                     </div> */}
                     <input type="submit" value="Layout wall"/>
                 </form>
@@ -145,9 +111,7 @@ const Calculator = () => {
                     </p>
                 </div>
         </>
->>>>>>> Stashed changes
     );
 }
 
 export default Calculator;
-// cd documents/github/calculator
