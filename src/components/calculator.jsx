@@ -1,4 +1,4 @@
-import React, {useState,} from 'react';
+import React, {useState} from 'react';
 
 const Calculator = () => {
     
@@ -9,6 +9,7 @@ const Calculator = () => {
     const [unit, setUnit] = useState(true);
     var OC = unit ? 16: 406;
     var studOffset = unit ? 3/4: 19;
+    
     const [userValues, setUserValues] = useState({
         wallLength: 0,
         // door: {
@@ -40,7 +41,6 @@ const Calculator = () => {
     function toggleUnits() {
         setUnit(prevUnit => !prevUnit);
     }
-
     const unitStyle = {
         backgroundColor: 'darkgrey',
     }
