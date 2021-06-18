@@ -2,90 +2,51 @@ import React, {useState} from 'react';
 
 const Calculator = () => {
     
-    const [output, setOutput] = useState({
-        studNum: 0,
-        measurments: [],
-    });
+    const [listOfMeasurements, setListofMeasurements] = useState([]);
     const [unit, setUnit] = useState(true);
-    var OC = unit ? 16: 406;
-    var studOffset = unit ? 3/4: 19;
+    const OC = unit ? 16: 406;
+    const studOffset = unit ? 3/4: 19;
     
-    const [userValues, setUserValues] = useState({
-        wallLength: 0,
-        // door: {
-        //     width: 0,
-        //     height: 0,
-        //     centerX: 0,
-        // },
-        // window: {
-        //     width: 0,
-        //     height: 0,
-        //     centerX: 0,
-        //     centerY: 0,
-        // }
-    });
+    const [wallLength, setWallLength] = useState(0);
     function layoutWall() {
-        setOutput({studNum: userValues.wallLength/OC + 1, measurments: makeAList(),});
+        setListofMeasurements(makeAList());
     }
     const makeAList = () => {
-        var newArray = [0 + ', '];
-        for (var i = 1; i < Math.ceil(userValues.wallLength/OC); i++) {
-            if (i == 1) {
-                newArray.push(OC-studOffset + ', ');
+        var newArray = [0];
+        for (var i = 1; i < Math.ceil(wallLength/OC); i++) {
+            if (i === 1) {
+                newArray.push(OC-studOffset);
             }
-            else newArray.push((i*OC)-studOffset + ', ');
+            else newArray.push((i*OC)-studOffset);
         }
-        newArray.push(userValues.wallLength-(2*studOffset));
+        newArray.push(wallLength-(2*studOffset));
         return newArray;
     }
     function toggleUnits() {
         setUnit(prevUnit => !prevUnit);
     }
-    const unitStyle = {
-        backgroundColor: 'darkgrey',
-    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         layoutWall();
     }
-    const handleInputChange =
-        (event) => {
-            setUserValues((prevProps) => ({
-              ...prevProps,
-              wallLength: event.target.value,
-            }));
-          };
+    const handleInputChange = (event) => {
+        setWallLength(event.target.value);
+    };
     
 
     return (
         <>
             <p>Wall Stud Calculator</p>
-            <p></p>
                 <form onSubmit={handleSubmit}> 
                     <div>
                         <label>Wall length</label>
                         <input type="number" name="wallX" 
-                        value={userValues.wallLength} onChange={handleInputChange} required />
+                        value={wallLength} onChange={handleInputChange} required />
                     </div>
-                    {/* <div>
-                        <label>Door center</label>
-                        <input type="number" name="doorC" />
-                        <label>Door width</label>
-                        <input type="number" name="doorX" />
-                        <label>Door height</label>
-                        <input type="number" name="doorY" />
-                    </div>
-                    <div>
-                        <label>Window center</label>
-                        <input type="number" name="windowC" />
-                        <label>Window width</label>
-                        <input type="number" name="windowX" />
-                        <label>Window height</label>
-                        <input type="number" name="windowY" />
-                    </div> */}
                     <input type="submit" value="Layout wall"/>
                 </form>
-                <div style={unitStyle}>
+                <div>
                     <button onClick={toggleUnits}>
                         Swap Units
                     </button>
@@ -95,7 +56,7 @@ const Calculator = () => {
                 </div>
                 <div>
                     <p>
-                        You need {Math.ceil(output.studNum)} studs. 
+                        You need {listOfMeasurements.length} studs. 
                         Don't forget, you will need 3 more boards for your top and bottom plates for every 
                         {unit ? ' 96 inches': ' 2438 milimetres'} of wall.
                     </p>
@@ -107,7 +68,7 @@ const Calculator = () => {
                       <br/>Your wall is shown below, placing the edge of each stud on the measurments listed. 
                     </p>
                     <p>
-                        Place your studs at: {output.measurments}
+                        Place your studs at: {listOfMeasurements.join(", ")}
                     </p>
                 </div>
         </>
