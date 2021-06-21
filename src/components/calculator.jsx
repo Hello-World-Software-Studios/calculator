@@ -1,19 +1,16 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Calculator = () => {
     
-    const [listOfMeasurements, setListofMeasurements] = useState([]);
+    const [listOfMeasurements, setListOfMeasurements] = useState([]);
     const [isImperialUnit, setImperialUnit] = useState(true);
     const [wallLength, setWallLength] = useState(0);
     const onCenterSpacing = isImperialUnit ? 16: 406.4;
     const studOffset = isImperialUnit ? 3/4: 19;
     
-    function layoutWall() {
-        setListofMeasurements(makeAList);
-    }
-    const makeAList = useMemo(() => {
+    const makeAList = () => {
         var newArray = [0];
         for (var i = 1; i < Math.ceil(wallLength/onCenterSpacing); i++) {
             if (i === 1) {
@@ -26,8 +23,13 @@ const Calculator = () => {
             return newArray;
         }
         else return newArray.map((x) => Math.round(x));
+    }
+    function layoutWall() {
+        setListOfMeasurements(makeAList);
+    }
+    useEffect(() => {
+        layoutWall();
     }, [isImperialUnit]);
-
     // const makeAList = () => {
     //     var newArray = [0];
     //     for (var i = 1; i < Math.ceil(wallLength/onCenterSpacing); i++) {
