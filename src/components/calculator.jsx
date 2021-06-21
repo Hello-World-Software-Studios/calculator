@@ -6,14 +6,14 @@ const Calculator = () => {
     
     const [listOfMeasurements, setListofMeasurements] = useState([]);
     const [isImperialUnit, setImperialUnit] = useState(true);
+    const [wallLength, setWallLength] = useState(0);
     const onCenterSpacing = isImperialUnit ? 16: 406.4;
     const studOffset = isImperialUnit ? 3/4: 19;
     
-    const [wallLength, setWallLength] = useState(0);
     function layoutWall() {
-        setListofMeasurements(makeAList());
+        setListofMeasurements(makeAList);
     }
-    const makeAList = () => {
+    const makeAList = useMemo(() => {
         var newArray = [0];
         for (var i = 1; i < Math.ceil(wallLength/onCenterSpacing); i++) {
             if (i === 1) {
@@ -26,7 +26,23 @@ const Calculator = () => {
             return newArray;
         }
         else return newArray.map((x) => Math.round(x));
-    }
+    }, [isImperialUnit]);
+
+    // const makeAList = () => {
+    //     var newArray = [0];
+    //     for (var i = 1; i < Math.ceil(wallLength/onCenterSpacing); i++) {
+    //         if (i === 1) {
+    //             newArray.push(onCenterSpacing-studOffset);
+    //         }
+    //         else newArray.push((i*onCenterSpacing)-studOffset);
+    //     }
+    //     newArray.push(wallLength-(2*studOffset));
+    //     if (isImperialUnit == true) {
+    //         return newArray;
+    //     }
+    //     else return newArray.map((x) => Math.round(x));
+    // }
+
     function toggleUnits() {
         setImperialUnit(prevUnit => !prevUnit);
     }
@@ -62,7 +78,7 @@ const Calculator = () => {
                 <h2>Directions:</h2>
                 <p>
                     You need {listOfMeasurements.length} studs. 
-                    Don't forget, you will need 3 more boards for your top and bottom plates for every 
+                    Don&apos;t forget, you will need 3 more boards for your top and bottom plates for every 
                     {isImperialUnit ? ' 96 inches': ' 2438 milimetres'} of wall.
                 </p>
                 <p>
