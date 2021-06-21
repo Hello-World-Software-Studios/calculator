@@ -30,20 +30,6 @@ const Calculator = () => {
     useEffect(() => {
         layoutWall();
     }, [isImperialUnit]);
-    // const makeAList = () => {
-    //     var newArray = [0];
-    //     for (var i = 1; i < Math.ceil(wallLength/onCenterSpacing); i++) {
-    //         if (i === 1) {
-    //             newArray.push(onCenterSpacing-studOffset);
-    //         }
-    //         else newArray.push((i*onCenterSpacing)-studOffset);
-    //     }
-    //     newArray.push(wallLength-(2*studOffset));
-    //     if (isImperialUnit == true) {
-    //         return newArray;
-    //     }
-    //     else return newArray.map((x) => Math.round(x));
-    // }
 
     function toggleUnits() {
         setImperialUnit(prevUnit => !prevUnit);
