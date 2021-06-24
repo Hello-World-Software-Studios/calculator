@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const CENTER_SPACING_IMPERIAL = 16;
+const CENTER_SPACING_METRIC = 406.4;
+const STUD_OFFSET_IMPERIAL = 3/4;
+const STUD_OFFSET_METRIC = 19;
+
 const Calculator = () => {   
     const [listOfMeasurements, setListOfMeasurements] = useState([]);
     const [isImperialUnit, setImperialUnit] = useState(true);
     const [wallLength, setWallLength] = useState(0);
-    const onCenterSpacing = isImperialUnit ? 16 : 406.4;
-    const studOffset = isImperialUnit ? 3/4 : 19;
+    const onCenterSpacing = isImperialUnit ? CENTER_SPACING_IMPERIAL : CENTER_SPACING_METRIC;
+    const studOffset = isImperialUnit ? STUD_OFFSET_IMPERIAL : STUD_OFFSET_METRIC;
     
     useEffect(() => {
         setListOfMeasurements(makeAList(wallLength, onCenterSpacing, studOffset, isImperialUnit));
@@ -21,6 +26,7 @@ const Calculator = () => {
         event.preventDefault();
         setListOfMeasurements(makeAList(wallLength, onCenterSpacing, studOffset, isImperialUnit));
     }
+
     const handleInputChange = (event) => {
         setWallLength(event.target.value);
     };
@@ -32,7 +38,7 @@ const Calculator = () => {
                 <Card.Title>Wall Stud Calculator</Card.Title>
                 <Form onSubmit={handleSubmit}> 
                     <Form.Label>Wall length</Form.Label>
-                    <Form.Control type="number" name="wallX" value={wallLength} onChange={handleInputChange} required />
+                    <Form.Control type="number" min="0" name="wallX" value={wallLength} onChange={handleInputChange} required />
                     <Button variant="primary" type="submit">
                         Layout wall
                     </Button>
@@ -64,15 +70,11 @@ const Calculator = () => {
         </>
     );
 }
+
 const makeAList = (wallLength, onCenterSpacing, studOffset, isImperialUnit) => {
     let newArray = [0];
     for (let i = 1; i < Math.ceil(wallLength / onCenterSpacing); i++) {
-        if (i === 1) {
-            newArray.push(onCenterSpacing - studOffset);
-        }
-        else {
-            newArray.push((i * onCenterSpacing) - studOffset);
-        }
+        newArray.push((i * onCenterSpacing) - studOffset);
     }
     newArray.push(wallLength - (2 * studOffset));
     if (isImperialUnit == true) {
