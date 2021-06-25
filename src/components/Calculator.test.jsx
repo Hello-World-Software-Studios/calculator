@@ -1,24 +1,6 @@
-import Calculator from "./calculator";
-import { unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import Calculator from "./Calculator";
 
-let container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+it("should say you need 7 studs from 98 inches", () => {
+  render(<Calculator wallLength="98" isImperialUnit="true" />);
+  expect(listOfMeasurements.length).toBe(7);
 });
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-it('Should say you need 7 studs from 98 inches', () => {
-    act(() => {
-        render(<Calculator wallLength="98" isImperialUnit="true"/>, container);
-      });
-    expect(listOfMeasurements.length).toBe(7);
-  });
