@@ -8,7 +8,9 @@ const STUD_OFFSET_IMPERIAL = 3 / 4;
 const STUD_OFFSET_METRIC = 19;
 
 const makeAList = (wallLength, isImperialUnit) => {
-  const studOffset = isImperialUnit ? STUD_OFFSET_IMPERIAL : STUD_OFFSET_METRIC;
+  const studOffset = isImperialUnit 
+    ? STUD_OFFSET_IMPERIAL 
+    : STUD_OFFSET_METRIC;
   const onCenterSpacing = isImperialUnit
     ? CENTER_SPACING_IMPERIAL
     : CENTER_SPACING_METRIC;
@@ -20,7 +22,7 @@ const makeAList = (wallLength, isImperialUnit) => {
   newArray.push(wallLength - 2 * studOffset);
   if (isImperialUnit) {
     return newArray;
-  } else return newArray.map((x) => Math.round(x));
+  } else {return newArray.map((x) => Math.round(x));}
 };
 
 const Calculator = () => {
