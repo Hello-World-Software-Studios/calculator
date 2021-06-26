@@ -1,6 +1,6 @@
 {
   "name": "calculator",
-  "homepage": "http://hello-world-software-studios.github.io/calculator",
+  "homepage": "http://hello-world-software-studios.github.io/calculator/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
