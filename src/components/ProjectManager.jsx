@@ -1,17 +1,19 @@
-import React, {useState} from "react";
-import {Card} from "react-bootstrap";
+import React, {useContext} from "react";
+import {Button, Card} from "react-bootstrap";
+import {UserDataContext} from "./UserDataContext";
 
-function ProjMan() {
-  const [listOfWalls, setListOfWalls] = useState(["placeHolder"]);
-  function setList(newElem) {
-    setListOfWalls(listOfWalls.push(newElem));
-  }
+export default function ProjMan() {
+  const userData = useContext(UserDataContext);
+  const handleClick = () => {
+    userData.push("new value, ");
+  };
   return (
     <Card>
-      <Card.Title>Project So Far:</Card.Title>
-      <Card.Text>{setList}</Card.Text>
+      <Card.Title>Your Project</Card.Title>
+      <Card.Text>{userData}</Card.Text>
+      <Button onClick={handleClick} variant="secondary">
+        Add Wall to Project
+      </Button>
     </Card>
   );
 }
-
-export default ProjMan;

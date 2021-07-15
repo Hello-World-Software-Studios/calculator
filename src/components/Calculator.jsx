@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Button, Card, Form} from "react-bootstrap";
-import ProjMan from "./ProjectManager";
 
 const CENTER_SPACING_IMPERIAL = 16,
   CENTER_SPACING_METRIC = 406.4,
@@ -104,7 +103,6 @@ function Calculator() {
           {listOfMeasurements.join(", ")}
         </p>
       </Card>
-      <ProjMan />
     </>
   );
 }

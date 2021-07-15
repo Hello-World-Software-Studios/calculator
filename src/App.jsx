@@ -1,12 +1,15 @@
 import "./App.css";
 import Calculator from "./components/Calculator";
 import React from "react";
+import {UserDataProvider} from "./components/UserDataContext";
+import ProjMan from "./components/ProjectManager";
 
 function App() {
   return (
-    <div>
+    <UserDataProvider>
       <Calculator />
-    </div>
+      <ProjMan />
+    </UserDataProvider>
   );
 }
 
