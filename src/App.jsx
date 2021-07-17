@@ -1,16 +1,9 @@
-import "./App.css";
-import Calculator from "./components/Calculator";
-import React from "react";
-import {UserDataProvider} from "./components/UserDataContext";
-import ProjMan from "./components/ProjectManager";
+import './App.css';
+import React from 'react';
+import Calculator from './components/Calculator';
 
 function App() {
-  return (
-    <UserDataProvider>
-      <Calculator />
-      <ProjMan />
-    </UserDataProvider>
-  );
+  return <Calculator />;
 }
 
 export default App;

@@ -1,19 +1,23 @@
-import React, {useContext} from "react";
-import {Button, Card} from "react-bootstrap";
-import {UserDataContext} from "./UserDataContext";
+import { Button, Card } from 'react-bootstrap';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-export default function ProjMan() {
-  const userData = useContext(UserDataContext);
+export default function ProjectManager({ listOfMeasurements }) {
+  const [userData, setUserData] = useState([]);
   const handleClick = () => {
-    userData.push("new value, ");
+    setUserData([...userData, listOfMeasurements]);
   };
   return (
     <Card>
       <Card.Title>Your Project</Card.Title>
-      <Card.Text>{userData}</Card.Text>
+      <Card.Text>{userData.map((wall) => wall.join(', '))}</Card.Text>
       <Button onClick={handleClick} variant="secondary">
         Add Wall to Project
       </Button>
     </Card>
   );
 }
+
+ProjectManager.propTypes = {
+  listOfMeasurements: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
