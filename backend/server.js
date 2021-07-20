@@ -1,11 +1,14 @@
 const express = require('express');
 
 const server = express();
-const port = 3000;
-const test
+const port = 3001;
+const wall = require('./routes/wall');
+server.use('/wall', wall);
+
+const test = (name) => `Hello, ${name}`;
 
 server.get('/', (req, res) => {
-  res.send({ name: 'JP', occupation: 'Web Dev' });
+  res.send(test('World'));
 });
 
 server.listen(port, () => {
