@@ -2,7 +2,7 @@
   "name": "calculator",
   "homepage": "http://hello-world-software-studios.github.io/calculator/",
   "version": "0.1.0",
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3001/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.13.0",

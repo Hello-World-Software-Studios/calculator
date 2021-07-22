@@ -1,4 +1,5 @@
 {
+  "name": "Project 1",
   "walls": [
     ["new", "list1"],
     ["new", "list2"]

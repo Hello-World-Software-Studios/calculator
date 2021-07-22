@@ -10,8 +10,16 @@ router
   })
   .post((req, res) => {});
 router
-  .route("/:wallLength")
-  .get((req, res) => {})
+  .route("/:name")
+  .get((req, res) => {
+    res.send(JSON.stringify(savedData.name));
+  })
+  .post((req, res) => {});
+router
+  .route("/:walls")
+  .get((req, res) => {
+    res.send(JSON.stringify(savedData.walls));
+  })
   .post((req, res) => {});
 
 module.exports = router;
