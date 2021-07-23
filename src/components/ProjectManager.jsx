@@ -3,9 +3,6 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 export default function ProjectManager({listOfMeasurements}) {
-  // const getData = useEffect(() => {
-  //   fetch("../backend/savedData").then((res) => res.data);
-  // });
   const [userData, setUserData] = useState([]);
   // useEffect(() => {
   //   fetch("../backend/savedData").then((res) => setUserData(res.data));
