@@ -16,11 +16,13 @@
   "extends": ["eslint:all", "plugin:react/all", "prettier", "airbnb"],
   "rules": {
     "comma-dangle": "off",
+    "implicit-arrow-linebreak": "off",
     "linebreak-style": "off",
     "object-curly-spacing": "off",
     "quotes": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
+    "react-hooks/exhaustive-deps": "error", // Checks effect dependencies
+    "react/jsx-one-expression-per-line": "warn"
     
   }
 }

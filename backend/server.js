@@ -2,8 +2,9 @@ const express = require("express");
 
 const server = express();
 const port = 3001;
-const user = require("./routes/userRoutes");
-server.use("/userRoutes", user);
+const walls = require("./routes/walls");
+server.use(express.json());
+server.use("/walls", walls);
 
 const test = (name) => `Hello, ${name}`;
 

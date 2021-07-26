@@ -1,52 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Form } from 'react-bootstrap';
-import ProjectManager from './ProjectManager';
-
-const CENTER_SPACING_IMPERIAL = 16;
-const CENTER_SPACING_METRIC = 406.4;
-const STUD_OFFSET_IMPERIAL = 0.75;
-const STUD_OFFSET_METRIC = 19;
-const makeAList = (wallLength, isImperialUnit) => {
-  const BASE_STUD = 0;
-  const newArray = [BASE_STUD];
-  const onCenterSpacing = isImperialUnit
-    ? CENTER_SPACING_IMPERIAL
-    : CENTER_SPACING_METRIC;
-  const studOffset = isImperialUnit ? STUD_OFFSET_IMPERIAL : STUD_OFFSET_METRIC;
-  for (
-    let studCount = 1;
-    studCount < Math.ceil(wallLength / onCenterSpacing);
-    studCount += 1
-  ) {
-    newArray.push(studCount * onCenterSpacing - studOffset);
-  }
-  newArray.push(wallLength - 2 * studOffset);
-  if (isImperialUnit) {
-    return newArray;
-  }
-  return newArray.map((roundedItem) => Math.round(roundedItem));
-};
+import React, {useState} from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {Button, Card, Form} from "react-bootstrap";
+import ProjectManager from "./ProjectManager";
+import useFetch from "./useFetch";
 
 function Calculator() {
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [wallLength, setWallLength] = useState(0);
-
-  useEffect(() => {
-    setListOfMeasurements(makeAList(wallLength, isImperialUnit));
-  }, [isImperialUnit, wallLength]);
-
-  function toggleUnits() {
-    setImperialUnit((prevUnit) => !prevUnit);
-  }
-
+  const ChangeUnit = () => {
+    function toggleUnits() {
+      setImperialUnit((prevUnit) => !prevUnit);
+    }
+    toggleUnits();
+    const newData = useFetch(
+      `http://localhost:3001/walls?wallLength=${wallLength}&isImperialUnit=${isImperialUnit}`
+    );
+    setListOfMeasurements(newData.response);
+  };
   const handleInputChange = (event) => {
     setWallLength(event.target.value);
   };
-  const handleSubmit = (event) => {
+  const HandleSubmit = (event) => {
     event.preventDefault();
-    setListOfMeasurements(makeAList(wallLength, isImperialUnit));
+    const data = useFetch(
+      `http://localhost:3001/walls?wallLength=${wallLength}&isImperialUnit=${isImperialUnit}`
+    );
+    setListOfMeasurements(data);
   };
 
   return (
@@ -54,7 +34,7 @@ function Calculator() {
       <Card>
         <Card.Title>Wall Stud Calculator</Card.Title>
 
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={HandleSubmit}>
           <Form.Label>Wall length</Form.Label>
 
           <Form.Control
@@ -72,12 +52,10 @@ function Calculator() {
 
           <Card.Text>
             Now measuring in
-            {' '}
-            {isImperialUnit ? 'Inches' : 'Milimetres'}
-            .
+            {isImperialUnit ? "Inches" : "Milimetres"}.
           </Card.Text>
 
-          <Button onClick={toggleUnits} variant="warning">
+          <Button onClick={ChangeUnit} variant="warning">
             Swap Between Imperial and Metric
           </Button>
         </Form>
@@ -88,28 +66,20 @@ function Calculator() {
 
         <p>
           You need
-          {' '}
           {listOfMeasurements.length}
-          {' '}
-          studs. Don&apos;t forget, you will need 3
-          more boards for your top and bottom plates for every
-          {isImperialUnit ? ' 96 inches' : ' 2438 milimetres'}
-          {' '}
+          studs. Don&apos;t forget, you will need 3 more boards for your top and bottom
+          plates for every
+          {isImperialUnit ? " 96 inches" : " 2438 milimetres"}
           of wall.
         </p>
 
         <p>
           In order for your drywall to line up right, the second stud is placed at
-          {' '}
-          {isImperialUnit ? '15.25 inches' : '387 milimetres'}
-          . From there, you can hook
+          {isImperialUnit ? " 15.25 inches" : " 387 milimetres"}. From there, you can hook
           your tape onto the second stud and proceed at spacing intervals. OR, should you
           want to mark them all in one go, simply subtract
-          {' '}
-          {isImperialUnit ? '3/4 inches' : '19 milimetres'}
-          {' '}
-          from each number as you
-          measure.
+          {isImperialUnit ? " 3/4 inches" : " 19 milimetres"}
+          from each number as you measure.
           <br />
           Your wall is shown below, placing the edge of each stud on the measurments
           listed.
@@ -117,7 +87,7 @@ function Calculator() {
 
         <p>
           Place your studs at:
-          {listOfMeasurements.join(', ')}
+          {listOfMeasurements.join(", ")}
         </p>
       </Card>
       <ProjectManager listOfMeasurements={listOfMeasurements} />
