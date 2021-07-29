@@ -26,6 +26,18 @@ p {
   margin-left: 5px;
   margin-right: 5px;
 }
+.column {
+  background-color: gray;
+  width: 70%;
+}
+.directions {
+  background-color: lightgreen;
+}
+.projectManager {
+  background-color: lightgray;
+  height: auto;
+  width: 30%;
+}
 
 .form {
   background-color: white;

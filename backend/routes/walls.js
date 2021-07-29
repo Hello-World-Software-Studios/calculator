@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
 
 const makeAList = (wallLength, isImperialUnit) => {
   const CENTER_SPACING_IMPERIAL = 16;
@@ -27,17 +28,22 @@ const makeAList = (wallLength, isImperialUnit) => {
   return newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
+router.use(
+  cors({
+    origin: "http://localhost:3000/",
+  })
+);
 router
   .route("/test")
   .get((req, res) => {
-    res.json(makeAList(120, true));
+    res.json(makeAList(900, false));
   })
   .post((req, res) => {});
 router
-  .route("/:wallLength/:isImperialUnit")
+  .route("/")
   .get((req, res) => {
-    console.log(req.query);
-    res.json(makeAList(req.query.wallLength, req.query.isImperialUnit));
+    const {wallLength, isImperialUnit} = req.query;
+    res.json(makeAList(wallLength, isImperialUnit));
   })
   .post((req, res) => {});
 
