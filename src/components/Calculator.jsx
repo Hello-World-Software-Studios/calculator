@@ -2,21 +2,20 @@ import React, {useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Button, Card, CardColumns, CardGroup, Form} from "react-bootstrap";
 import ProjectManager from "./ProjectManager";
-import useFetch from "./useFetch";
+import useFetchWall from "./useFetchWall";
+import Directions from "./Directions";
 
-// `http://localhost:3001/walls?wallLength=${wallLength}&isImperialUnit=${isImperialUnit}`
 function Calculator() {
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [wallLength, setWallLength] = useState(0);
-  const newList = useFetch(
-    `http://localhost:3001/walls?wallLength=${wallLength}&isImperialUnit=${isImperialUnit}`,
-    [(wallLength, isImperialUnit)]
-  );
+  const {response: fetchedListOfMeasurements, error: fetchedListOfMeasurementsError} =
+    useFetchWall(wallLength, isImperialUnit);
+  console.error(fetchedListOfMeasurementsError);
 
   function toggleUnits() {
     setImperialUnit((prevUnit) => !prevUnit);
-    setListOfMeasurements(newList);
+    setListOfMeasurements(fetchedListOfMeasurements);
   }
 
   const handleInputChange = (event) => {
@@ -24,16 +23,21 @@ function Calculator() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    setListOfMeasurements(newList);
+    setListOfMeasurements(fetchedListOfMeasurements);
   };
 
   return (
     <>
       <CardGroup>
+        <ProjectManager
+          listOfMeasurements={listOfMeasurements}
+          isImperialUnit={isImperialUnit}
+        />
         <CardColumns className="column">
-          <Card>
-            <Card.Title>Wall Stud Calculator</Card.Title>
-
+          <Card bg="light">
+            <Card.Header>
+              <Card.Title>Wall Stud Calculator</Card.Title>
+            </Card.Header>
             <Form onSubmit={handleSubmit}>
               <Form.Label>Wall length</Form.Label>
 
@@ -52,8 +56,9 @@ function Calculator() {
 
               <Card.Text>
                 Now measuring in
-                {isImperialUnit ? " inches" : " milimetres"}.
-              </Card.Text>
+                {isImperialUnit ? " inches" : " milimetres"}
+.
+</Card.Text>
 
               <Button onClick={toggleUnits} variant="warning">
                 Swap Between Imperial and Metric
@@ -64,23 +69,8 @@ function Calculator() {
               </Card.Body>
             </Form>
           </Card>
-
-          <Card className="directions">
-            <h2>Directions:</h2>
-            <Card.Body>
-              In order for your drywall to line up right, the second stud is placed at
-              {isImperialUnit ? " 15.25 inches" : " 387 milimetres"}. From there, you can
-              hook your tape onto the second stud and proceed at spacing intervals. OR,
-              should you want to mark them all in one go, simply subtract
-              {isImperialUnit ? " 3/4 inches" : " 19 milimetres"}
-              from each number as you measure.
-            </Card.Body>
-          </Card>
+          <Directions isImperialUnit={isImperialUnit} />
         </CardColumns>
-        <ProjectManager
-          listOfMeasurements={listOfMeasurements}
-          isImperialUnit={isImperialUnit}
-        />
       </CardGroup>
     </>
   );

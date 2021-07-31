@@ -1,7 +1,6 @@
-"use strict";
 const express = require("express");
+
 const router = express.Router();
-const cors = require("cors");
 
 const makeAList = (wallLength, isImperialUnit) => {
   const CENTER_SPACING_IMPERIAL = 16;
@@ -28,11 +27,6 @@ const makeAList = (wallLength, isImperialUnit) => {
   return newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
-router.use(
-  cors({
-    origin: "http://localhost:3000/",
-  })
-);
 router
   .route("/test")
   .get((req, res) => {

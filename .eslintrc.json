@@ -2,7 +2,7 @@
   "env": {
     "browser": true,
     "jest": true,
-    "es2021": true,
+    "es6": true,
     "node": true
   },
   "parserOptions": {
@@ -13,14 +13,8 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks", "prettier"],
-  "extends": ["eslint:all", "plugin:react/all", "prettier", "airbnb"],
+  "extends": ["eslint:all", "plugin:react/all", "airbnb", "prettier"],
   "rules": {
-    "comma-dangle": "off",
-    "implicit-arrow-linebreak": "off",
-    "linebreak-style": "off",
-    "object-curly-newline": "off",
-    "object-curly-spacing": "off",
-    "quotes": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "error", // Checks effect dependencies
     "react/jsx-one-expression-per-line": "warn"
