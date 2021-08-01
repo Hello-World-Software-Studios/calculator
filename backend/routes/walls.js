@@ -9,10 +9,11 @@ const makeAList = (wallLength, isImperialUnit) => {
   const STUD_OFFSET_METRIC = 19;
   const BASE_STUD = 0;
   const newArray = [BASE_STUD];
-  const onCenterSpacing = isImperialUnit
-    ? CENTER_SPACING_IMPERIAL
-    : CENTER_SPACING_METRIC;
-  const studOffset = isImperialUnit ? STUD_OFFSET_IMPERIAL : STUD_OFFSET_METRIC;
+  const onCenterSpacing =
+    isImperialUnit === "true" ? CENTER_SPACING_IMPERIAL : CENTER_SPACING_METRIC;
+  const studOffset =
+    isImperialUnit === "true" ? STUD_OFFSET_IMPERIAL : STUD_OFFSET_METRIC;
+
   for (
     let studCount = 1;
     studCount < Math.ceil(wallLength / onCenterSpacing);
@@ -21,24 +22,18 @@ const makeAList = (wallLength, isImperialUnit) => {
     newArray.push(studCount * onCenterSpacing - studOffset);
   }
   newArray.push(wallLength - 2 * studOffset);
-  if (isImperialUnit) {
-    return newArray;
-  }
-  return newArray.map((roundedItem) => Math.round(roundedItem));
+  console.log(isImperialUnit, onCenterSpacing, newArray);
+  return isImperialUnit === "true"
+    ? newArray
+    : newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
-router
-  .route("/test")
-  .get((req, res) => {
-    res.json(makeAList(900, false));
-  })
-  .post((req, res) => {});
-router
-  .route("/")
-  .get((req, res) => {
-    const {wallLength, isImperialUnit} = req.query;
-    res.json(makeAList(wallLength, isImperialUnit));
-  })
-  .post((req, res) => {});
+router.route("/test").get((req, res) => {
+  res.json(makeAList(120, true));
+});
+router.route("/").get((req, res) => {
+  const {wallLength, isImperialUnit} = req.query;
+  res.json(makeAList(wallLength, isImperialUnit));
+});
 
 module.exports = router;

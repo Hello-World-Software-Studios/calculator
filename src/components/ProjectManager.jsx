@@ -28,7 +28,7 @@ studs.
         You will also need
         {isImperialUnit
           ? ` ${numberOfStuds * 1.3} feet `
-          : ` ${numberOfStuds * 2.5} metres `}
+          : ` ${numberOfStuds / 2.5} metres `}
 {" "}
         of boards for your top and bottom plates.
         <Button onClick={handleClick} variant="secondary">
