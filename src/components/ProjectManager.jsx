@@ -2,6 +2,7 @@ import {Button, Card} from "react-bootstrap";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import ListGroupGenerator from "./ListGroupGenerator";
+import LumberPrice from "./LumberPrice";
 
 export default function ProjectManager({listOfMeasurements, isImperialUnit}) {
   const [listOfWalls, setListOfWalls] = useState([]);
@@ -15,7 +16,7 @@ export default function ProjectManager({listOfMeasurements, isImperialUnit}) {
   return (
     <Card className="projectManager">
       <Card.Header>
-        <h5>Carpentry Project Manager</h5>
+        <h1>Carpentry Project Manager</h1>
       </Card.Header>
       <Card.Body>
         {" "}
@@ -27,15 +28,15 @@ studs.
 <br />
         You will also need
         {isImperialUnit
-          ? ` ${numberOfStuds * 1.3} feet `
-          : ` ${numberOfStuds / 2.5} metres `}
+          ? ` ${Math.ceil(numberOfStuds * 3.3)} feet `
+          : ` ${Math.ceil(numberOfStuds / 2.5)} metres `}
 {" "}
         of boards for your top and bottom plates.
         <Button onClick={handleClick} variant="secondary">
           Add Wall to Project
         </Button>
       </Card.Body>
-
+      <LumberPrice />
       <ListGroupGenerator listOfWalls={listOfWalls} />
     </Card>
   );

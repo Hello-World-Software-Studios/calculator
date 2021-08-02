@@ -22,7 +22,6 @@ const makeAList = (wallLength, isImperialUnit) => {
     newArray.push(studCount * onCenterSpacing - studOffset);
   }
   newArray.push(wallLength - 2 * studOffset);
-  console.log(isImperialUnit, onCenterSpacing, newArray);
   return isImperialUnit === "true"
     ? newArray
     : newArray.map((roundedItem) => Math.round(roundedItem));

@@ -9,10 +9,11 @@ export default function ListGroupGenerator({listOfWalls}) {
 
   useEffect(() => {
     setListItems(listOfWalls);
-    setListIndex(listIndex);
-  }, [listIndex, listOfWalls]);
+    setListIndex(listItems.index);
+  }, [listItems.index, listOfWalls]);
   return (
     <ListGroup className="listGroup">
+      <h3>Your Walls</h3>
       {listItems.map((item) => (
         <ListGroup.Item>
           <Card bg="light">
