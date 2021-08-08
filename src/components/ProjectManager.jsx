@@ -19,19 +19,13 @@ export default function ProjectManager({listOfMeasurements, isImperialUnit}) {
         <h1>Carpentry Project Manager</h1>
       </Card.Header>
       <Card.Body>
-        {" "}
-        You need 
-{' '}
-{numberOfStuds}
-{' '}
-studs.
-<br />
-        You will also need
-        {isImperialUnit
-          ? ` ${Math.ceil(numberOfStuds * 3.3)} feet `
-          : ` ${Math.ceil(numberOfStuds / 2.5)} metres `}
-{" "}
-        of boards for your top and bottom plates.
+        {`You need ${numberOfStuds} studs.`}
+        <br />
+        {`You will also need ${
+          isImperialUnit
+            ? ` ${Math.ceil(numberOfStuds * 3.3)} feet `
+            : ` ${Math.ceil(numberOfStuds / 2.5)} metres `
+        } of boards for your top and bottom plates.`}
         <Button onClick={handleClick} variant="secondary">
           Add Wall to Project
         </Button>
