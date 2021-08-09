@@ -7,7 +7,7 @@ export default function Directions({isImperialUnit}) {
     isImperialUnit ? imperialValue : metricValue;
   return (
     <Card className="directions">
-      <h2>Directions:</h2>
+      <h2>How to layout a wall:</h2>
       <Card.Body>
         {`In order for your drywall to line up right, the second stud is placed at
         ${unitSwappedValues(" 15.25 inches ", " 387 milimetres ")}

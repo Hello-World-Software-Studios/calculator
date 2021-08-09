@@ -55,17 +55,14 @@ function Calculator() {
               </Button>
 
               <Card.Text>
-                Now measuring in
-                {isImperialUnit ? " inches" : " milimetres"}
-.
-</Card.Text>
+                {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
+              </Card.Text>
 
               <Button onClick={toggleUnits} variant="warning">
                 Swap Between Imperial and Metric
               </Button>
               <Card.Body>
-                Place your studs at:
-                {listOfMeasurements.join(", ")}
+                {`Place your studs at: ${listOfMeasurements.join(", ")}`}
               </Card.Body>
             </Form>
           </Card>
