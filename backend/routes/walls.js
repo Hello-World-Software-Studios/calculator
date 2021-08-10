@@ -27,9 +27,6 @@ const makeAList = (wallLength, isImperialUnit) => {
     : newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
-router.route("/test").get((req, res) => {
-  res.json(makeAList(120, true));
-});
 router.route("/").get((req, res) => {
   const {wallLength, isImperialUnit} = req.query;
   res.json(makeAList(wallLength, isImperialUnit));

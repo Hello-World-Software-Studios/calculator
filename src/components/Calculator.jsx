@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {Button, Card, CardColumns, CardGroup, Form} from "react-bootstrap";
 import ProjectManager from "./ProjectManager";
 import useFetchWall from "./useFetchWall";
-import Directions from "./Directions";
+import HowToLayoutAWall from "./HowToLayoutAWall";
 
 function Calculator() {
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -66,7 +66,7 @@ function Calculator() {
               </Card.Body>
             </Form>
           </Card>
-          <Directions isImperialUnit={isImperialUnit} />
+          <HowToLayoutAWall isImperialUnit={isImperialUnit} />
         </CardColumns>
       </CardGroup>
     </>

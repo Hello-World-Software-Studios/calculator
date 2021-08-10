@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Card} from "react-bootstrap";
 
-export default function Directions({isImperialUnit}) {
+export default function HowToLayoutAWall({isImperialUnit}) {
   const unitSwappedValues = (imperialValue, metricValue) =>
     isImperialUnit ? imperialValue : metricValue;
   return (
@@ -12,8 +12,8 @@ export default function Directions({isImperialUnit}) {
         {`In order for your drywall to line up right, the second stud is placed at
         ${unitSwappedValues(" 15.25 inches ", " 387 milimetres ")}
         instead of the standard spacing of
-        ${unitSwappedValues(" 16 inches", " 406 milimetres")}
-        . From there, you can hook your
+        ${unitSwappedValues(" 16 inches.", " 406 milimetres.")}
+        From there, you can hook your
         tape onto the second stud and proceed at spacing intervals. OR, should you want to
         mark them all in one go, simply subtract
         ${unitSwappedValues(" 3/4 inches ", " 19 milimetres ")}
@@ -23,6 +23,6 @@ export default function Directions({isImperialUnit}) {
   );
 }
 
-Directions.propTypes = {
+HowToLayoutAWall.propTypes = {
   isImperialUnit: PropTypes.bool.isRequired,
 };

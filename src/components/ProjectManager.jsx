@@ -36,7 +36,7 @@ export default function ProjectManager({listOfMeasurements, isImperialUnit}) {
             {`You will also need ${topAndBottomPlates}
             of boards for your top and bottom plates.`}
             <br />
-            {`It will cost: $${totalCost.toFixed(2)}`}
+            {`It will cost about: $${(totalCost * 1.1).toFixed(2)}`}
           </Card.Body>
           </Card>
           <Card>
