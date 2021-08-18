@@ -2,22 +2,21 @@ const express = require("express");
 const pool = require("../db");
 
 const router = express.Router();
-
-router.route("/").get(async (req, res) => {
-  const selectAll = await pool.query("SELECT * FROM projects");
+router.route("/get").get(async (req, res) => {
+  const selectAll = await pool.query("SELECT name FROM projects WHERE owner_user_id = 1");
   res.json(selectAll.rows);
 });
-// router.route("/").post(async (req, res) => {
-//   try {
-//     const {project} = req.body;
-//     pool.query(
-//       `INSERT INTO projects (name, owner_user_id, date_created) VALUES (${
-//         (project.name, project.owner_user_id, "2005-07-08 00:00:00")
-//       });`
-//     );
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
+
+router.route("/").post(async ({query: {projectName, ownerUserID}}, res) => {
+  try {
+    // const currentTimestamp = new Date().getTime();
+    pool.query(
+      "INSERT INTO projects (name, owner_user_id) VALUES ($1)",
+        [projectName, ownerUserID]
+      );
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 module.exports = router;

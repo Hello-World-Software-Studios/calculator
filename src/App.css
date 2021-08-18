@@ -9,27 +9,18 @@ input {
   border-radius: 4px;
   border-color: lightgray;
 }
-
-p {
-  color: "black";
-  font-size: 20px;
-  text-align: left;
-}
-.button {
-  background-color: black;
-  color: green;
-  border: none;
-  margin: 10px 0;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
 .button:hover {
   opacity: 0.5;
 }
 .calculator {
   align-items: center;
   justify-content: center;
+  width: 100%
+}
+.calcInstance {
+  align-items: center;
+  justify-content: center;
+  width: 100%
 }
 .card {
   align-items: center;
@@ -39,12 +30,12 @@ p {
 }
 .column {
   background-color: gray;
-  width: 30%;
+  width: 100%;
 }
 
 .form {
   background-color: white;
-  width: 50%;
+  width: 100%;
   border-radius: 4px;
   margin-top: 30px;
   margin-bottom: 30px;
@@ -54,7 +45,10 @@ p {
   align-items: center;
   margin-bottom: 3px;
 }
-
+.header {
+  font-size: large;
+  font-weight: bold;
+}
 #label {
   color: lightgreen;
   font-size: 12px;
@@ -76,7 +70,15 @@ p {
   height: 90%;
   width: 80%;
 }
+.modalStyle {
+  justify-content: center;
+  align-items: center;
+}
+p {
+  color: "black";
+  font-size: 20px;
+  text-align: left;
+}
 .projectManager {
-  background-color: greenyellow;
-  width: 70%;
+  width: 100%;
 }

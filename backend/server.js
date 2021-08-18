@@ -1,10 +1,13 @@
 const express = require("express");
 const session = require("express-session");
+const projects = require("./routes/projects");
 const walls = require("./routes/walls");
+
 
 const server = express();
 const port = 3001;
 server.use(express.json());
+server.use("/projects", projects);
 server.use("/walls", walls);
 server.use(session({
   secret: "secret-key",
@@ -12,9 +15,8 @@ server.use(session({
   saveUninitialized: false,
 }));
 
-const test = (name) => `Hello, ${name}`;
 server.get("/", (req, res) => {
-  res.send(test("welcome to the root folder of my server"));
+  res.send("welcome to the root folder of my server");
 });
 
 server.listen(port, () => {

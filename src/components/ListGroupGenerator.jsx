@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-
 import {Button, Card, ListGroup} from "react-bootstrap";
+import useFetchProjectName from "./useFetchProjectName";
+
 
 export default function ListGroupGenerator({listOfWalls}) {
   const [listItems, setListItems] = useState([]);
-
+  const {response: fetchedSQLProject, error: fetchedSQLProjectError} =
+    useFetchProjectName();
+    console.error(fetchedSQLProjectError);
+  // const fetchErrorCheck =  fetchedSQLProjectError == null ? fetchedSQLProject : fetchedSQLProject;
   useEffect(() => {
     setListItems(listOfWalls);
   }, [listOfWalls]);
@@ -13,7 +17,7 @@ export default function ListGroupGenerator({listOfWalls}) {
 
   return (
     <ListGroup className="listGroup" variant="flush">
-      <h3 className="listGroupHeader">Your Walls</h3>
+      <h3 className="listGroupHeader">{fetchedSQLProject}</h3>
       {listItems.map((item) => (
         <ListGroup.Item>
           <Card bg="secondary">

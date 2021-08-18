@@ -1,23 +1,24 @@
 import {useEffect, useState} from "react";
 
-const useFetchWall = (wallLength, isImperialUnit) => {
+const useFetchSQLData = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     async function fetchData() {
-      try {
+        try {
         const res = await fetch(
-          `http://localhost:3000/walls?wallLength=${wallLength}&isImperialUnit=${isImperialUnit}`
+        `http://localhost:3000/projects/get`
         );
         const json = await res.json();
-        setResponse(json);
-      } catch (err) {
-        setError(err);
-      }
+        const {name: projectName} = json.rows[0];
+        setResponse(projectName);
+        } catch (err) {
+            setError(err);
+        } 
     }
     fetchData();
-  }, [wallLength, isImperialUnit]);
+;  }, []);
   return {response, error};
 };
 
-export default useFetchWall;
+export default useFetchSQLData;

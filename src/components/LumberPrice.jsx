@@ -12,7 +12,7 @@ export default function LumberPrice() {
 
   return (
     <Card>
-      <Card.Header>Current price of lumber:</Card.Header>
+      <Card.Header className="header">Current price of lumber:</Card.Header>
       <Card.Body>
         {`Price of a 2x4: $${twoByFourPrice} `}
         <br />

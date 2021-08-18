@@ -1,13 +1,13 @@
 const express = require("express");
 
+const BASE_STUD = 0;
+const CENTER_SPACING_IMPERIAL = 16;
+const CENTER_SPACING_METRIC = 406.4;
+const STUD_OFFSET_IMPERIAL = 0.75;
+const STUD_OFFSET_METRIC = 19;
 const router = express.Router();
 
-const makeAList = (wallLength, isImperialUnit) => {
-  const CENTER_SPACING_IMPERIAL = 16;
-  const CENTER_SPACING_METRIC = 406.4;
-  const STUD_OFFSET_IMPERIAL = 0.75;
-  const STUD_OFFSET_METRIC = 19;
-  const BASE_STUD = 0;
+const getListOfMeasurements = (wallLength, isImperialUnit) => {
   const newArray = [BASE_STUD];
   const onCenterSpacing =
     isImperialUnit === "true" ? CENTER_SPACING_IMPERIAL : CENTER_SPACING_METRIC;
@@ -27,9 +27,8 @@ const makeAList = (wallLength, isImperialUnit) => {
     : newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
-router.route("/").get((req, res) => {
-  const {wallLength, isImperialUnit} = req.query;
-  res.json(makeAList(wallLength, isImperialUnit));
+router.route("/").get(({query: {wallLength, isImperialUnit}}, res) => {
+  res.json(getListOfMeasurements(wallLength, isImperialUnit));
 });
 
 module.exports = router;
