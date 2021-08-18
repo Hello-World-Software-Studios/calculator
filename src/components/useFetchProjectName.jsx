@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-const useFetchSQLData = () => {
+const useFetchProjectName = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -21,4 +21,4 @@ const useFetchSQLData = () => {
   return {response, error};
 };
 
-export default useFetchSQLData;
+export default useFetchProjectName;
