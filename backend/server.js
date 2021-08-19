@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const cookies = require("cookie-parser");
 const projects = require("./routes/projects");
 const walls = require("./routes/walls");
 const users = require("./routes/users");

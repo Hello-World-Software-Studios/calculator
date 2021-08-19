@@ -8,16 +8,17 @@ router.route("/get").get(async (req, res) => {
   res.json(selectAll.rows);
 });
 
-router.route("/post").post(async ({query: {projectName, ownerUserID}}, res) => {
+router.route("/post").post(async ({body: {projectName, ownerUserID}}, res) => {
   console.log(projectName, ownerUserID);
   try {
     // const currentTimestamp = new Date().getTime();
     const newProject = await pool.query(
-      "INSERT INTO projects (name, owner_user_id) VALUES ($1)",
+      "INSERT INTO projects (name, owner_user_id) VALUES ($1, $2)",
         [projectName, ownerUserID]
       );
       res.json(newProject.rows);
   } catch (err) {
+    res.json({message: err.message});
     console.error(err.message);
   }
 });
