@@ -4,7 +4,7 @@ const pool = require("../db");
 const router = express.Router();
 
 router.route("/get").get(async (req, res) => {
-  const selectAll = await pool.query("SELECT name FROM projects WHERE owner_user_id = 1");
+  const selectAll = await pool.query("SELECT name FROM projects");
   res.json(selectAll.rows);
 });
 
@@ -16,9 +16,8 @@ router.route("/post").post(async ({query: {projectName, ownerUserID}}, res) => {
       "INSERT INTO projects (name, owner_user_id) VALUES ($1)",
         [projectName, ownerUserID]
       );
-      res.json(newProject.rows)
+      res.json(newProject.rows);
   } catch (err) {
-    console.log(projectName, ownerUserID);
     console.error(err.message);
   }
 });

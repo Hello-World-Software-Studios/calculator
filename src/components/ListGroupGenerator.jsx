@@ -8,15 +8,18 @@ export default function ListGroupGenerator({listOfWalls}) {
   const [listItems, setListItems] = useState([]);
   const {response: fetchedSQLProject, error: fetchedSQLProjectError} =
     useFetchProjectName();
-    console.error(fetchedSQLProjectError);
-  // const fetchErrorCheck =  fetchedSQLProjectError == null ? fetchedSQLProject : fetchedSQLProject;
+  
+  const fetchErrorCheck =  fetchedSQLProjectError == null 
+    ? fetchedSQLProject 
+    : fetchedSQLProject;
+
   useEffect(() => {
     setListItems(listOfWalls);
   }, [listOfWalls]);
 
   return (
     <ListGroup className="listGroup" variant="flush">
-      <h3 className="listGroupHeader">{fetchedSQLProject}</h3>
+      <h3 className="listGroupHeader">{fetchErrorCheck}</h3>
       {listItems.map((item) => (
         <ListGroup.Item>
           <Card bg="secondary">

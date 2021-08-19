@@ -10,14 +10,16 @@ const useFetchProjectName = () => {
         `http://localhost:3000/projects/get`
         );
         const json = await res.json();
-        const {projectName} = json.rows[0];
+        const {name: projectName} = json[0];
         setResponse(projectName);
         } catch (err) {
             setError(err);
         } 
     }
     fetchData();
+    
 ;  }, []);
+
   return {response, error};
 };
 
