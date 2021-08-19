@@ -14,7 +14,6 @@ export default function ListGroupGenerator({listOfWalls}) {
     setListItems(listOfWalls);
   }, [listOfWalls]);
 
-
   return (
     <ListGroup className="listGroup" variant="flush">
       <h3 className="listGroupHeader">{fetchedSQLProject}</h3>

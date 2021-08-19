@@ -4,6 +4,8 @@ import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
 
+const CONVERSION_COEFFICIENT = 0.3048;
+
 export default function ProjectManager() {
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -12,12 +14,15 @@ export default function ProjectManager() {
   const [numberOfStuds, setNumberOfStuds] = useState(0);
   const numberOfFeetOfPlate = isImperialUnit 
     ? Math.ceil(numberOfStuds * 3.3) 
-    : Math.ceil(numberOfStuds / 2.5);
+    : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
   const topAndBottomPlates = isImperialUnit
     ? ` ${numberOfFeetOfPlate} feet `
     : ` ${numberOfFeetOfPlate} metres `;
+    const studHeightDivisor = isImperialUnit
+    ? 8
+    : 2.4;
   const studCost = 7;
-  const totalCost = (numberOfStuds * studCost) + ((numberOfFeetOfPlate / 8) * studCost);
+  const totalCost = (numberOfStuds * studCost) + ((numberOfFeetOfPlate / studHeightDivisor) * studCost);
 
   const handleClick = () => {
     setListOfWalls([...listOfWalls, listOfMeasurements]);
