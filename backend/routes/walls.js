@@ -1,4 +1,5 @@
 const express = require("express");
+const pool = require("../db");
 
 const BASE_STUD = 0;
 const CENTER_SPACING_IMPERIAL = 16;
@@ -29,6 +30,17 @@ const getListOfMeasurements = (wallLength, isImperialUnit) => {
 
 router.route("/").get(({query: {wallLength, isImperialUnit}}, res) => {
   res.json(getListOfMeasurements(wallLength, isImperialUnit));
+});
+router.route("/post").post(async ({body: {wallLength, projectID}}, res) => {
+  try {
+    const newWall = await pool.query(
+      "INSERT INTO walls (wall_length, project_id) VALUES ($1, $2) RETURNING *",
+        [wallLength, projectID]
+      );
+      res.json(newWall.rows);
+  } catch (err) {
+    res.json({message: err.message});
+  }
 });
 
 module.exports = router;

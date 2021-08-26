@@ -21,16 +21,9 @@ CREATE TABLE "walls" (
   "wall_length" int
 );
 
-CREATE TABLE "studs" (
-  "id" serial PRIMARY KEY,
-  "wall_id" int,
-  "date_created" timestamp,
-  "stud_num" int
-);
 
 ALTER TABLE "projects" ADD FOREIGN KEY ("owner_user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "walls" ADD FOREIGN KEY ("project_id") REFERENCES "projects" ("id");
 
-ALTER TABLE "studs" ADD FOREIGN KEY ("wall_id") REFERENCES "walls" ("id");*/
 

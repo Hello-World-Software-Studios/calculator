@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Button, Card, CardColumns, Form, ListGroup} from "react-bootstrap";
 import PropTypes from "prop-types";
@@ -6,21 +6,20 @@ import useFetchWall from "./useFetchWall";
 import HowToLayoutAWall from "./HowToLayoutAWall";
 
 
-function Calculator({ setListOfMeasurements, isImperialUnit}) {
-  const [wallLength, setWallLength] = useState(0);
+function Calculator({isImperialUnit, setListOfMeasurements, setWallLength, wallLength}) {
   const {response: fetchedListOfMeasurements, error: fetchedListOfMeasurementsError} =
     useFetchWall(wallLength, isImperialUnit);
   console.error(fetchedListOfMeasurementsError);
+  
   const handleInputChange = (event) => {
-    event.preventDefault();
     setWallLength(event.target.value);
-    setListOfMeasurements(fetchedListOfMeasurements);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setListOfMeasurements(fetchedListOfMeasurements);
   };
-
+  
   return (
     <>
       <CardColumns className="column">
@@ -65,4 +64,6 @@ export default Calculator;
 Calculator.propTypes = {
   setListOfMeasurements: PropTypes.func.isRequired,
   isImperialUnit: PropTypes.bool.isRequired,
+  wallLength: PropTypes.number.isRequired,
+  setWallLength: PropTypes.func.isRequired,
 };

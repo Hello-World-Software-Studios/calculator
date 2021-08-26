@@ -1,17 +1,17 @@
 import {useEffect, useState} from "react";
 
-const useFetchProjectName = () => {
+const useFetchProject = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     async function fetchData() {
         try {
         const res = await fetch(
-        `http://localhost:3000/projects/get`
+        `http://localhost:3000/projects`
         );
         const json = await res.json();
-        const {name: projectName} = json[0];
-        setResponse(projectName);
+        // const {name: project} = json[0];
+        setResponse(json[0]);
         } catch (err) {
             setError(err);
         } 
@@ -23,4 +23,4 @@ const useFetchProjectName = () => {
   return {response, error};
 };
 
-export default useFetchProjectName;
+export default useFetchProject;

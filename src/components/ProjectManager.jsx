@@ -1,17 +1,24 @@
 import {Button, Card, CardGroup, Modal} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {createContext, useState} from "react";
+// eslint-disable-next-line import/no-cycle
 import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
+import Dashboard from "./Dashboard";
 
 const CONVERSION_COEFFICIENT = 0.3048;
+export const wallLengthContext = createContext();
 
 export default function ProjectManager() {
+  const [currentProject, setCurrentProject] = useState({id: 0, name: "Default Project", owner_id: 1})
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([]);
   const [numberOfStuds, setNumberOfStuds] = useState(0);
+  const [wallLength, setWallLength] = useState(0);
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null); 
   const numberOfFeetOfPlate = isImperialUnit 
     ? Math.ceil(numberOfStuds * 3.3) 
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -24,12 +31,35 @@ export default function ProjectManager() {
   const studCost = 7;
   const totalCost = (numberOfStuds * studCost) + ((numberOfFeetOfPlate / studHeightDivisor) * studCost);
 
-  const handleClick = () => {
+  const addWall = async (projectName, ownerUserID) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({projectName, ownerUserID})
+    };
+    try {
+        const res = await fetch(
+        `http://localhost:3000/walls/post`,
+        requestOptions
+        );
+        const json = await res.json();
+        const {name: returnedWall} = json[0];
+        setResponse(returnedWall);
+        } catch (err) {
+            setError(err);
+        } 
+    return {response, error}    
+  }
+  const handlePostWall = () => {
     setListOfWalls([...listOfWalls, listOfMeasurements]);
     setNumberOfStuds(numberOfStuds + listOfMeasurements.length);
+    addWall(wallLength, currentProject.owner_id);
   };
-  function setListOfMeasurementsFunction(fetchedListOfMeasurements){
+  function setListOfMeasurementsFunction(fetchedListOfMeasurements) {
     setListOfMeasurements(fetchedListOfMeasurements);
+  }
+  function setWallLengthFunction(event) {
+    setWallLength(event);
   }
   function toggleUnits() {
     setImperialUnit((prevUnit) => !prevUnit);
@@ -40,6 +70,7 @@ export default function ProjectManager() {
 
   return (
   <CardGroup className="projectManager">
+    <Dashboard currentProject={currentProject} setCurrentProject={(project) => setCurrentProject(project)}/>
     <Card>
       <Card.Header>
         <h1>Carpentry Project Manager</h1>
@@ -64,7 +95,7 @@ export default function ProjectManager() {
           <Card>
             <Card.Header className="header">Directions:</Card.Header>
             <Card.Body>
-              Use the Calculator component to layout a wall, then click below to add the wall to your project.
+              Use the Calculator component to layout a wall, and add the wall to your project.
               <br/>
               <Button onClick={handleShow}>
                 Open Calculator
@@ -74,18 +105,19 @@ export default function ProjectManager() {
                   <Modal.Header>
                     <Modal.Title>Wall Stud Calculator</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
+                  <Modal.Body>                 
                     <Calculator className="calcInstance"
-                      listOfMeasurements={listOfMeasurements}
-                      setListOfMeasurements={setListOfMeasurementsFunction}
                       isImperialUnit={isImperialUnit}
+                      setListOfMeasurements={setListOfMeasurementsFunction}
+                      setWallLength={setWallLengthFunction}
+                      wallLength={wallLength}
                     />
                   </Modal.Body>
                   <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                       Close
                     </Button>
-                    <Button onClick={handleClick} variant="primary">
+                    <Button onClick={handlePostWall} variant="primary">
                       Add Wall to Project
                     </Button>
                   </Modal.Footer>
@@ -95,7 +127,7 @@ export default function ProjectManager() {
           </Card>
         </CardGroup>
       </Card.Body>
-      <ListGroupGenerator listOfWalls={listOfWalls} />
+        <ListGroupGenerator listOfWalls={listOfWalls} currentProject={currentProject} wallLength={wallLength} />
     </Card>
     </CardGroup>
   );
