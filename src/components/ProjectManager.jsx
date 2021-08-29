@@ -1,6 +1,5 @@
 import {Button, Card, CardGroup, Modal} from "react-bootstrap";
 import React, {createContext, useState} from "react";
-// eslint-disable-next-line import/no-cycle
 import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
@@ -10,7 +9,7 @@ const CONVERSION_COEFFICIENT = 0.3048;
 export const wallLengthContext = createContext();
 
 export default function ProjectManager() {
-  const [currentProject, setCurrentProject] = useState({id: 0, name: "Default Project", owner_id: 1})
+  const [currentProject, setCurrentProject] = useState({id: 0, name: "", owner_id: 1})
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -19,6 +18,7 @@ export default function ProjectManager() {
   const [wallLength, setWallLength] = useState(0);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null); 
+  console.log("Error:", error);
   const numberOfFeetOfPlate = isImperialUnit 
     ? Math.ceil(numberOfStuds * 3.3) 
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -30,12 +30,13 @@ export default function ProjectManager() {
     : 2.4;
   const studCost = 7;
   const totalCost = (numberOfStuds * studCost) + ((numberOfFeetOfPlate / studHeightDivisor) * studCost);
-
-  const addWall = async (projectName, ownerUserID) => {
+  
+  const addWall = async (length, projectID) => {
+    console.log(length, projectID);
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({projectName, ownerUserID})
+        body: JSON.stringify({length, projectID})
     };
     try {
         const res = await fetch(
@@ -43,17 +44,19 @@ export default function ProjectManager() {
         requestOptions
         );
         const json = await res.json();
-        const {name: returnedWall} = json[0];
-        setResponse(returnedWall);
-        } catch (err) {
-            setError(err);
-        } 
-    return {response, error}    
+        setResponse(json);
+        // TODO SET LIST OF WALLS HERE?
+        console.log(json);
+      } catch (err) {
+          setError(err);
+      }     
   }
-  const handlePostWall = () => {
-    setListOfWalls([...listOfWalls, listOfMeasurements]);
+  const handlePostWall = async () => {
+    console.log(wallLength);
+    setListOfWalls([...listOfWalls, {wall_length: wallLength, studs: listOfMeasurements.length, list: listOfMeasurements}]);
     setNumberOfStuds(numberOfStuds + listOfMeasurements.length);
-    addWall(wallLength, currentProject.owner_id);
+    await addWall(wallLength, currentProject.id);
+    console.log(response);
   };
   function setListOfMeasurementsFunction(fetchedListOfMeasurements) {
     setListOfMeasurements(fetchedListOfMeasurements);

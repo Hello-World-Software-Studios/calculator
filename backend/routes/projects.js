@@ -3,10 +3,11 @@ const pool = require("../db");
 
 const router = express.Router();
 
-router.route("/").get(async (req, res) => {
+router.route("/").get(async ({body: {id: ownerUserID}}, res) => {
   try {
     const selectProject = await pool.query(
-      "SELECT id, name, owner_user_id FROM projects WHERE owner_user_id = $1;"
+      "SELECT id, name, owner_user_id FROM projects WHERE owner_user_id = $1;",
+      [ownerUserID]
       );
     res.json(selectProject.rows);
   } catch (err) {

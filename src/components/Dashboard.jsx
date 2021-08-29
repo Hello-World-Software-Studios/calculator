@@ -1,22 +1,37 @@
 import React, {useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import PropTypes from "prop-types";
+import checkForNameToDisplay from './reusableCode';
 
-const NO_NAME_TO_DISPLAY = "No Project Selected";
+const PRODUCTION_USER_ID = 1;
 
 export default function Dashboard({currentProject, setCurrentProject}) {
-    const [user, setUser] = useState({username: "JP", password: "password", id: 1});
-    const [response, setResponse] = useState({});
+    const [user, setUser] = useState({username: null, password: "password", id: PRODUCTION_USER_ID});
     const [error, setError] = useState(null);
-    const displayProjectName = currentProject == null
-    ? NO_NAME_TO_DISPLAY
-    : currentProject.name;
 
-    console.log(currentProject);
-    // const {response: returnedProject, error: returnedProjectError} = response;
-    // const handleErrors = returnedProjectError == null
-    // ? returnedProject
-    // : returnedProjectError;
+    console.log("Error:", error);
+    console.log("User", user);
+    console.log("currentProject", currentProject);
+    
+    const addUser = async (username, password) => {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({username, password})
+      };
+      try {
+        const res = await fetch(
+        `http://localhost:3000/users/post`,
+        requestOptions
+        );
+        const json = await res.json();
+        const {id: incomingID} = json[0];
+        console.log(json[0]);
+        setUser(prevState => ({username: prevState.username, password: prevState.password, id: incomingID}));
+        } catch (err) {
+            setError(err);
+        } 
+    }
 
     const addProject = async (projectName, ownerUserID) => {
       const requestOptions = {
@@ -30,27 +45,27 @@ export default function Dashboard({currentProject, setCurrentProject}) {
           requestOptions
           );
           const json = await res.json();
-          setResponse(json);
+          console.log(json[0]);
+          setCurrentProject(json[0]);
           } catch (err) {
               setError(err);
-          } 
-      return {response, error}    
+          }    
     }
 
-    const loginSubmit = (event) => {
+    const submitUser = async (event) => {
       event.preventDefault();
-      setUser(prevState => ({username: user, ...prevState}));
+      // TODO find a way to generate a new userID based on SQL table
+      await addUser(user.username, user.password);
+      setCurrentProject(prevState => ({...prevState, owner_id: user.id}))
       // TODO Create a login function
     };
     const onChangeUser = (event) => {
-      setUser(event.target.value);
+      setUser(prevState => ({username: event.target.value, password: prevState.password, id: prevState.id}));
     };
 
-    const submitProject = (event) => {
+    const submitProject = async (event) => {
       event.preventDefault();
-      addProject(currentProject.name, user.id);
-      setCurrentProject(response);
-      console.log(currentProject);
+      await addProject(currentProject.name, user.id);
     };
     const onChangeProject = (event) => {
       setCurrentProject(prevState => ({id: prevState.id, name: event.target.value, owner_id: prevState.owner_id}));
@@ -60,8 +75,8 @@ export default function Dashboard({currentProject, setCurrentProject}) {
         <Card>
             <Card.Header>{`Hello, ${user.username}`}</Card.Header>
             <Card.Body>
-                {`Current Project: ${displayProjectName}`}
-              <Form className="form" onSubmit={loginSubmit}>
+                {`Current Project: ${checkForNameToDisplay(currentProject.name)}`}
+              <Form className="form" onSubmit={submitUser}>
                 <Form.Label>Login to get started</Form.Label>
 
                 <Form.Control
@@ -84,7 +99,7 @@ export default function Dashboard({currentProject, setCurrentProject}) {
                   required
                   type="text"
                   onChange={onChangeProject}
-                  value={displayProjectName}
+                  value={currentProject.name}
                 />
 
                 <Button type="submit" variant="primary">

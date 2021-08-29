@@ -31,11 +31,12 @@ const getListOfMeasurements = (wallLength, isImperialUnit) => {
 router.route("/").get(({query: {wallLength, isImperialUnit}}, res) => {
   res.json(getListOfMeasurements(wallLength, isImperialUnit));
 });
-router.route("/post").post(async ({body: {wallLength, projectID}}, res) => {
+
+router.route("/post").post(async ({body: {length, projectID}}, res) => {
   try {
     const newWall = await pool.query(
-      "INSERT INTO walls (wall_length, project_id) VALUES ($1, $2) RETURNING *",
-        [wallLength, projectID]
+      "INSERT INTO walls (wall_length, project_id) VALUES ($1, $2) RETURNING wall_length, project_id",
+        [length, projectID]
       );
       res.json(newWall.rows);
   } catch (err) {

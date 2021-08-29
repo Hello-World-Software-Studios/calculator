@@ -8,14 +8,15 @@ router.route("/").get(async (req, res) => {
   res.json(selectAll.rows);
 });
 
-router.route("/").post(async ({body: {username, password}}, res) => {
+router.route("/post").post(async ({body: {username, password}}, res) => {
   try {
-    await pool.query(
-      "INSERT INTO users (username, password) VALUES ($1)",
+    const newUser = await pool.query(
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
         [username, password]
       );
+    res.json(newUser.rows);
   } catch (err) {
-    console.error(err.message);
+    res.json({message: err.message});
   }
 });
 
