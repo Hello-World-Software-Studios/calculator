@@ -75,7 +75,8 @@ export default function Dashboard({currentProject, setCurrentProject}) {
         <Card>
             <Card.Header>{`Hello, ${user.username}`}</Card.Header>
             <Card.Body>
-                {`Current Project: ${checkForNameToDisplay(currentProject.name)}`}
+                Current Project: 
+                {checkForNameToDisplay(currentProject.name)}
               <Form className="form" onSubmit={submitUser}>
                 <Form.Label>Login to get started</Form.Label>
 

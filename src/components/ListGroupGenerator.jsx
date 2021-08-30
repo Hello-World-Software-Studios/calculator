@@ -5,7 +5,8 @@ import checkForNameToDisplay from "./reusableCode";
 
 export default function ListGroupGenerator({listOfWalls, currentProject}) {
 console.log("List of Walls:", listOfWalls);
- 
+
+// TODO wall length needs imperial/metric context
   return (
     <ListGroup className="listGroup" variant="flush">
       <h3 className="listGroupHeader">{checkForNameToDisplay(currentProject.name)}</h3>
@@ -17,7 +18,8 @@ console.log("List of Walls:", listOfWalls);
               <br/>
               {`${item.studs} studs.`}
               <br/>
-              {`Measurements: ${item.list}`}
+              Measurements: 
+              {item.list.join(" | ")}
             </Card.Body>
             <Button variant="danger" >REMOVE</Button>
           </Card>

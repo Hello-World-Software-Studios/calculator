@@ -111,6 +111,7 @@ export default function ProjectManager() {
                   <Modal.Body>                 
                     <Calculator className="calcInstance"
                       isImperialUnit={isImperialUnit}
+                      listOfMeasurements={listOfMeasurements}
                       setListOfMeasurements={setListOfMeasurementsFunction}
                       setWallLength={setWallLengthFunction}
                       wallLength={wallLength}
