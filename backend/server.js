@@ -1,22 +1,30 @@
 const express = require("express");
 const session = require("express-session");
-const cookies = require("cookie-parser");
+// const cookie = require("cookie-parser");
 const projects = require("./routes/projects");
 const walls = require("./routes/walls");
 const users = require("./routes/users");
 
-
 const server = express();
 const port = 3001;
+
 server.use(express.json());
 server.use("/projects", projects);
 server.use("/walls", walls);
 server.use("/users", users);
 server.use(session({
-  secret: "secret-key",
+  secret: "secret",
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    httpOnly: false,
+    maxAge: 36000
+  }
 }));
+server.use((req, res, next) => {
+  console.log(req.session);
+  next();
+});
 
 server.get("/", (req, res) => {
   res.send("welcome to the root folder of my server");
