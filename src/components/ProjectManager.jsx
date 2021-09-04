@@ -38,7 +38,6 @@ export default function ProjectManager() {
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
 
   const addWall = async (length, projectID) => {
-    console.log(length, projectID);
     const requestOptions = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
@@ -48,14 +47,11 @@ export default function ProjectManager() {
       const res = await fetch(`http://localhost:3000/walls/post`, requestOptions);
       const json = await res.json();
       setResponse(json);
-      // TODO SET LIST OF WALLS HERE?
-      console.log(json);
     } catch (err) {
       setError(err);
     }
   };
   const handlePostWall = async () => {
-    console.log(wallLength);
     setListOfWalls([
       ...listOfWalls,
       {
@@ -84,13 +80,13 @@ export default function ProjectManager() {
   return (
     <CardGroup className="projectManager">
       <CardColumns>
-        <RegisterUser 
-          setCurrentProject={(project) => setCurrentProject(project)} 
+        <RegisterUser
+          setCurrentProject={(project) => setCurrentProject(project)}
           user={user}
           setUser={(u) => setUser(u)}
         />
-        <ReturningUser 
-          setCurrentProject={(project) => setCurrentProject(project)} 
+        <ReturningUser
+          setCurrentProject={(project) => setCurrentProject(project)}
           user={user}
           setUser={(u) => setUser(u)}
         />

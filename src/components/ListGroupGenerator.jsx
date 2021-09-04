@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Button, Card, ListGroup} from "react-bootstrap";
-import checkForNameToDisplay from "./reusableCode";
+import checkForNameToDisplay from "./utilities";
 
 export default function ListGroupGenerator({listOfWalls, currentProject}) {
-console.log("List of Walls:", listOfWalls);
+  console.log("List of Walls:", listOfWalls);
 
-// TODO wall length needs imperial/metric context
+  // TODO wall length needs imperial/metric context
   return (
     <ListGroup className="listGroup" variant="flush">
       <h3 className="listGroupHeader">{checkForNameToDisplay(currentProject.name)}</h3>
@@ -15,13 +15,13 @@ console.log("List of Walls:", listOfWalls);
           <Card bg="secondary">
             <Card.Body className="listGroupItem">
               {`${item.wall_length} inches.`}
-              <br/>
+              <br />
               {`${item.studs} studs.`}
-              <br/>
-              Measurements: 
+              <br />
+              Measurements:
               {item.list.join(" | ")}
             </Card.Body>
-            <Button variant="danger" >REMOVE</Button>
+            <Button variant="danger">REMOVE</Button>
           </Card>
         </ListGroup.Item>
       ))}
@@ -30,6 +30,16 @@ console.log("List of Walls:", listOfWalls);
 }
 
 ListGroupGenerator.propTypes = {
-  listOfWalls: PropTypes.arrayOf(PropTypes.shape({wall_length: PropTypes.number, studs: PropTypes.number, list: PropTypes.arrayOf(PropTypes.number)})).isRequired,
-  currentProject: PropTypes.shape({id: PropTypes.number, name: PropTypes.string, owner_id: PropTypes.number}).isRequired,
+  listOfWalls: PropTypes.arrayOf(
+    PropTypes.shape({
+      wall_length: PropTypes.number,
+      studs: PropTypes.number,
+      list: PropTypes.arrayOf(PropTypes.number),
+    })
+  ).isRequired,
+  currentProject: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    owner_id: PropTypes.number,
+  }).isRequired,
 };

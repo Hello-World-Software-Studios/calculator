@@ -1,5 +1,7 @@
 const express = require("express");
 const session = require("express-session");
+const PGSession = require("connect-pg-simple")(session);
+const pool = require("./db");
 // const cookie = require("cookie-parser");
 const projects = require("./routes/projects");
 const walls = require("./routes/walls");
@@ -12,15 +14,21 @@ server.use(express.json());
 server.use("/projects", projects);
 server.use("/walls", walls);
 server.use("/users", users);
-server.use(session({
-  secret: "secret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-    maxAge: 36000
-  }
-}));
+server.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: false,
+      maxAge: 36000,
+    },
+    store: new PGSession({
+      pool: {pool},
+      tableName: "user_sessions",
+    }),
+  })
+);
 server.use((req, res, next) => {
   console.log(req.session);
   next();

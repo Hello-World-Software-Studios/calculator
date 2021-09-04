@@ -1,9 +1,0 @@
-//GET http://localhost:3001/walls?wallLength=144&isImperialUnit=true;
-
-POST http://localhost:3001/projects/post HTTP/1.1
-Content-Type: {application/json}
-{
-    "name": "New Summer Project",
-    "id": 1
-
-}

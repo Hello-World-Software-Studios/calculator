@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 
 export default function Dashboard({user, currentProject, setCurrentProject}) {
   const [error, setError] = useState(null);
-
   console.log("Error:", error);
-  console.log("currentProject", currentProject);
 
   const addProject = async (projectName, ownerUserID) => {
     const requestOptions = {
@@ -17,7 +15,6 @@ export default function Dashboard({user, currentProject, setCurrentProject}) {
     try {
       const res = await fetch(`http://localhost:3000/projects/post`, requestOptions);
       const json = await res.json();
-      console.log(json[0]);
       setCurrentProject(json[0]);
     } catch (err) {
       setError(err);
@@ -42,8 +39,8 @@ export default function Dashboard({user, currentProject, setCurrentProject}) {
       <Card.Body>
         <Form className="form" onSubmit={submitProject}>
           <Form.Label>
-            Choose a name for your project 
-             {user.username}
+            Choose a name for your project
+            {user.username}
           </Form.Label>
 
           <Form.Control

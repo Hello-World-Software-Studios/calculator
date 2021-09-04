@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 export default function RegisterUser({setCurrentProject, user, setUser}) {
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log("User:", user);
 
   const addUser = async (username, password) => {
     const requestOptions = {
@@ -15,8 +14,7 @@ export default function RegisterUser({setCurrentProject, user, setUser}) {
     };
     try {
       const res = await fetch(`http://localhost:3000/users/post`, requestOptions);
-      const json = await res.json();
-      const {id: incomingID} = json[0];
+      const [{id: incomingID}] = await res.json();
       setUser((prevState) => ({
         username: prevState.username,
         password: prevState.password,
@@ -29,7 +27,11 @@ export default function RegisterUser({setCurrentProject, user, setUser}) {
   const submitUser = async (event) => {
     event.preventDefault();
     await addUser(user.username, user.password);
-    setCurrentProject((prevState) => ({id: prevState.id, name: prevState.name, owner_id: user.id}));
+    setCurrentProject((prevState) => ({
+      id: prevState.id,
+      name: prevState.name,
+      owner_id: user.id,
+    }));
   };
   const onChangeUser = (event) => {
     setUser((prevState) => ({
@@ -41,9 +43,7 @@ export default function RegisterUser({setCurrentProject, user, setUser}) {
 
   return (
     <Card>
-      <Card.Header>
-        Registration
-      </Card.Header>
+      <Card.Header>Registration</Card.Header>
       <Form className="form" onSubmit={submitUser}>
         <Form.Label>Enter your name to begin</Form.Label>
 

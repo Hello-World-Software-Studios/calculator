@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 export default function RegisterUser({setCurrentProject, user, setUser}) {
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log(user);
 
   const getUser = async (username) => {
     const requestOptions = {
@@ -26,7 +25,7 @@ export default function RegisterUser({setCurrentProject, user, setUser}) {
       setError(err);
     }
   };
-  
+
   const submitUser = async (event) => {
     event.preventDefault();
     await getUser(user.username);
@@ -47,9 +46,7 @@ export default function RegisterUser({setCurrentProject, user, setUser}) {
 
   return (
     <Card>
-      <Card.Header>
-       Returning Users
-      </Card.Header>
+      <Card.Header>Returning Users</Card.Header>
       <Form className="form" onSubmit={submitUser}>
         <Form.Label>Login to continue</Form.Label>
 

@@ -4,8 +4,13 @@ import {Button, Card, CardColumns, Form, ListGroup} from "react-bootstrap";
 import PropTypes from "prop-types";
 import HowToLayoutAWall from "./HowToLayoutAWall";
 
-
-function Calculator({isImperialUnit, listOfMeasurements, setListOfMeasurements, setWallLength, wallLength}) {
+function Calculator({
+  isImperialUnit,
+  listOfMeasurements,
+  setListOfMeasurements,
+  setWallLength,
+  wallLength,
+}) {
   const BASE_STUD = 0;
   const CENTER_SPACING_IMPERIAL = 16;
   const CENTER_SPACING_METRIC = 406.4;
@@ -40,12 +45,11 @@ function Calculator({isImperialUnit, listOfMeasurements, setListOfMeasurements, 
     event.preventDefault();
     setListOfMeasurements(getListOfMeasurements);
   };
-  
+
   return (
     <>
       <CardColumns className="column">
         <Card bg="light">
-         
           <Form className="form" onSubmit={handleSubmit}>
             <Form.Label>Wall length</Form.Label>
 
@@ -66,16 +70,19 @@ function Calculator({isImperialUnit, listOfMeasurements, setListOfMeasurements, 
               {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
             </Card.Text>
 
-            
             <Card.Body>
               <ListGroup>
-                <ListGroup.Item>{`Place your studs at: ${listOfMeasurements.join(", ")}`}</ListGroup.Item> 
-              </ListGroup>              
+                <ListGroup.Item>
+{`Place your studs at: ${listOfMeasurements.join(
+                  ", "
+                )}`}
+</ListGroup.Item>
+              </ListGroup>
             </Card.Body>
           </Form>
         </Card>
         <HowToLayoutAWall isImperialUnit={isImperialUnit} />
-      </CardColumns>      
+      </CardColumns>
     </>
   );
 }
