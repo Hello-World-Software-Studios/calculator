@@ -1,27 +1,66 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
+const jwtGenerator = require("../utils/jwtGenerator");
 const pool = require("../db");
+const validInfo = require("../utils/validInfo");
+const authorization = require("../utils/auth");
 
 const router = express.Router();
 
-router.route("/get").post(async ({body: {username}}, res) => {
+const USERNAME_ALREADY_EXISTS = "Username already exists.";
+const LOGIN_ERROR = "Check your username and/or password.";
+
+router.route("/verify").get(authorization, async (req, res) => {
   try {
-    const userInfo = await pool.query(
-      "SELECT users.username, users.id, projects.name, projects.owner_user_id, walls.project_id, walls.wall_length FROM users INNER JOIN projects ON users.id=projects.owner_user_id INNER JOIN walls ON projects.id=walls.project_id WHERE users.username=($1)",
-      [username]
+    res.json(true);
+  } catch (err) {
+    console.log({message: err.message});
+    res.status(500).json({message: "Server Error"});
+  }
+});
+
+router.route("/register").post(async ({body: {username, password}}, res) => {
+  try {
+    const selectUsers = await pool.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+
+    if (selectUsers.rows.length > 0) {
+      res.status(401).json({error: USERNAME_ALREADY_EXISTS});
+    }
+
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
+    const bryptPassword = await bcrypt.hash(password, salt);
+
+    const newUser = await pool.query(
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
+      [username, bryptPassword]
     );
-    res.json(userInfo.rows);
+    const token = jwtGenerator(newUser.rows[0]);
+    res.json({token});
   } catch (err) {
     res.json({message: err.message});
   }
 });
 
-router.route("/post").post(async ({body: {username, password}}, res) => {
+router.route("/login").post(validInfo, async ({body: {username, password}}, res) => {
   try {
-    const newUser = await pool.query(
-      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
-      [username, password]
-    );
-    res.json(newUser.rows);
+    const returningUser = await pool.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+
+    if (returningUser.rows.length !== 0) {
+      res.status(401).json({error: LOGIN_ERROR});
+    }
+    const validPassword = await bcrypt.compare(password, returningUser.rows[0].password);
+
+    if (!validPassword) {
+      res.status(401).json({error: LOGIN_ERROR});
+    }
+
+    const token = jwtGenerator(returningUser.rows[0]);
+    res.json({token});
   } catch (err) {
     res.json({message: err.message});
   }

@@ -1,11 +1,9 @@
 const express = require("express");
 const session = require("express-session");
-const PGSession = require("connect-pg-simple")(session);
-const pool = require("./db");
-// const cookie = require("cookie-parser");
 const projects = require("./routes/projects");
 const walls = require("./routes/walls");
 const users = require("./routes/users");
+const welcome = require("./routes/welcome");
 
 const server = express();
 const port = 3001;
@@ -14,24 +12,24 @@ server.use(express.json());
 server.use("/projects", projects);
 server.use("/walls", walls);
 server.use("/users", users);
+server.use("/welcome", welcome);
 server.use(
   session({
-    secret: "secret",
+    secret: "secret key",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: false,
       maxAge: 36000,
+      path: "/",
+      secure: false,
     },
-    store: new PGSession({
-      pool: {pool},
-      tableName: "user_sessions",
-    }),
   })
 );
-server.use((req, res, next) => {
-  console.log(req.session);
-  next();
+// const Users = [];
+
+server.use((req, res) => {
+  console.log(req.session.id);
 });
 
 server.get("/", (req, res) => {

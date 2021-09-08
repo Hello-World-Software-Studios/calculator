@@ -2,15 +2,15 @@ import React, {useState} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 
-export default function Dashboard({user, currentProject, setCurrentProject}) {
+export default function Dashboard({user, currentProject, setCurrentProject, userID}) {
   const [error, setError] = useState(null);
   console.log("Error:", error);
 
-  const addProject = async (projectName, ownerUserID) => {
+  const addProject = async (projectName) => {
     const requestOptions = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({projectName, ownerUserID}),
+      body: JSON.stringify({projectName, userID}),
     };
     try {
       const res = await fetch(`http://localhost:3000/projects/post`, requestOptions);
@@ -72,4 +72,5 @@ Dashboard.propTypes = {
     password: PropTypes.string,
     id: PropTypes.number,
   }).isRequired,
+  userID: PropTypes.number.isRequired,
 };

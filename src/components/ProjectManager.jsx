@@ -1,27 +1,20 @@
 import {Button, Card, CardColumns, CardGroup, Modal} from "react-bootstrap";
 import React, {useState} from "react";
+import PropTypes from "prop-types";
 import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
 import Dashboard from "./Dashboard";
-import RegisterUser from "./RegisterUser";
-import ReturningUser from "./ReturningUser";
 
 const CONVERSION_COEFFICIENT = 0.3048;
-const PRODUCTION_USER_ID = 1;
 
-export default function ProjectManager() {
+export default function ProjectManager({setIsAuthenticated, userID}) {
   const [currentProject, setCurrentProject] = useState({id: 0, name: "", owner_id: 1});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([]);
   const [numberOfStuds, setNumberOfStuds] = useState(0);
-  const [user, setUser] = useState({
-    username: null,
-    password: "password",
-    id: PRODUCTION_USER_ID,
-  });
   const [wallLength, setWallLength] = useState(0);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -64,12 +57,6 @@ export default function ProjectManager() {
     await addWall(wallLength, currentProject.id);
     console.log(response);
   };
-  function setListOfMeasurementsFunction(fetchedListOfMeasurements) {
-    setListOfMeasurements(fetchedListOfMeasurements);
-  }
-  function setWallLengthFunction(event) {
-    setWallLength(event);
-  }
   function toggleUnits() {
     setImperialUnit((prevUnit) => !prevUnit);
     setListOfMeasurements(listOfMeasurements);
@@ -80,26 +67,17 @@ export default function ProjectManager() {
   return (
     <CardGroup className="projectManager">
       <CardColumns>
-        <RegisterUser
-          setCurrentProject={(project) => setCurrentProject(project)}
-          user={user}
-          setUser={(u) => setUser(u)}
-        />
-        <ReturningUser
-          setCurrentProject={(project) => setCurrentProject(project)}
-          user={user}
-          setUser={(u) => setUser(u)}
-        />
         <Dashboard
           currentProject={currentProject}
           setCurrentProject={(project) => setCurrentProject(project)}
-          user={user}
+          setIsAuthenticated={setIsAuthenticated}
+          userID={userID}
         />
       </CardColumns>
       <Card>
         <Card.Header>
           <h1>Carpentry Project Manager</h1>
-          <Button onClick={toggleUnits} variant="warning">
+          <Button onClick={() => toggleUnits} variant="warning">
             Swap Between Imperial and Metric
           </Button>
         </Card.Header>
@@ -134,8 +112,8 @@ export default function ProjectManager() {
                         className="calcInstance"
                         isImperialUnit={isImperialUnit}
                         listOfMeasurements={listOfMeasurements}
-                        setListOfMeasurements={setListOfMeasurementsFunction}
-                        setWallLength={setWallLengthFunction}
+                        setListOfMeasurements={(e) => setListOfMeasurements(e)}
+                        setWallLength={(e) => setWallLength(e)}
                         wallLength={wallLength}
                       />
                     </Modal.Body>
@@ -162,3 +140,8 @@ export default function ProjectManager() {
     </CardGroup>
   );
 }
+
+ProjectManager.propTypes = {
+  setIsAuthenticated: PropTypes.func.isRequired,
+  userID: PropTypes.number.isRequired,
+};
