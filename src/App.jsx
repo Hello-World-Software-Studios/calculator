@@ -12,7 +12,7 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/calculator">
             render=
             {!isAuthenticated ? (
               <Redirect to="/register" />
