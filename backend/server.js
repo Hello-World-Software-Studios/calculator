@@ -3,7 +3,6 @@ const session = require("express-session");
 const projects = require("./routes/projects");
 const walls = require("./routes/walls");
 const users = require("./routes/users");
-const welcome = require("./routes/welcome");
 
 const server = express();
 const port = 3001;
@@ -12,7 +11,6 @@ server.use(express.json());
 server.use("/projects", projects);
 server.use("/walls", walls);
 server.use("/users", users);
-server.use("/welcome", welcome);
 server.use(
   session({
     secret: "secret key",

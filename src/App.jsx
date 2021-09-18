@@ -7,6 +7,7 @@ import RegisterUser from "./components/RegisterUser";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userID, setUserID] = useState(0);
+  console.log(userID);
   return (
     <Router>
       <div>
