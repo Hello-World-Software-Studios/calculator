@@ -67,7 +67,9 @@ function Calculator({
             </Button>
 
             <Card.Text>
-              {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
+              Now measuring in &nbsp
+              {isImperialUnit ? "inches" : "milimetres"}
+              .
             </Card.Text>
 
             <Card.Body>

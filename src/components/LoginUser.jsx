@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function RegisterUser({setIsAuthenticated, setUserID}) {
   const [userInformation, setuserInformation] = useState({
@@ -11,30 +11,28 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
   const [error, setError] = useState(null);
   console.log("Error:", error);
 
-  const addUser = async () => {
+  const loginUser = async () => {
     const requestOptions = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(userInformation),
     };
     try {
-      const res = await fetch(`http://localhost:3000/users/register`, requestOptions);
+      const res = await fetch(`http://localhost:3000/users/login`, requestOptions);
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
-      console.log(incoming);
-      // TODO figure out why these arent functions
+      console.log(incoming.token);
+      // TODO figure out why response is missing
       setUserID(incoming.token.id);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);
-      console.error(err);
     }
   };
-  const submitUser = async (event) => {
+  const submitLogin = async (event) => {
     event.preventDefault();
-    await addUser(userInformation.username, userInformation.password);
+    await loginUser(userInformation.username, userInformation.password);
   };
-
   const onChangeName = (event) => {
     setuserInformation((prevState) => ({
       username: event.target.value,
@@ -47,12 +45,11 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
       password: event.target.value,
     }));
   };
-
   return (
     <Card>
-      <Card.Header>Registration</Card.Header>
-      <Form className="form" onSubmit={submitUser}>
-        <Form.Label>Enter your name to begin</Form.Label>
+      <Card.Header>Login</Card.Header>
+      <Form className="form" onSubmit={submitLogin}>
+        <Form.Label>Enter your name</Form.Label>
 
         <Form.Control
           placeholder="Enter your name"
@@ -71,10 +68,10 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
         />
 
         <Button type="submit" variant="primary">
-          Create Account
+          Login
         </Button>
       </Form>
-      <Link to="/login">Already signed up? Click here to Login</Link>
+      <Link to="/register">Not a User? Click here to register</Link>
     </Card>
   );
 }
