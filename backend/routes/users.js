@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const pool = require("../db");
 const validInfo = require("../utils/validInfo");
-const authorization = require("../utils/auth");
+const authorization = require("../utils/authorize");
+const authentication = require("../utils/authenticate");
 
 const router = express.Router();
 
@@ -18,7 +19,8 @@ router.route("/verify").get(authorization, async (req, res) => {
     res.status(500).json({message: "Server Error"});
   }
 });
-router.route("/").get(authorization, async (req, res) => {
+
+router.route("/name").get(authentication, async (req, res) => {
   try {
     const selectUsername = await pool.query("SELECT username FROM users WHERE id = $1", [
       req.id,
@@ -45,12 +47,13 @@ router.route("/register").post(async ({body: {username, password}}, res) => {
     const bryptPassword = await bcrypt.hash(password, salt);
 
     const {
-      rows: [{id}],
+      rows: [{id: incomingID}],
     } = await pool.query(
       "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
       [username, bryptPassword]
     );
-    const token = jwtGenerator(id);
+    console.log(incomingID);
+    const token = jwtGenerator(incomingID);
     res.json({token});
   } catch (err) {
     res.json({message: err.message});
@@ -72,7 +75,7 @@ router.route("/login").post(validInfo, async ({body: {username, password}}, res)
       res.status(401).json({error: LOGIN_ERROR});
     }
 
-    const token = jwtGenerator(returningUser.rows[0]);
+    const token = jwtGenerator(returningUser.rows[0].id);
     res.json({token});
   } catch (err) {
     res.json({message: err.message});

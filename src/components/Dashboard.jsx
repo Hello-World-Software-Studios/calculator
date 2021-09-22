@@ -1,37 +1,35 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
+import useAPI from "../hooks/useAPI";
 
-export default function Dashboard({setIsAuthenticated, currentProject, setCurrentProject, userID}) {
-  const [username, setUsername] = useState("");
+export default function Dashboard({
+  setIsAuthenticated,
+  currentProject,
+  setCurrentProject,
+  userID,
+}) {
+  const [username, setUsername] = useState(null);
   const [error, setError] = useState(null);
-  console.log("Error:", error);
 
-  const getName = async ()=> {
-    const requestOptions = {
-      method: "GET",
-      headers: {"Content-Type": "application/json", "Authorization": localStorage.token},
-    };
-    try {
-      const res = await fetch("htttp://localhost:3000/users", requestOptions);
-      const json = await res.json();
-      setUsername(json[0])
-    } catch (err) {
-      console.log("Error:", err.message)
-      
-    }
-  }
-  useEffect(() => {
-    getName();
-  });
+  const {nameData, isLoading, errr} = useAPI(`http://localhost:3000/users/name`);
+
+  setUsername(nameData);
+
+  console.log("Error:", error);
+  console.log("data:", nameData, isLoading, errr);
+
   const addProject = async (projectName) => {
-    const requestOptions = {
+    const projectRequestOptions = {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({projectName, userID}),
     };
     try {
-      const res = await fetch(`http://localhost:3000/projects/post`, requestOptions);
+      const res = await fetch(
+        `http://localhost:3000/projects/post`,
+        projectRequestOptions
+      );
       const json = await res.json();
       setCurrentProject(json[0]);
     } catch (err) {
@@ -74,9 +72,7 @@ export default function Dashboard({setIsAuthenticated, currentProject, setCurren
           </Button>
         </Form>
       </Card.Body>
-      <Button onClick={() => setIsAuthenticated(false)}>
-        Logout
-      </Button>
+      <Button onClick={() => setIsAuthenticated(false)}>Logout</Button>
     </Card>
   );
 }

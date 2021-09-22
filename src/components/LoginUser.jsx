@@ -3,7 +3,7 @@ import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-export default function RegisterUser({setIsAuthenticated, setUserID}) {
+export default function RegisterUser({setIsAuthenticated}) {
   const [userInformation, setuserInformation] = useState({
     username: "",
     password: "",
@@ -21,9 +21,6 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
       const res = await fetch(`http://localhost:3000/users/login`, requestOptions);
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
-      console.log(incoming.token);
-      // TODO figure out why response is missing
-      setUserID(incoming.token.id);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);
@@ -78,5 +75,4 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
 
 RegisterUser.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
-  setUserID: PropTypes.func.isRequired,
 };
