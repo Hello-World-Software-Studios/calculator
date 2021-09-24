@@ -1,6 +1,7 @@
 import {Button, Card, CardColumns, CardGroup, Modal} from "react-bootstrap";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
+import {Redirect} from "react-router-dom";
 import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
@@ -8,7 +9,7 @@ import Dashboard from "./Dashboard";
 
 const CONVERSION_COEFFICIENT = 0.3048;
 
-export default function ProjectManager({setIsAuthenticated, userID}) {
+export default function ProjectManager({isAuthenticated, setIsAuthenticated, userID}) {
   const [currentProject, setCurrentProject] = useState({id: 0, name: "", owner_id: 1});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function ProjectManager({setIsAuthenticated, userID}) {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   console.log("Error:", error);
+  console.log("Auth:", isAuthenticated, "ID:", userID);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -64,6 +66,9 @@ export default function ProjectManager({setIsAuthenticated, userID}) {
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
 
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
   return (
     <CardGroup className="projectManager">
       <CardColumns>
@@ -87,19 +92,23 @@ export default function ProjectManager({setIsAuthenticated, userID}) {
             <Card>
               <Card.Header className="header">Project Total:</Card.Header>
               <Card.Body>
-                {`You need ${numberOfStuds} studs.`}
+                You need 
+                {numberOfStuds} 
+                &nbsp;
+                studs.
                 <br />
-                {`You will also need ${topAndBottomPlates}
-              of boards for your top and bottom plates.`}
+                You will also need &nbsp;
+                {topAndBottomPlates}
+                of boards for your top and bottom plates.
                 <br />
-                {`It will cost about: $${(totalCost * 1.1).toFixed(2)}`}
+                It will cost about: $
+                {(totalCost * 1.1).toFixed(2)}
               </Card.Body>
             </Card>
             <Card>
               <Card.Header className="header">Directions:</Card.Header>
               <Card.Body>
-                Use the Calculator component to layout a wall, and add the wall to your
-                project.
+                Use the Calculator component to layout a wall, and add the wall to your project.
                 <br />
                 <Button onClick={handleShow}>Open Calculator</Button>
                 <>
@@ -142,6 +151,7 @@ export default function ProjectManager({setIsAuthenticated, userID}) {
 }
 
 ProjectManager.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
   userID: PropTypes.number.isRequired,
 };

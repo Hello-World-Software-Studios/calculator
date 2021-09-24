@@ -14,11 +14,16 @@ export default function ListGroupGenerator({listOfWalls, currentProject}) {
         <ListGroup.Item key={listOfWalls.id}>
           <Card bg="secondary">
             <Card.Body className="listGroupItem">
-              {`${item.wall_length} inches.`}
+              {item.wall_length}
+              &nbsp;
+              inches.
               <br />
-              {`${item.studs} studs.`}
+              {item.studs}
+              &nbsp;
+              studs
+              .
               <br />
-              Measurements:
+              Measurements: &nbsp;
               {item.list.join(" | ")}
             </Card.Body>
             <Button variant="danger">REMOVE</Button>

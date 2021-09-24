@@ -4,7 +4,6 @@ const jwtGenerator = require("../utils/jwtGenerator");
 const pool = require("../db");
 const validInfo = require("../utils/validInfo");
 const authorization = require("../utils/authorize");
-const authentication = require("../utils/authenticate");
 
 const router = express.Router();
 
@@ -20,14 +19,15 @@ router.route("/verify").get(authorization, async (req, res) => {
   }
 });
 
-router.route("/name").get(authentication, async (req, res) => {
+router.route("/name").get(authorization, async (req, res) => {
+  console.log(req);
   try {
-    const selectUsername = await pool.query("SELECT username FROM users WHERE id = $1", [
+    const selectUsername = await pool.query("SELECT username FROM users WHERE id = $1 RETURNING username", [
       req.id,
     ]);
     res.json(selectUsername.rows[0]);
   } catch (err) {
-    console.log({message: err.message});
+    console.log({message: err.message}); 
     res.status(500).json({message: "Server Error"});
   }
 });
@@ -52,7 +52,6 @@ router.route("/register").post(async ({body: {username, password}}, res) => {
       "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
       [username, bryptPassword]
     );
-    console.log(incomingID);
     const token = jwtGenerator(incomingID);
     res.json({token});
   } catch (err) {

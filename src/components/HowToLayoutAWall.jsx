@@ -9,15 +9,15 @@ export default function HowToLayoutAWall({isImperialUnit}) {
     <Card className="directions">
       <h2>How to layout a wall:</h2>
       <Card.Body>
-        {`In order for your drywall to line up right, the second stud is placed at
-        ${unitSwappedValues(" 15.25 inches ", " 387 milimetres ")}
-        instead of the standard spacing of
-        ${unitSwappedValues(" 16 inches.", " 406 milimetres.")}
-        From there, you can hook your
-        tape onto the second stud and proceed at spacing intervals. OR, should you want to
-        mark them all in one go, simply subtract
-        ${unitSwappedValues(" 3/4 inches ", " 19 milimetres ")}
-        from each number as you measure.`}
+        In order for your drywall to line up right, the second stud is placed at &nbsp;
+        {unitSwappedValues(" 15.25 inches ", " 387 milimetres ")}
+        instead of the standard spacing of &nbsp;
+        {unitSwappedValues(" 16 inches.", " 406 milimetres.")}
+        From there, you can hook your &nbsp;
+        tape onto the second stud and proceed at spacing intervals. OR, should you want to &nbsp;
+        mark them all in one go, simply subtract &nbsp;
+        {unitSwappedValues(" 3/4 inches ", " 19 milimetres ")}
+        from each number as you measure.
       </Card.Body>
     </Card>
   );

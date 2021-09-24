@@ -11,7 +11,7 @@ export default function useAPI(url) {
       try {
         const res = await fetch(url, {
           method: "GET",
-          headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
+          headers: {"Authorization": `Bearer ${localStorage.Token}`},
         });
         const json = await res.json();
         setData(json);
@@ -21,7 +21,8 @@ export default function useAPI(url) {
       }
     };
     fetchData();
-  }, [url]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {data, isLoading, error};
 }

@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
-export default function RegisterUser({setIsAuthenticated}) {
+export default function LoginUser({isAuthenticated, setIsAuthenticated}) {
   const [userInformation, setuserInformation] = useState({
     username: "",
     password: "",
@@ -21,6 +21,8 @@ export default function RegisterUser({setIsAuthenticated}) {
       const res = await fetch(`http://localhost:3000/users/login`, requestOptions);
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
+      console.log(incoming.token);
+      console.log(localStorage.Token);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);
@@ -42,6 +44,9 @@ export default function RegisterUser({setIsAuthenticated}) {
       password: event.target.value,
     }));
   };
+  if (isAuthenticated) {
+    return <Redirect to="/calculator" />;
+  }
   return (
     <Card>
       <Card.Header>Login</Card.Header>
@@ -68,11 +73,12 @@ export default function RegisterUser({setIsAuthenticated}) {
           Login
         </Button>
       </Form>
-      <Link to="/register">Not a User? Click here to register</Link>
+      <Link to="/register">Not already a User? Click here to register</Link>
     </Card>
   );
 }
 
-RegisterUser.propTypes = {
+LoginUser.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
 };

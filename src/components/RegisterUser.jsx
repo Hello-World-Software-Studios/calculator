@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
-export default function RegisterUser({setIsAuthenticated, setUserID}) {
+export default function RegisterUser({isAuthenticated, setIsAuthenticated, setUserID}) {
   const [userInformation, setuserInformation] = useState({
     username: "",
     password: "",
@@ -47,7 +47,9 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
       password: event.target.value,
     }));
   };
-
+  if (isAuthenticated) {
+    return <Redirect to="/calculator" />;
+  }
   return (
     <Card>
       <Card.Header>Registration</Card.Header>
@@ -80,6 +82,7 @@ export default function RegisterUser({setIsAuthenticated, setUserID}) {
 }
 
 RegisterUser.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
   setUserID: PropTypes.func.isRequired,
 };

@@ -3,7 +3,7 @@ import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 import useAPI from "../hooks/useAPI";
 
-export default function Dashboard({
+export default function Dashboard({ 
   setIsAuthenticated,
   currentProject,
   setCurrentProject,
@@ -55,7 +55,7 @@ export default function Dashboard({
       <Card.Body>
         <Form className="form" onSubmit={submitProject}>
           <Form.Label>
-            Choose a name for your project,
+            Choose a name for your project, &nbsp;
             {username}
           </Form.Label>
 
@@ -72,7 +72,12 @@ export default function Dashboard({
           </Button>
         </Form>
       </Card.Body>
-      <Button onClick={() => setIsAuthenticated(false)}>Logout</Button>
+      <Button onClick={() => {
+        setIsAuthenticated(false);
+        localStorage.removeItem("Token");
+        }}>
+          Logout
+        </Button>
     </Card>
   );
 }

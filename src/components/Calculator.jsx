@@ -67,7 +67,7 @@ function Calculator({
             </Button>
 
             <Card.Text>
-              Now measuring in &nbsp
+              Now measuring in &nbsp;
               {isImperialUnit ? "inches" : "milimetres"}
               .
             </Card.Text>
@@ -75,10 +75,9 @@ function Calculator({
             <Card.Body>
               <ListGroup>
                 <ListGroup.Item>
-{`Place your studs at: ${listOfMeasurements.join(
-                  ", "
-                )}`}
-</ListGroup.Item>
+                  Place your studs at: &nbsp;
+                  {listOfMeasurements.join(", ")}
+                </ListGroup.Item>
               </ListGroup>
             </Card.Body>
           </Form>

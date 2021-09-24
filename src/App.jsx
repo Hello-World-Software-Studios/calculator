@@ -1,6 +1,6 @@
 import "./App.css";
 import React, {useState} from "react";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import ProjectManager from "./components/ProjectManager";
 import RegisterUser from "./components/RegisterUser";
 import LoginUser from "./components/LoginUser";
@@ -8,8 +8,10 @@ import LoginUser from "./components/LoginUser";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userID, setUserID] = useState(null);
-  console.log(userID);
-
+  console.log("Auth:", isAuthenticated);
+  const setIsAuthCallback = (boolean) => {
+    setIsAuthenticated(boolean);
+  }
   // TODO token refresh
   // const checkIfStillAuthenticated = async () => {
   //   try {
@@ -36,35 +38,24 @@ function App() {
       <div>
         <Switch>
           <Route exact path="/calculator">
-            {!isAuthenticated ? (
-              <Redirect to="/register" />
-            ) : (
               <ProjectManager
                 isAuthenticated={isAuthenticated}
-                setIsAuthenticated={(boolean) => setIsAuthenticated(boolean)}
+                setIsAuthenticated={setIsAuthCallback}
                 userID={userID}
               />
-            )}
           </Route>
           <Route exact path="/register">
-            {!isAuthenticated ? (
               <RegisterUser
-                setIsAuthenticated={(boolean) => setIsAuthenticated(boolean)}
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthCallback}
                 setUserID={(id) => setUserID(id)}
               />
-            ) : (
-              <Redirect to="/calculator" />
-            )}
           </Route>
           <Route exact path="/login">
-            {!isAuthenticated ? (
               <LoginUser
-                setIsAuthenticated={(boolean) => setIsAuthenticated(boolean)}
-                setUserID={(id) => setUserID(id)}
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthCallback}
               />
-            ) : (
-              <Redirect to="/calculator" />
-            )}
           </Route>
         </Switch>
       </div>
