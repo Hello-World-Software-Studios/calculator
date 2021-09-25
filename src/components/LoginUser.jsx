@@ -22,7 +22,6 @@ export default function LoginUser({isAuthenticated, setIsAuthenticated}) {
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
       console.log(incoming.token);
-      console.log(localStorage.Token);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);

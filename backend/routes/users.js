@@ -14,24 +14,22 @@ router.route("/verify").get(authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (err) {
-    console.log({message: err.message});
-    res.status(500).json({message: "Server Error"});
+    res.status(500).json({message: err.message});
   }
 });
 
 router.route("/name").get(authorization, async (req, res) => {
-  console.log(req);
   try {
-    const selectUsername = await pool.query("SELECT username FROM users WHERE id = $1 RETURNING username", [
+    const selectUsername = await pool.query("SELECT username FROM users WHERE id = $1", [
       req.id,
     ]);
     res.json(selectUsername.rows[0]);
   } catch (err) {
-    console.log({message: err.message}); 
-    res.status(500).json({message: "Server Error"});
+    res.status(500).json({message: err.message});
   }
 });
 // TODO route /users/current
+
 router.route("/register").post(async ({body: {username, password}}, res) => {
   try {
     const selectUsers = await pool.query("SELECT * FROM users WHERE username = $1", [

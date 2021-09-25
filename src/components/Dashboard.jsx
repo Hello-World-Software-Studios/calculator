@@ -9,15 +9,12 @@ export default function Dashboard({
   setCurrentProject,
   userID,
 }) {
-  const [username, setUsername] = useState(null);
   const [error, setError] = useState(null);
 
-  const {nameData, isLoading, errr} = useAPI(`http://localhost:3000/users/name`);
-
-  setUsername(nameData);
-
+  const {name: nameData, isLoading: isLoadData, errorAPI: errData} = useAPI(`http://localhost:3000/users/name`);
+  console.log(useAPI(`http://localhost:3000/users/name`));
   console.log("Error:", error);
-  console.log("data:", nameData, isLoading, errr);
+  console.log("data:", nameData, isLoadData, errData);
 
   const addProject = async (projectName) => {
     const projectRequestOptions = {
@@ -56,7 +53,7 @@ export default function Dashboard({
         <Form className="form" onSubmit={submitProject}>
           <Form.Label>
             Choose a name for your project, &nbsp;
-            {username}
+            {nameData}
           </Form.Label>
 
           <Form.Control
