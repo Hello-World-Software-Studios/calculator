@@ -20,8 +20,7 @@ export default function ListGroupGenerator({listOfWalls, currentProject}) {
               <br />
               {item.studs}
               &nbsp;
-              studs
-              .
+              studs.
               <br />
               Measurements: &nbsp;
               {item.list.join(" | ")}

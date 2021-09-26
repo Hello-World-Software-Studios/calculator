@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("../db");
+const authorization = require("../utils/authorize");
 
 const router = express.Router();
 
@@ -27,11 +28,13 @@ router.route("/get").get(async ({body: {id: ownerUserID}}, res) => {
   }
 });
 
-router.route("/post").post(async ({body: {projectName, ownerUserID}}, res) => {
+// TODO rework this endpoint
+router.route("/post").post(authorization, async (req, res) => {
+  const {body: {currentProject}} = req;
   try {
     const newProject = await pool.query(
       "INSERT INTO projects (name, owner_user_id) VALUES ($1, $2) RETURNING id, name, owner_user_id",
-      [projectName, ownerUserID]
+      [currentProject.name, req.id]
     );
     res.json(newProject.rows);
   } catch (err) {

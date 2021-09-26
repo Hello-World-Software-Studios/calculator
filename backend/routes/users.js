@@ -28,6 +28,7 @@ router.route("/name").get(authorization, async (req, res) => {
     res.status(500).json({message: err.message});
   }
 });
+
 // TODO route /users/current
 
 router.route("/register").post(async ({body: {username, password}}, res) => {

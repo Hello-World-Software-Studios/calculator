@@ -21,7 +21,6 @@ export default function LoginUser({isAuthenticated, setIsAuthenticated}) {
       const res = await fetch(`http://localhost:3000/users/login`, requestOptions);
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
-      console.log(incoming.token);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);

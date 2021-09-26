@@ -13,9 +13,8 @@ export default function useAPI(url) {
           method: "GET",
           headers: {"Authorization": `Bearer ${localStorage.Token}`},
         });
-        const {username} = await res.json();
-        console.log(username);
-        setData(username);
+        const {username: json} = await res.json();
+        setData(json);        
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
