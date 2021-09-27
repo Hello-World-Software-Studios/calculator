@@ -6,7 +6,8 @@ A simple tool for carpenters. Built using React.js, it will take the frustration
 
 ![alt text](https://github.com/Hello-World-Software-Studios/calculator/tree/master/public/calc_modal.png?raw=true)
 ![alt text](https://github.com/Hello-World-Software-Studios/calculator/tree/master/public/calc_main.png?raw=true)
-
+![Screenshot](public/calc_main.png)
+![Screenshot](public/calc_modal.png)
 Built using react hooks and functional components, styled using react-bootstrap, using Node.js, Express.js, and PostgreSQL for back end.
 
 ## API Schema:
