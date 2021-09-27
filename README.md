@@ -3,12 +3,10 @@ version 0.6: API schema being finalized using JWT for authorization.
 version 0.5: successful integration with server.
 
 A simple tool for carpenters. Built using React.js, it will take the frustration out of laying out your wall by telling you exactly where to mark your lines, and how much lumber you'll need. 
+Built using react hooks and functional components, styled using react-bootstrap, using Node.js, Express.js, and PostgreSQL for back end.
 
-![alt text](https://github.com/Hello-World-Software-Studios/calculator/tree/master/public/calc_modal.png?raw=true)
-![alt text](https://github.com/Hello-World-Software-Studios/calculator/tree/master/public/calc_main.png?raw=true)
 ![Screenshot](public/calc_main.png)
 ![Screenshot](public/calc_modal.png)
-Built using react hooks and functional components, styled using react-bootstrap, using Node.js, Express.js, and PostgreSQL for back end.
 
 ## API Schema:
 ### /users 
