@@ -9,6 +9,14 @@ Built using React hooks and functional components, styled using react-bootstrap,
 ![Screenshot](public/calc_modal.png)
 
 ## API Schema:
-### /users 
-This route is used to login existing users, and post new users to the database. A JWT is issued, which stores only the user's unique id. This id value is used in the relational database for project creation and retrieval.
-### /users/name 
+### /users/login & /users/register
+These routes are used to login existing users, and to post new users to the database. A JWT is issued, which stores only the user's unique id. This id value is used in the relational database for project creation and retrieval.
+### /users/verify
+Compares values received from the login component to the values stored in the database.
+### /users/current
+Retrieves the authenticated user's information.
+### /projects
+GET and POST projects using user id.
+### /walls
+GET and POST walls using project id
+

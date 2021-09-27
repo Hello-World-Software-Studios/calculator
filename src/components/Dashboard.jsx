@@ -16,13 +16,13 @@ export default function Dashboard({
     data: nameData,
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/users/name`);
+  } = useAPI(`http://localhost:3000/users/current`);
   const errorCheckedName = !errData ? nameData : "Server Error!";
   const loadingCheckedName =
     isLoadData === false ? errorCheckedName : <Spinner animation="border" />;
 
   const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
-    usePostAPI(`http://localhost:3000/projects/post`, {currentProject});
+    usePostAPI(`http://localhost:3000/projects`, {currentProject});
   console.log(
     {data: incomingProjectData, isLoading: loadingBool, error: postError},
     callAPI
