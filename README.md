@@ -1,6 +1,6 @@
 # Construction Project Manager
-version 0.6: API schema being finalized using JWT for authorization.
-version 0.5: successful integration with server.
+* Version 0.6: API schema being finalized using JWT for authorization.
+* Version 0.5: successful integration with server.
 
 A simple tool for carpenters. It will take the frustration out of laying out your wall by telling you exactly where to mark your lines, and how much lumber you'll need. 
 Built using React hooks and functional components, styled using react-bootstrap, using Node.js, Express.js, and PostgreSQL for back end.
