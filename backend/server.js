@@ -24,11 +24,6 @@ server.use(
     },
   })
 );
-// const Users = [];
-
-server.use((req, res) => {
-  console.log(req.session.id);
-});
 
 server.get("/", (req, res) => {
   res.send("welcome to the root folder of my server");

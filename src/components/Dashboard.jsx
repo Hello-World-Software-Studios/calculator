@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Button, Card, Form, Spinner} from "react-bootstrap";
 import PropTypes from "prop-types";
 import useAPI from "../hooks/useAPI";
@@ -8,7 +8,6 @@ export default function Dashboard({
   setIsAuthenticated,
   currentProject,
   setCurrentProject,
-  // userID,
 }) {
   const [error, setError] = useState(null);
   console.log("Error:", error);
@@ -18,50 +17,45 @@ export default function Dashboard({
     isLoading: isLoadData,
     errorAPI: errData,
   } = useAPI(`http://localhost:3000/users/name`);
+  const errorCheckedName = !errData ? nameData : "Server Error!";
+  const loadingCheckedName =
+    isLoadData === false ? errorCheckedName : <Spinner animation="border" />;
 
-  const errorCheckedNameData = !errData ? nameData : "Server Error!";
-  const loadingCheckedNameData =
-    isLoadData === false ? errorCheckedNameData : <Spinner animation="border" />;
-
-  const [{data: incomingFromPost, isLoading: loadingBool, error: postError}, callAPI] =
+  const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
     usePostAPI(`http://localhost:3000/projects/post`, {currentProject});
+  console.log(
+    {data: incomingProjectData, isLoading: loadingBool, error: postError},
+    callAPI
+  );
+  const errorCheckedProjectData = !postError ? incomingProjectData : "Server Error Post!";
+  const loadingCheckedProjectData = useMemo(
+    () =>
+      loadingBool === false ? errorCheckedProjectData : <Spinner animation="border" />,
+    [errorCheckedProjectData, loadingBool]
+  );
+  useEffect(() => {
+    if (loadingCheckedProjectData) {
+      setCurrentProject(loadingCheckedProjectData);
+    }
+  }, [loadingCheckedProjectData, setCurrentProject]);
 
-  console.log({data: incomingFromPost, isLoading: loadingBool, error: postError}, callAPI);
-
-  const errorCheckedProjectData = !postError ? incomingFromPost : "Server Error Post!";
-  const loadingCheckedProjectData =
-    loadingBool === false ? errorCheckedProjectData : <Spinner animation="border" />;
-  console.log(loadingCheckedProjectData);
-
-  // const addProject = async (projectName) => {
-  //   const projectRequestOptions = {
-  //     method: "POST",
-  //     headers: {"Content-Type": "application/json"},
-  //     body: JSON.stringify({projectName, userID}),
-  //   };
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:3000/projects/post`,
-  //       projectRequestOptions
-  //     );
-  //     const json = await res.json();
-  //     setCurrentProject(json[0]);
-  //   } catch (err) {
-  //     setError(err);
-  //   }
-  // };
+  console.log("value returned from API:", loadingCheckedProjectData, "current Project State:", currentProject);
 
   const submitProject = async (event) => {
     event.preventDefault();
     await callAPI();
+    await setCurrentProject(() => {
+      if (loadingCheckedProjectData) {
+        return loadingCheckedProjectData;
+      } return currentProject;
+    });
     setError(postError);
-    // await addProject(currentProject.name);
   };
+
   const onChangeProject = (event) => {
     setCurrentProject((prevState) => ({
       id: prevState.id,
       name: event.target.value,
-      owner_id: prevState.owner_id,
     }));
   };
 
@@ -72,7 +66,7 @@ export default function Dashboard({
         <Form className="form" onSubmit={submitProject}>
           <Form.Label>
             Choose a name for your project, &nbsp;
-            {loadingCheckedNameData}
+            {loadingCheckedName}
           </Form.Label>
 
           <Form.Control
@@ -107,6 +101,8 @@ Dashboard.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     owner_id: PropTypes.number,
-  }).isRequired,
-  // userID: PropTypes.number.isRequired,
+  }),
+};
+Dashboard.defaultProps = {
+  currentProject: {id: undefined, name: ""}
 };

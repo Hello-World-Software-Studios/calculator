@@ -10,7 +10,7 @@ import Dashboard from "./Dashboard";
 const CONVERSION_COEFFICIENT = 0.3048;
 
 export default function ProjectManager({isAuthenticated, setIsAuthenticated, userID}) {
-  const [currentProject, setCurrentProject] = useState({id: 0, name: "", owner_id: 1});
+  const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -76,7 +76,6 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated, use
           currentProject={currentProject}
           setCurrentProject={(project) => setCurrentProject(project)}
           setIsAuthenticated={setIsAuthenticated}
-          userID={userID}
         />
       </CardColumns>
       <Card>

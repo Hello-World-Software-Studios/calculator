@@ -33,10 +33,10 @@ router.route("/post").post(authorization, async (req, res) => {
   const {body: {currentProject}} = req;
   try {
     const newProject = await pool.query(
-      "INSERT INTO projects (name, owner_user_id) VALUES ($1, $2) RETURNING id, name, owner_user_id",
+      "INSERT INTO projects (name, owner_user_id) VALUES ($1, $2) RETURNING id, name",
       [currentProject.name, req.id]
     );
-    res.json(newProject.rows);
+    res.json(newProject.rows[0]);
   } catch (err) {
     res.json({message: err.message});
   }
