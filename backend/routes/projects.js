@@ -19,7 +19,7 @@ router.route("/").get(async ({body: {id: ownerUserID}}, res) => {
 router.route("/get").get(async ({body: {id: ownerUserID}}, res) => {
   try {
     const selectAll = await pool.query(
-      "SELECT name, wall_length FROM projects INNER JOIN walls ON projects.id = walls.project_id WHERE owner_user_id = $1;",
+      "SELECT name, wall_length, FROM projects INNER JOIN walls ON projects.id = walls.project_id WHERE owner_user_id = $1;",
       [ownerUserID]
     );
     res.json(selectAll.rows);
@@ -28,8 +28,8 @@ router.route("/get").get(async ({body: {id: ownerUserID}}, res) => {
   }
 });
 
-// TODO rework this endpoint
-router.route("/post").post(authorization, async (req, res) => {
+
+router.route("/").post(authorization, async (req, res) => {
   const {body: {currentProject}} = req;
   try {
     const newProject = await pool.query(

@@ -11,7 +11,7 @@ export default function useAPI(url) {
       try {
         const res = await fetch(url, {
           method: "GET",
-          headers: {"Authorization": `Bearer ${localStorage.Token}`},
+          headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
         });
         const {username: json} = await res.json();
         setData(json);        

@@ -1,15 +1,16 @@
 import {Button, Card, CardColumns, CardGroup, Modal} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
 import ListGroupGenerator from "./ListGroupGenerator";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
 import Dashboard from "./Dashboard";
+// import useAPI from "../hooks/useAPI";
 
 const CONVERSION_COEFFICIENT = 0.3048;
 
-export default function ProjectManager({isAuthenticated, setIsAuthenticated, userID}) {
+export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -20,7 +21,6 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated, use
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log("Auth:", isAuthenticated, "ID:", userID);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -31,6 +31,12 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated, use
   const studCost = 7;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+
+  useEffect(() => {
+    if (currentProject.id !== undefined) {
+      console.log("Has Project");
+    } else console.log("Has No Project");
+  })
 
   const addWall = async (length, projectID) => {
     const requestOptions = {
@@ -152,5 +158,4 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated, use
 ProjectManager.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
-  userID: PropTypes.number.isRequired,
 };

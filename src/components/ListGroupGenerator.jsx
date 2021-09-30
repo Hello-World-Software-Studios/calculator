@@ -15,12 +15,10 @@ export default function ListGroupGenerator({listOfWalls, currentProject}) {
           <Card bg="secondary">
             <Card.Body className="listGroupItem">
               {item.wall_length}
-              &nbsp;
-              inches.
+              &nbsp; inches.
               <br />
               {item.studs}
-              &nbsp;
-              studs.
+              &nbsp; studs.
               <br />
               Measurements: &nbsp;
               {item.list.join(" | ")}
@@ -44,6 +42,5 @@ ListGroupGenerator.propTypes = {
   currentProject: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-    owner_id: PropTypes.number,
   }).isRequired,
 };

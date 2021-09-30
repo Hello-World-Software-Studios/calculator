@@ -12,7 +12,7 @@ export default function usePostAPI(url, bodyJSON) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.Token}`,
+          "Authorization": `Bearer ${localStorage.Token}`,
         },
         body: JSON.stringify(bodyJSON),
       });

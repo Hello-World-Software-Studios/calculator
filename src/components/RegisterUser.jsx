@@ -3,7 +3,7 @@ import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
 
-export default function RegisterUser({isAuthenticated, setIsAuthenticated, setUserID}) {
+export default function RegisterUser({isAuthenticated, setIsAuthenticated}) {
   const [userInformation, setuserInformation] = useState({
     username: "",
     password: "",
@@ -23,7 +23,6 @@ export default function RegisterUser({isAuthenticated, setIsAuthenticated, setUs
       localStorage.setItem("Token", incoming.token);
       console.log(incoming);
       // TODO figure out why these arent functions
-      setUserID(incoming.token.id);
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);
@@ -84,5 +83,5 @@ export default function RegisterUser({isAuthenticated, setIsAuthenticated, setUs
 RegisterUser.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
-  setUserID: PropTypes.func.isRequired,
+
 };

@@ -1,8 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {Button, Card, Form, Spinner} from "react-bootstrap";
+import {Button, Card, Dropdown, DropdownButton, Form, Spinner} from "react-bootstrap";
 import PropTypes from "prop-types";
 import useAPI from "../hooks/useAPI";
 import usePostAPI from "../hooks/usePostAPI";
+import {errorAndLoadingHandler} from "./utilities";
+// import DropdownItemGenerator from "./DropdownItemGenerator";
 
 export default function Dashboard({
   setIsAuthenticated,
@@ -13,33 +15,39 @@ export default function Dashboard({
   console.log("Error:", error);
 
   const {
-    data: nameData,
+    data: userName,
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/users/current`);
-  const errorCheckedName = !errData ? nameData : "Server Error!";
-  const loadingCheckedName =
-    isLoadData === false ? errorCheckedName : <Spinner animation="border" />;
+  } = useAPI(`http://localhost:3000/users/name`);
+  const handledUsername = errorAndLoadingHandler(
+    userName,
+    isLoadData,
+    errData,
+    <Spinner animation="border" />
+  );
+  console.log("Data:", handledUsername);
+  useEffect(() => {
+    if (errData) {
+      setError(errData);
+    }
+  }, [errData]);
 
   const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
     usePostAPI(`http://localhost:3000/projects`, {currentProject});
-  console.log(
-    {data: incomingProjectData, isLoading: loadingBool, error: postError},
-    callAPI
-  );
   const errorCheckedProjectData = !postError ? incomingProjectData : "Server Error Post!";
   const loadingCheckedProjectData = useMemo(
     () =>
       loadingBool === false ? errorCheckedProjectData : <Spinner animation="border" />,
     [errorCheckedProjectData, loadingBool]
   );
+
   useEffect(() => {
     if (loadingCheckedProjectData) {
       setCurrentProject(loadingCheckedProjectData);
     }
   }, [loadingCheckedProjectData, setCurrentProject]);
 
-  console.log("value returned from API:", loadingCheckedProjectData, "current Project State:", currentProject);
+  // console.log("value returned from API:", loadingCheckedProjectData, "current Project State:", currentProject);
 
   const submitProject = async (event) => {
     event.preventDefault();
@@ -47,7 +55,8 @@ export default function Dashboard({
     await setCurrentProject(() => {
       if (loadingCheckedProjectData) {
         return loadingCheckedProjectData;
-      } return currentProject;
+      }
+      return currentProject;
     });
     setError(postError);
   };
@@ -63,12 +72,23 @@ export default function Dashboard({
     <Card>
       <Card.Header>Project Dashboard</Card.Header>
       <Card.Body>
+        <Button
+          onClick={() => {
+            setIsAuthenticated(false);
+            localStorage.removeItem("Token");
+          }}
+        >
+          Logout
+        </Button>
         <Form className="form" onSubmit={submitProject}>
+          <h3>
+            Hello, &nbsp;
+            {handledUsername || error}
+          </h3>
+          <br />
           <Form.Label>
-            Choose a name for your project, &nbsp;
-            {loadingCheckedName}
+            <h5>To create a project, enter a name:</h5>
           </Form.Label>
-
           <Form.Control
             placeholder="Ex: New Shed"
             required
@@ -76,20 +96,21 @@ export default function Dashboard({
             onChange={onChangeProject}
             value={currentProject.name}
           />
-
           <Button type="submit" variant="primary">
             Submit
           </Button>
         </Form>
+        <h5>Or, select one of your existing projects:</h5>
+        {/* <DropdownItemGenerator
+          dataReturnedFromAPICall={userName}
+          setCurrentProject={setCurrentProject}
+        />  */}
+        <DropdownButton id="dropdown-project" title="Your Saved Projects">
+          <Dropdown.Item onClick={() => console.log("Hello WOrld")}>Action</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+        </DropdownButton>
       </Card.Body>
-      <Button
-        onClick={() => {
-          setIsAuthenticated(false);
-          localStorage.removeItem("Token");
-        }}
-      >
-        Logout
-      </Button>
     </Card>
   );
 }
@@ -100,9 +121,8 @@ Dashboard.propTypes = {
   currentProject: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-    owner_id: PropTypes.number,
   }),
 };
 Dashboard.defaultProps = {
-  currentProject: {id: undefined, name: ""}
+  currentProject: {id: undefined, name: ""},
 };
