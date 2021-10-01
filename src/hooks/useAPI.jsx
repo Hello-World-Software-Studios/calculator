@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 
 export default function useAPI(url) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorAPI, setError] = useState(null);
-
+  // TODO response error
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
@@ -13,7 +13,7 @@ export default function useAPI(url) {
           method: "GET",
           headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
         });
-        const {username: json} = await res.json();
+        const json = await res.json();
         setData(json);        
         setIsLoading(false);
       } catch (err) {

@@ -31,7 +31,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const studCost = 7;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
-
+  // helper for dev
   useEffect(() => {
     if (currentProject.id !== undefined) {
       console.log("Has Project");

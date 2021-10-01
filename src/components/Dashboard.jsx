@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {Button, Card, Dropdown, DropdownButton, Form, Spinner} from "react-bootstrap";
+import {Button, Card, Form, Spinner} from "react-bootstrap";
 import PropTypes from "prop-types";
 import useAPI from "../hooks/useAPI";
 import usePostAPI from "../hooks/usePostAPI";
 import {errorAndLoadingHandler} from "./utilities";
-// import DropdownItemGenerator from "./DropdownItemGenerator";
+import DropdownItemGenerator from "./DropdownItemGenerator";
 
 export default function Dashboard({
   setIsAuthenticated,
@@ -15,7 +15,7 @@ export default function Dashboard({
   console.log("Error:", error);
 
   const {
-    data: userName,
+    data: {username: userName},
     isLoading: isLoadData,
     errorAPI: errData,
   } = useAPI(`http://localhost:3000/users/name`);
@@ -25,7 +25,6 @@ export default function Dashboard({
     errData,
     <Spinner animation="border" />
   );
-  console.log("Data:", handledUsername);
   useEffect(() => {
     if (errData) {
       setError(errData);
@@ -46,8 +45,6 @@ export default function Dashboard({
       setCurrentProject(loadingCheckedProjectData);
     }
   }, [loadingCheckedProjectData, setCurrentProject]);
-
-  // console.log("value returned from API:", loadingCheckedProjectData, "current Project State:", currentProject);
 
   const submitProject = async (event) => {
     event.preventDefault();
@@ -101,15 +98,14 @@ export default function Dashboard({
           </Button>
         </Form>
         <h5>Or, select one of your existing projects:</h5>
-        {/* <DropdownItemGenerator
-          dataReturnedFromAPICall={userName}
+        <DropdownItemGenerator
           setCurrentProject={setCurrentProject}
-        />  */}
-        <DropdownButton id="dropdown-project" title="Your Saved Projects">
+        /> 
+        {/* <DropdownButton id="dropdown-project" title="Your Saved Projects">
           <Dropdown.Item onClick={() => console.log("Hello WOrld")}>Action</Dropdown.Item>
           <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-        </DropdownButton>
+        </DropdownButton> */}
       </Card.Body>
     </Card>
   );
