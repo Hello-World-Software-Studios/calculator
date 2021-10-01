@@ -21,6 +21,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   console.log("Error:", error);
+  console.log(currentProject);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
