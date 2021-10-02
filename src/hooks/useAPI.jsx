@@ -14,7 +14,7 @@ export default function useAPI(url) {
           headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
         });
         const json = await res.json();
-        setData(json);        
+        setData(await json);        
         setIsLoading(false);
       } catch (err) {
         setError(err.message);

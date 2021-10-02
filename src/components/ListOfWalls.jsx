@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Button, Card, ListGroup} from "react-bootstrap";
 import checkForNameToDisplay from "./utilities";
 
-export default function ListGroupGenerator({listOfWalls, currentProject}) {
+export default function ListOfWalls({listOfWalls, currentProject}) {
   console.log("List of Walls:", listOfWalls);
 
   // TODO wall length needs imperial/metric context
@@ -31,7 +31,7 @@ export default function ListGroupGenerator({listOfWalls, currentProject}) {
   );
 }
 
-ListGroupGenerator.propTypes = {
+ListOfWalls.propTypes = {
   listOfWalls: PropTypes.arrayOf(
     PropTypes.shape({
       wall_length: PropTypes.number,

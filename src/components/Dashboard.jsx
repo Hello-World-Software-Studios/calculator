@@ -4,13 +4,14 @@ import PropTypes from "prop-types";
 import useAPI from "../hooks/useAPI";
 import usePostAPI from "../hooks/usePostAPI";
 import {errorAndLoadingHandler} from "./utilities";
-import DropdownItemGenerator from "./DropdownItemGenerator";
+import ProjectSelector from "./ProjectSelector";
 
 export default function Dashboard({
   setIsAuthenticated,
   currentProject,
   setCurrentProject,
 }) {
+  const [projectInput, setProjectInput] = useState({id: undefined, name: ""});
   const [error, setError] = useState(null);
   console.log("Error:", error);
 
@@ -33,25 +34,28 @@ export default function Dashboard({
 
   const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
     usePostAPI(`http://localhost:3000/projects`, {currentProject});
-  const errorCheckedProjectData = !postError ? incomingProjectData : "Server Error Post!";
-  const loadingCheckedProjectData = useMemo(
+  const handledProjectData = useMemo(
     () =>
-      loadingBool === false ? errorCheckedProjectData : <Spinner animation="border" />,
-    [errorCheckedProjectData, loadingBool]
+      errorAndLoadingHandler(
+        incomingProjectData,
+        loadingBool,
+        postError,
+        <Spinner animation="border" />
+      ),
+    [incomingProjectData, loadingBool, postError]
   );
-
   useEffect(() => {
-    if (loadingCheckedProjectData) {
-      setCurrentProject(loadingCheckedProjectData);
+    if (handledProjectData) {
+      setCurrentProject(handledProjectData);
     }
-  }, [loadingCheckedProjectData, setCurrentProject]);
+  }, [handledProjectData, setCurrentProject]);
 
   const submitProject = async (event) => {
     event.preventDefault();
     await callAPI();
     await setCurrentProject(() => {
-      if (loadingCheckedProjectData) {
-        return loadingCheckedProjectData;
+      if (handledProjectData) {
+        return handledProjectData;
       }
       return currentProject;
     });
@@ -59,7 +63,7 @@ export default function Dashboard({
   };
 
   const onChangeProject = (event) => {
-    setCurrentProject((prevState) => ({
+    setProjectInput((prevState) => ({
       id: prevState.id,
       name: event.target.value,
     }));
@@ -91,21 +95,14 @@ export default function Dashboard({
             required
             type="text"
             onChange={onChangeProject}
-            value={currentProject.name}
+            value={projectInput.name}
           />
           <Button type="submit" variant="primary">
             Submit
           </Button>
         </Form>
         <h5>Or, select one of your existing projects:</h5>
-        <DropdownItemGenerator
-          setCurrentProject={setCurrentProject}
-        /> 
-        {/* <DropdownButton id="dropdown-project" title="Your Saved Projects">
-          <Dropdown.Item onClick={() => console.log("Hello WOrld")}>Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-        </DropdownButton> */}
+        <ProjectSelector setCurrentProject={setCurrentProject} />
       </Card.Body>
     </Card>
   );

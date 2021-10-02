@@ -2,7 +2,7 @@ import {Button, Card, CardColumns, CardGroup, Modal} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
-import ListGroupGenerator from "./ListGroupGenerator";
+import ListOfWalls from "./ListOfWalls";
 import LumberPrice from "./LumberPrice";
 import Calculator from "./Calculator";
 import Dashboard from "./Dashboard";
@@ -146,7 +146,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
             </Card>
           </CardGroup>
         </Card.Body>
-        <ListGroupGenerator
+        <ListOfWalls
           listOfWalls={listOfWalls}
           currentProject={currentProject}
           wallLength={wallLength}

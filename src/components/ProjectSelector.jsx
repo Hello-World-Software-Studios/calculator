@@ -4,10 +4,8 @@ import {Dropdown, DropdownButton, Spinner} from "react-bootstrap";
 import useAPI from "../hooks/useAPI";
 import {errorAndLoadingHandler} from "./utilities";
 
-export default function DropdownItemGenerator({
-  setCurrentProject
-}) {
-  const [listOfProjects, setListOfProjects] = useState();
+export default function ProjectSelector({setCurrentProject}) {
+  const [listOfProjects, setListOfProjects] = useState([]);
   const [error, setError] = useState(null);
   console.log("Error:", error);
 
@@ -15,7 +13,7 @@ export default function DropdownItemGenerator({
     data: incomingProjectData,
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/projects/current`);
+  } = useAPI(`http://localhost:3000/projects`);
   const handledProjectData = errorAndLoadingHandler(
     incomingProjectData,
     isLoadData,
@@ -30,20 +28,30 @@ export default function DropdownItemGenerator({
   }, [errData]);
 
   useEffect(() => {
-    const unique = (array) => {
+    // const unique = (array) => {
+    //   const arr = [];
+    //   for (let i = 0; i < array.length; i += 1) {
+    //     if (!arr.includes(array[i].id)) {
+    //       arr.push(array[i].name);
+    //     }
+    //   }
+    //   return arr;
+    // };
+    // const uniqueProjectNames = unique(handledProjectData);
+    // setListOfProjects(uniqueProjectNames);
+
+    const newListGenerator = (array) => {
       const arr = [];
-      for(let i = 0; i < array.length; i += 1) {
-          if(!arr.includes(array[i].name)) {
-              arr.push(array[i].name);
-          }
+      for (let i = 0; i < array.length; i += 1) {
+        arr.push(array[i]);
       }
-      return arr; 
-    }
-    const uniqueProjectNames = unique(handledProjectData);
-    setListOfProjects(uniqueProjectNames);
+      return arr;
+    };
+    const newListOfProjects = newListGenerator(handledProjectData);
+    setListOfProjects(newListOfProjects);
   }, [handledProjectData]);
   console.log(listOfProjects);
-  
+
   if (listOfProjects === undefined) {
     return (
       <DropdownButton title="Your Saved Projects">
@@ -52,15 +60,19 @@ export default function DropdownItemGenerator({
     );
   }
   return (
-    <DropdownButton id="dropdown-project" title="Your Saved Projects">
+    <DropdownButton
+      id="dropdown-project"
+      title="Your Saved Projects"
+      placeholder="No saved projects"
+    >
       {listOfProjects.map((item) => (
-        <Dropdown.Item onClick={setCurrentProject(item)}>{item}</Dropdown.Item>
+        <Dropdown.Item onClick={() => setCurrentProject(item)}>{item.name}</Dropdown.Item>
       ))}
     </DropdownButton>
   );
 }
 
-DropdownItemGenerator.propTypes = {
+ProjectSelector.propTypes = {
   // dataReturnedFromAPICall: PropTypes.arrayOf(
   //   PropTypes.shape({
   //     id: PropTypes.number,
