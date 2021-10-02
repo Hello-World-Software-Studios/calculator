@@ -60,14 +60,16 @@ export default function ProjectSelector({setCurrentProject}) {
     );
   }
   return (
-    <DropdownButton
-      id="dropdown-project"
-      title="Your Saved Projects"
-      placeholder="No saved projects"
-    >
-      {listOfProjects.map((item) => (
-        <Dropdown.Item onClick={() => setCurrentProject(item)}>{item.name}</Dropdown.Item>
-      ))}
+    <DropdownButton id="dropdown-project" title="Your Saved Projects">
+      {listOfProjects.length === 0 ? (
+        <Dropdown.Item>No Saved Projects</Dropdown.Item>
+      ) : (
+        listOfProjects.map((item) => (
+          <Dropdown.Item onClick={() => setCurrentProject(item)}>
+            {item.name}
+          </Dropdown.Item>
+        ))
+      )}
     </DropdownButton>
   );
 }
