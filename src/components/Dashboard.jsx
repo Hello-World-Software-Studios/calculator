@@ -11,9 +11,10 @@ export default function Dashboard({
   currentProject,
   setCurrentProject,
 }) {
-  const [projectInput, setProjectInput] = useState({id: undefined, name: ""});
+  const [projectInput, setProjectInput] = useState("");
   const [error, setError] = useState(null);
   console.log("Error:", error);
+  console.log("projectInput:", projectInput);
 
   const {
     data: {username: userName},
@@ -33,7 +34,7 @@ export default function Dashboard({
   }, [errData]);
 
   const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
-    usePostAPI(`http://localhost:3000/projects`, {currentProject});
+    usePostAPI(`http://localhost:3000/projects`, {projectInput});
   const handledProjectData = useMemo(
     () =>
       errorAndLoadingHandler(
@@ -63,10 +64,7 @@ export default function Dashboard({
   };
 
   const onChangeProject = (event) => {
-    setProjectInput((prevState) => ({
-      id: prevState.id,
-      name: event.target.value,
-    }));
+    setProjectInput(event.target.value);
   };
 
   return (

@@ -11,10 +11,13 @@ export default function useAPI(url) {
       try {
         const res = await fetch(url, {
           method: "GET",
-          headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.Token}`,
+          },
         });
         const json = await res.json();
-        setData(await json);        
+        setData(await json);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);

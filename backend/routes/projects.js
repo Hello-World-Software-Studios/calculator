@@ -11,11 +11,11 @@ const router = express.Router();
 
 router.route("/").get(authorization, async (req, res) => {
   try {
-    const selectUsersData = await pool.query(
+    const selectProjects = await pool.query(
       "SELECT projects.id, projects.name FROM projects WHERE projects.owner_user_id = $1;",
       [req.id]
     );
-    res.json(selectUsersData.rows);
+    res.json(selectProjects.rows);
   } catch (err) {
     res.status(500).json({message: err.message});
   }
@@ -23,12 +23,12 @@ router.route("/").get(authorization, async (req, res) => {
 
 router.route("/").post(authorization, async (req, res) => {
   const {
-    body: {currentProject},
+    body: {projectInput},
   } = req;
   try {
     const newProject = await pool.query(
       "INSERT INTO projects (name, owner_user_id) VALUES ($1, $2) RETURNING id, name",
-      [currentProject.name, req.id]
+      [projectInput, req.id]
     );
     res.json(newProject.rows[0]);
   } catch (err) {

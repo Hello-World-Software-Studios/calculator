@@ -17,11 +17,6 @@ module.exports = async (req, res, next) => {
     } catch (err) {
       res.status(403).json({message: `Error during authorization: ${err.message}`});
     }
-    // const payload = await jwt.verify(
-    //   jwtToken.replace("Bearer ", ""),
-    //   process.env.jwtSecret
-    // );
-    // req.id = payload.id;
   } catch (err) {
     res.status(403).json({message: err.message});
   }

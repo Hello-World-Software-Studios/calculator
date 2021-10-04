@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Dropdown, DropdownButton, Spinner} from "react-bootstrap";
 import useAPI from "../hooks/useAPI";
-import {errorAndLoadingHandler} from "./utilities";
+import {errorAndLoadingHandler, newListGenerator} from "./utilities";
 
 export default function ProjectSelector({setCurrentProject}) {
   const [listOfProjects, setListOfProjects] = useState([]);
@@ -20,7 +20,7 @@ export default function ProjectSelector({setCurrentProject}) {
     errData,
     <Spinner animation="border" />
   );
-  console.log("Data:", incomingProjectData, handledProjectData, isLoadData);
+  console.log("projectData:", incomingProjectData, handledProjectData, isLoadData);
   useEffect(() => {
     if (errData) {
       setError(errData);
@@ -40,17 +40,16 @@ export default function ProjectSelector({setCurrentProject}) {
     // const uniqueProjectNames = unique(handledProjectData);
     // setListOfProjects(uniqueProjectNames);
 
-    const newListGenerator = (array) => {
-      const arr = [];
-      for (let i = 0; i < array.length; i += 1) {
-        arr.push(array[i]);
-      }
-      return arr;
-    };
+    // const newListGenerator = (array) => {
+    //   const arr = [];
+    //   for (let i = 0; i < array.length; i += 1) {
+    //     arr.push(array[i]);
+    //   }
+    //   return arr;
+    // };
     const newListOfProjects = newListGenerator(handledProjectData);
     setListOfProjects(newListOfProjects);
   }, [handledProjectData]);
-  console.log(listOfProjects);
 
   if (listOfProjects === undefined) {
     return (
