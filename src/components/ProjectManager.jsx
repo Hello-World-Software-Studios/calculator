@@ -82,7 +82,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
       ),
     [incomingPostWallData, loadingBool, postError]
   );
-
+  console.log("PostWallData:", incomingPostWallData, handledPostWallData, isLoadData);
   const handlePostWall = async () => {
     await callAPI();
     setListOfWalls([

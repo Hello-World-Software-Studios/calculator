@@ -34,7 +34,7 @@ export default function Calculator({
   wallLength,
 }) {
   const handleInputChange = (event) => {
-    setWallLength(event.target.value);
+    setWallLength(parseInt(event.target.value, 10));
   };
 
   const handleSubmit = (event) => {
