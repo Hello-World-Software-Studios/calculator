@@ -1,8 +1,9 @@
 import {Button, Card, CardColumns, CardGroup, Modal, Spinner} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
 import useAPI from "../hooks/useAPI";
+import usePostAPI from "../hooks/usePostAPI";
 import {errorAndLoadingHandler, newListGenerator} from "./utilities";
 import ListOfWalls from "./ListOfWalls";
 import LumberPrice from "./LumberPrice";
@@ -21,7 +22,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log(currentProject);
+  console.log("currentProject:", currentProject);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -59,18 +60,38 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
         wallLength: item.wall_length,
         list: gotList,
         studs: gotList.length,
+        id: item.id,
       };
     };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
+    // TODO this!
+    // setNumberOfStuds(() => )
   }, [handledWallData, isImperialUnit]);
 
-  const handlePostWall = () => {
+  const [
+    {data: incomingPostWallData, isLoading: loadingBool, error: postError},
+    callAPI,
+  ] = usePostAPI(`http://localhost:3000/walls`, {wallLength, currentProject});
+  const handledPostWallData = useMemo(
+    () =>
+      errorAndLoadingHandler(
+        incomingPostWallData,
+        loadingBool,
+        postError,
+        <Spinner animation="border" />
+      ),
+    [incomingPostWallData, loadingBool, postError]
+  );
+
+  const handlePostWall = async () => {
+    await callAPI();
     setListOfWalls([
       ...listOfWalls,
       {
         wall_length: wallLength,
         list: listOfMeasurements,
         studs: listOfMeasurements.length,
+        id: handledPostWallData.id,
       },
     ]);
     setNumberOfStuds(numberOfStuds + listOfMeasurements.length);

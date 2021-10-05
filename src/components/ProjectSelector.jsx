@@ -20,6 +20,7 @@ export default function ProjectSelector({setCurrentProject}) {
     errData,
     <Spinner animation="border" />
   );
+
   console.log("projectData:", incomingProjectData, handledProjectData, isLoadData);
   useEffect(() => {
     if (errData) {
@@ -28,25 +29,6 @@ export default function ProjectSelector({setCurrentProject}) {
   }, [errData]);
 
   useEffect(() => {
-    // const unique = (array) => {
-    //   const arr = [];
-    //   for (let i = 0; i < array.length; i += 1) {
-    //     if (!arr.includes(array[i].id)) {
-    //       arr.push(array[i].name);
-    //     }
-    //   }
-    //   return arr;
-    // };
-    // const uniqueProjectNames = unique(handledProjectData);
-    // setListOfProjects(uniqueProjectNames);
-
-    // const newListGenerator = (array) => {
-    //   const arr = [];
-    //   for (let i = 0; i < array.length; i += 1) {
-    //     arr.push(array[i]);
-    //   }
-    //   return arr;
-    // };
     const newListOfProjects = newListGenerator(handledProjectData);
     setListOfProjects(newListOfProjects);
   }, [handledProjectData]);

@@ -45,6 +45,7 @@ export default function Dashboard({
       ),
     [incomingProjectData, loadingBool, postError]
   );
+
   useEffect(() => {
     if (handledProjectData) {
       setCurrentProject(handledProjectData);
