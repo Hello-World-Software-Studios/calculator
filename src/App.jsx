@@ -2,8 +2,7 @@ import "./App.css";
 import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import ProjectManager from "./components/ProjectManager";
-import RegisterUser from "./components/RegisterUser";
-import LoginUser from "./components/LoginUser";
+import Authentication from "./components/Authentication";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,13 +10,17 @@ function App() {
   console.log("Auth:", isAuthenticated, "Error:", error);
   const setIsAuthCallback = (boolean) => {
     setIsAuthenticated(boolean);
-  }
-
+  };
+  // TODO refresh token.
+  // Below: revokes auth if token expired
   const checkIfStillAuthenticated = async () => {
     try {
       const res = await fetch("http://localhost:3000/users/verify", {
         method: "GET",
-        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.Token}`},
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.Token}`,
+        },
       });
       const refreshValid = await res.json();
       if (refreshValid) {
@@ -36,22 +39,25 @@ function App() {
       <div>
         <Switch>
           <Route exact path="/calculator">
-              <ProjectManager
-                isAuthenticated={isAuthenticated}
-                setIsAuthenticated={setIsAuthCallback}
-              />
+            <ProjectManager
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthCallback}
+            />
           </Route>
           <Route exact path="/register">
-              <RegisterUser
-                isAuthenticated={isAuthenticated}
-                setIsAuthenticated={setIsAuthCallback}
-              />
+            <Authentication
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthCallback}
+              isLoginComponent={false}
+            />
           </Route>
           <Route exact path="/login">
-              <LoginUser
-                isAuthenticated={isAuthenticated}
-                setIsAuthenticated={setIsAuthCallback}
-              />
+            <Authentication
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthCallback}
+              // eslint-disable-next-line react/jsx-boolean-value
+              isLoginComponent={true}
+            />
           </Route>
         </Switch>
       </div>

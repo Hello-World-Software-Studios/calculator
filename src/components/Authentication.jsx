@@ -26,7 +26,6 @@ export default function RegisterUser({
       const incoming = await res.json();
       localStorage.setItem("Token", incoming.token);
       console.log(incoming);
-      // TODO figure out why these arent functions
       setIsAuthenticated(true);
     } catch (err) {
       setError(err);

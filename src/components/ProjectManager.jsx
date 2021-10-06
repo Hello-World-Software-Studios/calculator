@@ -64,7 +64,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
       };
     };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
-    // TODO this!
+    // TODO 66a this!
     // setNumberOfStuds(() => )
   }, [handledWallData, isImperialUnit]);
 
@@ -94,6 +94,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
         id: handledPostWallData.id,
       },
     ]);
+    // TODO 66b fix this
     setNumberOfStuds(numberOfStuds + listOfMeasurements.length);
   };
   function toggleUnits() {
