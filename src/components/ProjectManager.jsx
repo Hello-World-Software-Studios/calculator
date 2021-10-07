@@ -64,9 +64,13 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
       };
     };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
-    // TODO 66a this!
-    // setNumberOfStuds(() => )
   }, [handledWallData, isImperialUnit]);
+
+  useEffect(() => {
+    const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
+    setNumberOfStuds(sumNumberOfStuds);
+    console.log(sumNumberOfStuds);
+  }, [listOfWalls]);
 
   const [
     {data: incomingPostWallData, isLoading: loadingBool, error: postError},

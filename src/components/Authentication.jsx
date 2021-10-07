@@ -74,9 +74,11 @@ export default function RegisterUser({
   }
   return (
     <Card>
-      <Card.Header>Registration</Card.Header>
+      <Card.Header>{isLoginComponent ? "Login" : "Registration"}</Card.Header>
       <Form className="form" onSubmit={submitUser}>
-        <Form.Label>Enter your name to begin</Form.Label>
+        <Form.Label>
+          {isLoginComponent ? "Enter your name" : "Enter your name to begin"}
+        </Form.Label>
 
         <Form.Control
           placeholder="Enter your name"
@@ -89,7 +91,7 @@ export default function RegisterUser({
         <Form.Control
           type="password"
           onChange={onChangePassword}
-          placeholder="Enter a Password"
+          placeholder={isLoginComponent ? "Enter your password" : "Enter a password"}
           required
           value={userInformation.password}
         />
@@ -98,11 +100,11 @@ export default function RegisterUser({
           Create Account
         </Button>
       </Form>
-      {isLoginComponent ? (
-        <Link to="/login">Already signed up? Click here to Login</Link>
-      ) : (
-        <Link to="/register">Not already a User? Click here to register</Link>
-      )}
+      <Link to={isLoginComponent ? "/login" : "/register"}>
+        {isLoginComponent
+          ? "Not already a User? Click here to register"
+          : "Already signed up? Click here to Login"}
+      </Link>
     </Card>
   );
 }

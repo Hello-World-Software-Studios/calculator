@@ -14,7 +14,7 @@ These routes are used to login existing users, and to post new users to the data
 ### /users/verify
 Compares values received from the login component to the values stored in the database.
 ### /users/current
-Retrieves the authenticated user's information.
+Retrieves the authenticated user's name.
 ### /projects
 GET and POST projects using user id.
 ### /walls

@@ -20,7 +20,7 @@ export default function Dashboard({
     data: {username: userName},
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/users/name`);
+  } = useAPI(`http://localhost:3000/users/current`);
   const handledUsername = errorAndLoadingHandler(
     userName,
     isLoadData,
