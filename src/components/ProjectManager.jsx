@@ -34,6 +34,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const studCost = 7;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+
   const {
     data: incomingWallData,
     isLoading: isLoadData,
@@ -51,6 +52,22 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
       setError(errData);
     }
   }, [errData]);
+
+  const [
+    {data: incomingPostWallData, isLoading: loadingBool, error: postError},
+    callAPI,
+  ] = usePostAPI(`http://localhost:3000/walls`, {wallLength, currentProject});
+  const handledPostWallData = useMemo(
+    () =>
+      errorAndLoadingHandler(
+        incomingPostWallData,
+        loadingBool,
+        postError,
+        <Spinner animation="border" />
+      ),
+    [incomingPostWallData, loadingBool, postError]
+  );
+  console.log("PostWallData:", incomingPostWallData, handledPostWallData, isLoadData);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
@@ -72,21 +89,6 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
     console.log(sumNumberOfStuds);
   }, [listOfWalls]);
 
-  const [
-    {data: incomingPostWallData, isLoading: loadingBool, error: postError},
-    callAPI,
-  ] = usePostAPI(`http://localhost:3000/walls`, {wallLength, currentProject});
-  const handledPostWallData = useMemo(
-    () =>
-      errorAndLoadingHandler(
-        incomingPostWallData,
-        loadingBool,
-        postError,
-        <Spinner animation="border" />
-      ),
-    [incomingPostWallData, loadingBool, postError]
-  );
-  console.log("PostWallData:", incomingPostWallData, handledPostWallData, isLoadData);
   const handlePostWall = async () => {
     await callAPI();
     setListOfWalls([
@@ -98,8 +100,6 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
         id: handledPostWallData.id,
       },
     ]);
-    // TODO 66b fix this
-    setNumberOfStuds(numberOfStuds + listOfMeasurements.length);
   };
   function toggleUnits() {
     setImperialUnit((prevUnit) => !prevUnit);
