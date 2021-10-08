@@ -90,14 +90,15 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   }, [listOfWalls]);
 
   const handlePostWall = async () => {
-    await callAPI();
+    const [wallData] = await callAPI();
+    console.log(wallData);
     setListOfWalls([
       ...listOfWalls,
       {
-        wall_length: wallLength,
+        wallLength: wallData.wall_length,
         list: listOfMeasurements,
         studs: listOfMeasurements.length,
-        id: handledPostWallData.id,
+        id: wallData.id,
       },
     ]);
   };

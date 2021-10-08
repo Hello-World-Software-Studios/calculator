@@ -12,16 +12,19 @@ export default function usePostAPI(url, bodyJSON) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.Token}`,
+          Authorization: `Bearer ${localStorage.Token}`,
         },
         body: JSON.stringify(bodyJSON),
       });
       const json = await res.json();
       setData(json);
       setIsLoading(false);
+      return json;
     } catch (err) {
       setError(err.message);
     }
+    return null;
   }, [url, bodyJSON]);
+
   return [{data, isLoading, error}, callAPI];
 }
