@@ -34,7 +34,7 @@ export default function Dashboard({
   }, [errData]);
 
   const [{data: incomingProjectData, isLoading: loadingBool, error: postError}, callAPI] =
-    usePostAPI(`http://localhost:3000/projects`, {projectInput});
+    usePostAPI();
   const handledProjectData = useMemo(
     () =>
       errorAndLoadingHandler(
@@ -54,7 +54,7 @@ export default function Dashboard({
 
   const submitProject = async (event) => {
     event.preventDefault();
-    await callAPI();
+    await callAPI(`http://localhost:3000/projects`, {projectInput});
     await setCurrentProject(() => {
       if (handledProjectData) {
         return handledProjectData;

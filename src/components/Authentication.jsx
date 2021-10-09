@@ -14,7 +14,7 @@ export default function RegisterUser({
   });
   const [error, setError] = useState(null);
   console.log("Error:", error);
-
+  // TODO usePostAPI for these  2 fns
   const addUser = async () => {
     const requestOptions = {
       method: "POST",

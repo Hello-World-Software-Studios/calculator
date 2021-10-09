@@ -56,7 +56,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   const [
     {data: incomingPostWallData, isLoading: loadingBool, error: postError},
     callAPI,
-  ] = usePostAPI(`http://localhost:3000/walls`, {wallLength, currentProject});
+  ] = usePostAPI();
   const handledPostWallData = useMemo(
     () =>
       errorAndLoadingHandler(
@@ -90,7 +90,10 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
   }, [listOfWalls]);
 
   const handlePostWall = async () => {
-    const [wallData] = await callAPI();
+    const [wallData] = await callAPI(`http://localhost:3000/walls`, {
+      wallLength,
+      currentProject,
+    });
     console.log(wallData);
     setListOfWalls([
       ...listOfWalls,
