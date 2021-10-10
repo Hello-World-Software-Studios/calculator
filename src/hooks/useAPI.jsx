@@ -4,7 +4,7 @@ export default function useAPI(url) {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [errorAPI, setError] = useState(null);
-  // TODO response error
+
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {

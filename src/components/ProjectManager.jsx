@@ -36,17 +36,17 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
 
   const {
-    data: incomingWallData,
+    data: getWallData,
     isLoading: isLoadData,
     errorAPI: errData,
   } = useAPI(`http://localhost:3000/walls?projectID=${currentProject.id}`);
   const handledWallData = errorAndLoadingHandler(
-    incomingWallData,
+    getWallData,
     isLoadData,
     errData,
     <Spinner animation="border" />
   );
-  console.log("WallData:", incomingWallData, handledWallData, isLoadData);
+  console.log("WallData:", getWallData, handledWallData, isLoadData);
   useEffect(() => {
     if (errData) {
       setError(errData);
@@ -67,7 +67,7 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
       ),
     [incomingPostWallData, loadingBool, postError]
   );
-  console.log("PostWallData:", incomingPostWallData, handledPostWallData, isLoadData);
+  console.log("PostWallData:", incomingPostWallData, handledPostWallData, loadingBool);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
@@ -187,8 +187,9 @@ export default function ProjectManager({isAuthenticated, setIsAuthenticated}) {
         </Card.Body>
         <ListOfWalls
           listOfWalls={listOfWalls}
+          setListOfWalls={setListOfWalls}
           currentProject={currentProject}
-          wallLength={wallLength}
+          isImperialUnit={isImperialUnit}
         />
       </Card>
     </CardGroup>

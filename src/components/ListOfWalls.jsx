@@ -1,10 +1,65 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
-import {Button, Card, ListGroup} from "react-bootstrap";
-import {checkForNameToDisplay} from "./utilities";
+import {Button, Card, ListGroup, Spinner} from "react-bootstrap";
+import {
+  errorAndLoadingHandler,
+  checkForNameToDisplay,
+  newListGenerator,
+} from "./utilities";
+import usePostAPI from "../hooks/usePostAPI";
+import useAPI from "../hooks/useAPI";
+import {getListOfMeasurements} from "./Calculator";
 
-export default function ListOfWalls({listOfWalls, currentProject}) {
+export default function ListOfWalls({
+  listOfWalls,
+  setListOfWalls,
+  currentProject,
+  isImperialUnit,
+}) {
   console.log("List of Walls:", listOfWalls);
+
+  const [
+    {data: deleteWallResponse, isLoading: loadingBool, error: deleteError},
+    callAPI,
+  ] = usePostAPI();
+  const handledDeleteResponse = () =>
+    errorAndLoadingHandler(
+      deleteWallResponse,
+      loadingBool,
+      deleteError,
+      <Spinner animation="border" />
+    );
+  console.log("Delete Response:", handledDeleteResponse, loadingBool);
+  const deleteWall = async (id) => {
+    await callAPI(`http://localhost:3000/walls?id=${id}`);
+  };
+
+  const {
+    data: getWallData,
+    isLoading: isLoadData,
+    errorAPI: errData,
+  } = useAPI(`http://localhost:3000/walls?projectID=${currentProject.id}`);
+  const handledWallData = errorAndLoadingHandler(
+    getWallData,
+    isLoadData,
+    errData,
+    <Spinner animation="border" />
+  );
+  console.log("WallData:", getWallData, handledWallData, isLoadData);
+
+  useEffect(() => {
+    const newListOfWalls = newListGenerator(handledWallData);
+    const listOfWallsItemGenerator = (item) => {
+      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
+      return {
+        wallLength: item.wall_length,
+        list: gotList,
+        studs: gotList.length,
+        id: item.id,
+      };
+    };
+    setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
+  }, [handledWallData, isImperialUnit, setListOfWalls]);
 
   // TODO wall length needs imperial/metric context
   return (
@@ -12,7 +67,7 @@ export default function ListOfWalls({listOfWalls, currentProject}) {
       <h3 className="listGroupHeader">{checkForNameToDisplay(currentProject.name)}</h3>
       {listOfWalls ? (
         listOfWalls.map((item) => (
-          <ListGroup.Item key={listOfWalls.id}>
+          <ListGroup.Item key={item.id}>
             <Card bg="secondary">
               <Card.Body className="listGroupItem">
                 {item.wallLength}
@@ -24,7 +79,9 @@ export default function ListOfWalls({listOfWalls, currentProject}) {
                 Measurements: &nbsp;
                 {item.list.join(" | ")}
               </Card.Body>
-              <Button variant="danger">REMOVE</Button>
+              <Button variant="danger" onClick={() => deleteWall(item.id)}>
+                REMOVE
+              </Button>
             </Card>
           </ListGroup.Item>
         ))
@@ -43,8 +100,10 @@ ListOfWalls.propTypes = {
       studs: PropTypes.number,
     })
   ).isRequired,
+  setListOfWalls: PropTypes.func.isRequired,
   currentProject: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,
+  isImperialUnit: PropTypes.bool.isRequired,
 };

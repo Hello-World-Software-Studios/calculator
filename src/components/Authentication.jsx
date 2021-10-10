@@ -100,7 +100,7 @@ export default function RegisterUser({
           Create Account
         </Button>
       </Form>
-      <Link to={isLoginComponent ? "/login" : "/register"}>
+      <Link to={isLoginComponent ? "/register" : "/login"}>
         {isLoginComponent
           ? "Not already a User? Click here to register"
           : "Already signed up? Click here to Login"}
