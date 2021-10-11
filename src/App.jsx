@@ -2,6 +2,7 @@ import "./App.css";
 import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/Dashboard";
+import Manager from "./components/Manager";
 import Authentication from "./components/Authentication";
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
     <Router>
       <div>
         <Switch>
+          <Route exact path="/manager">
+            <Manager />
+          </Route>
           <Route exact path="/calculator">
             <Dashboard
               isAuthenticated={isAuthenticated}

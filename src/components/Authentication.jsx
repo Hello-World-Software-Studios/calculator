@@ -70,7 +70,7 @@ export default function RegisterUser({
     }));
   };
   if (isAuthenticated) {
-    return <Redirect to="/calculator" />;
+    return <Redirect to="/manager" />;
   }
   return (
     <Card>
