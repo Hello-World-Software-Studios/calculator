@@ -6,11 +6,7 @@ import usePostAPI from "../hooks/usePostAPI";
 import {errorAndLoadingHandler} from "./utilities";
 import ProjectSelector from "./ProjectSelector";
 
-export default function Manager({
-  setIsAuthenticated,
-  currentProject,
-  setCurrentProject,
-}) {
+export default function Manager({setIsAuthenticated, currentProject, setCurrentProject}) {
   const [projectInput, setProjectInput] = useState("");
   const [error, setError] = useState(null);
   console.log("Error:", error);

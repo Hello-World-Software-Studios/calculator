@@ -18,5 +18,5 @@ Retrieves the authenticated user's name.
 ### /projects
 GET and POST projects using user id.
 ### /walls
-GET and POST walls using project id
+GET, POST and DELETE walls using project id.
 
