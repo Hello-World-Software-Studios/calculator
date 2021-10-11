@@ -113,10 +113,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     ]);
   };
   // TODO fix this
-  function toggleUnits() {
-    setImperialUnit((prevUnit) => !prevUnit);
-    setListOfMeasurements(listOfMeasurements);
-  }
+  const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
 
@@ -135,7 +132,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
       <Card>
         <Card.Header>
           <h1>Carpentry Project Manager</h1>
-          <Button onClick={() => toggleUnits} variant="warning">
+          <Button onClick={toggleUnits} variant="warning">
             Swap Between Imperial and Metric
           </Button>
         </Card.Header>

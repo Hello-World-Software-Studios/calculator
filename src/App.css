@@ -32,7 +32,9 @@ input {
   background-color: gray;
   width: 100%;
 }
-
+.emptyList {
+  align-self: center;
+}
 .form {
   background-color: white;
   width: 100%;
