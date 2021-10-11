@@ -1,8 +1,9 @@
 import {Button, Card, CardColumns, CardGroup, Modal, Spinner} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
 import useAPI from "../hooks/useAPI";
+import useAPIWithCallback from "../hooks/useAPIWithCallback";
 import usePostAPI from "../hooks/usePostAPI";
 import {errorAndLoadingHandler, newListGenerator} from "./utilities";
 import ListOfWalls from "./ListOfWalls";
@@ -22,7 +23,6 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log("currentProject:", currentProject);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -46,7 +46,8 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     errData,
     <Spinner animation="border" />
   );
-  console.log("WallData:", getWallData, handledWallData, isLoadData);
+
+  console.log("getWallData:", getWallData, handledWallData, isLoadData);
   useEffect(() => {
     if (errData) {
       setError(errData);
@@ -54,17 +55,28 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   }, [errData]);
 
   const [{isLoading: loadingBool, error: postError}, callAPI] = usePostAPI();
-  // const handledPostWallData = useMemo(
-  //   () =>
-  //     errorAndLoadingHandler(
-  //       incomingPostWallData,
-  //       loadingBool,
-  //       postError,
-  //       <Spinner animation="border" />
-  //     ),
-  //   [incomingPostWallData, loadingBool, postError]
-  // );
+  const [{isLoading: loadingRefreshBool, error: refreshError}, callGetAPI] =
+    useAPIWithCallback();
+
   console.log("PostWallData:", loadingBool, postError);
+  console.log("refreshWallData:", loadingRefreshBool, refreshError);
+
+  const deleteRefreshCallback = useCallback(async () => {
+    const refreshedListOfWalls = await callGetAPI(
+      `http://localhost:3000/walls?projectID=${currentProject.id}`
+    );
+    const newListOfWalls = newListGenerator(refreshedListOfWalls);
+    const listOfWallsItemGenerator = (item) => {
+      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
+      return {
+        wallLength: item.wall_length,
+        list: gotList,
+        studs: gotList.length,
+        id: item.id,
+      };
+    };
+    setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
+  }, [callGetAPI, currentProject.id, isImperialUnit]);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
@@ -83,7 +95,6 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   useEffect(() => {
     const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
     setNumberOfStuds(sumNumberOfStuds);
-    console.log(sumNumberOfStuds);
   }, [listOfWalls]);
 
   const handlePostWall = async () => {
@@ -91,7 +102,6 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
       wallLength,
       currentProject,
     });
-    console.log(wallData);
     setListOfWalls([
       ...listOfWalls,
       {
@@ -183,12 +193,17 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
             </Card>
           </CardGroup>
         </Card.Body>
-        <ListOfWalls
-          listOfWalls={listOfWalls}
-          setListOfWalls={setListOfWalls}
-          currentProject={currentProject}
-          isImperialUnit={isImperialUnit}
-        />
+        {loadingBool || loadingRefreshBool ? (
+          <Spinner animation="border" />
+        ) : (
+          <ListOfWalls
+            listOfWalls={listOfWalls}
+            setListOfWalls={setListOfWalls}
+            currentProject={currentProject}
+            isImperialUnit={isImperialUnit}
+            deleteCallback={deleteRefreshCallback}
+          />
+        )}
       </Card>
     </CardGroup>
   );

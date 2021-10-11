@@ -15,6 +15,7 @@ export default function ListOfWalls({
   setListOfWalls,
   currentProject,
   isImperialUnit,
+  deleteCallback,
 }) {
   console.log("List of Walls:", listOfWalls);
 
@@ -45,16 +46,16 @@ export default function ListOfWalls({
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
   }, [handledWallData, isImperialUnit, setListOfWalls]);
 
-  const deleteWall = async (id) => {
+  const handleDeleteWall = async (id) => {
     const {status: deleteRes} = await callAPI(`http://localhost:3000/walls?id=${id}`);
 
     if (deleteRes === "Deleted!") {
-      console.log("success!");
+      deleteCallback();
     }
   };
 
   console.log("WallData:", getWallData, handledWallData, isLoadData);
-  console.log("Delete Response:", deleteWall, loadingBool, deleteError);
+  console.log("Delete Response:", handleDeleteWall, loadingBool, deleteError);
   console.log("List of Walls:", listOfWalls);
   // TODO wall length needs imperial/metric context
   return (
@@ -74,7 +75,7 @@ export default function ListOfWalls({
                 Measurements: &nbsp;
                 {item.list.join(" | ")}
               </Card.Body>
-              <Button variant="danger" onClick={() => deleteWall(item.id)}>
+              <Button variant="danger" onClick={() => handleDeleteWall(item.id)}>
                 REMOVE
               </Button>
             </Card>
@@ -101,4 +102,5 @@ ListOfWalls.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   isImperialUnit: PropTypes.bool.isRequired,
+  deleteCallback: PropTypes.func.isRequired,
 };
