@@ -1,7 +1,6 @@
 import {useCallback, useState} from "react";
 
 export default function usePostAPI() {
-  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -17,7 +16,6 @@ export default function usePostAPI() {
         body: JSON.stringify(bodyJSON),
       });
       const json = await res.json();
-      setData(json);
       setIsLoading(false);
       return json;
     } catch (err) {
@@ -26,5 +24,5 @@ export default function usePostAPI() {
     return null;
   }, []);
 
-  return [{data, isLoading, error}, callAPI];
+  return [{isLoading, error}, callAPI];
 }

@@ -18,22 +18,7 @@ export default function ListOfWalls({
 }) {
   console.log("List of Walls:", listOfWalls);
 
-  const [
-    {data: deleteWallResponse, isLoading: loadingBool, error: deleteError},
-    callAPI,
-  ] = usePostAPI();
-  const handledDeleteResponse = () =>
-    errorAndLoadingHandler(
-      deleteWallResponse,
-      loadingBool,
-      deleteError,
-      <Spinner animation="border" />
-    );
-  console.log("Delete Response:", handledDeleteResponse, loadingBool);
-  const deleteWall = async (id) => {
-    await callAPI(`http://localhost:3000/walls?id=${id}`);
-  };
-
+  const [{isLoading: loadingBool, error: deleteError}, callAPI] = usePostAPI();
   const {
     data: getWallData,
     isLoading: isLoadData,
@@ -45,7 +30,6 @@ export default function ListOfWalls({
     errData,
     <Spinner animation="border" />
   );
-  console.log("WallData:", getWallData, handledWallData, isLoadData);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
@@ -61,6 +45,17 @@ export default function ListOfWalls({
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
   }, [handledWallData, isImperialUnit, setListOfWalls]);
 
+  const deleteWall = async (id) => {
+    const {status: deleteRes} = await callAPI(`http://localhost:3000/walls?id=${id}`);
+
+    if (deleteRes === "Deleted!") {
+      console.log("success!");
+    }
+  };
+
+  console.log("WallData:", getWallData, handledWallData, isLoadData);
+  console.log("Delete Response:", deleteWall, loadingBool, deleteError);
+  console.log("List of Walls:", listOfWalls);
   // TODO wall length needs imperial/metric context
   return (
     <ListGroup className="listGroup" variant="flush">

@@ -1,7 +1,7 @@
 import "./App.css";
 import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import ProjectManager from "./components/ProjectManager";
+import Dashboard from "./components/Dashboard";
 import Authentication from "./components/Authentication";
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
       <div>
         <Switch>
           <Route exact path="/calculator">
-            <ProjectManager
+            <Dashboard
               isAuthenticated={isAuthenticated}
               setIsAuthenticated={setIsAuthCallback}
             />
@@ -55,8 +55,7 @@ function App() {
             <Authentication
               isAuthenticated={isAuthenticated}
               setIsAuthenticated={setIsAuthCallback}
-              // eslint-disable-next-line react/jsx-boolean-value
-              isLoginComponent={true}
+              isLoginComponent
             />
           </Route>
         </Switch>
