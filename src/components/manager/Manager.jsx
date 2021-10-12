@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Form, Spinner} from "react-bootstrap";
+import {Redirect} from "react-router-dom";
 import PropTypes from "prop-types";
-import useAPI from "../hooks/useAPI";
-import usePostAPI from "../hooks/usePostAPI";
-import {errorAndLoadingHandler} from "./utilities";
+import useAPI from "../../hooks/useAPI";
+import usePostAPI from "../../hooks/usePostAPI";
+import {errorAndLoadingHandler} from "../utils/utilities";
 import ProjectSelector from "./ProjectSelector";
+import Dashboard from "../calculator/Dashboard";
 
-export default function Manager({setIsAuthenticated, currentProject, setCurrentProject}) {
+export default function Manager({isAuthenticated, setIsAuthenticated}) {
+  const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [projectInput, setProjectInput] = useState("");
   const [error, setError] = useState(null);
   console.log("Error:", error);
@@ -49,7 +52,21 @@ export default function Manager({setIsAuthenticated, currentProject, setCurrentP
   const onChangeProject = (event) => {
     setProjectInput(event.target.value);
   };
-
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+  if (currentProject.id) {
+    return (
+      // <Route path={`:${currentProject.id}`}>
+      <Dashboard
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+        currentProject={currentProject}
+        setCurrentProject={() => setCurrentProject}
+      />
+      // </Route>
+    );
+  }
   return (
     <Card>
       <Card.Header>Project Manager</Card.Header>
@@ -90,13 +107,6 @@ export default function Manager({setIsAuthenticated, currentProject, setCurrentP
 }
 
 Manager.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
-  setCurrentProject: PropTypes.func.isRequired,
-  currentProject: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
-};
-Manager.defaultProps = {
-  currentProject: {id: undefined, name: ""},
 };

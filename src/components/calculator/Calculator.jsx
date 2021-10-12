@@ -9,7 +9,7 @@ import {
   CENTER_SPACING_METRIC,
   STUD_OFFSET_IMPERIAL,
   STUD_OFFSET_METRIC,
-} from "./constants";
+} from "../utils/constants";
 
 export const getListOfMeasurements = (isImperial, wall) => {
   const newArray = [BASE_STUD];

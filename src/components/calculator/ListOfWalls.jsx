@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Button, Card, ListGroup, Spinner} from "react-bootstrap";
-import {checkForNameToDisplay} from "./utilities";
-import usePostAPI from "../hooks/usePostAPI";
+import {checkForNameToDisplay} from "../utils/utilities";
+import usePostAPI from "../../hooks/usePostAPI";
 
 export default function ListOfWalls({
   listOfWalls,

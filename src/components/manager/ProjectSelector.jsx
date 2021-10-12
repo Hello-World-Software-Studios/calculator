@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Dropdown, DropdownButton, Spinner} from "react-bootstrap";
-import useAPI from "../hooks/useAPI";
-import {errorAndLoadingHandler, newListGenerator} from "./utilities";
+import useAPI from "../../hooks/useAPI";
+import {errorAndLoadingHandler, newListGenerator} from "../utils/utilities";
 
 export default function ProjectSelector({setCurrentProject}) {
   const [listOfProjects, setListOfProjects] = useState([]);
@@ -56,25 +56,5 @@ export default function ProjectSelector({setCurrentProject}) {
 }
 
 ProjectSelector.propTypes = {
-  // dataReturnedFromAPICall: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     id: PropTypes.number,
-  //     name: PropTypes.string,
-  //     project_id: PropTypes.number,
-  //     username: PropTypes.string,
-  //     wall_length: PropTypes.number,
-  //   })
-  // ),
   setCurrentProject: PropTypes.func.isRequired,
 };
-// DropdownItemGenerator.defaultProps = {
-//   dataReturnedFromAPICall: [
-//     {
-//       id: null,
-//       name: "No Projects Saved",
-//       project_id: null,
-//       username: null,
-//       wall_length: null,
-//     },
-//   ],
-// };

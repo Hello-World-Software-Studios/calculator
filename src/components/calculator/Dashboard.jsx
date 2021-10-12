@@ -1,20 +1,22 @@
-import {Button, Card, CardColumns, CardGroup, Modal, Spinner} from "react-bootstrap";
+import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
-import useAPI from "../hooks/useAPI";
-import useAPIWithCallback from "../hooks/useAPIWithCallback";
-import usePostAPI from "../hooks/usePostAPI";
-import {errorAndLoadingHandler, newListGenerator} from "./utilities";
+import useAPI from "../../hooks/useAPI";
+import useAPIWithCallback from "../../hooks/useAPIWithCallback";
+import usePostAPI from "../../hooks/usePostAPI";
+import {errorAndLoadingHandler, newListGenerator} from "../utils/utilities";
+import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import ListOfWalls from "./ListOfWalls";
 import LumberPrice from "./LumberPrice";
 import Calculator, {getListOfMeasurements} from "./Calculator";
-import Manager from "./Manager";
 
-const CONVERSION_COEFFICIENT = 0.3048;
-
-export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
-  const [currentProject, setCurrentProject] = useState({id: 0, name: ""});
+export default function Dashboard({
+  isAuthenticated,
+  setIsAuthenticated,
+  currentProject,
+  setCurrentProject,
+}) {
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -47,7 +49,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     <Spinner animation="border" />
   );
 
-  console.log("getWallData:", getWallData, handledWallData, isLoadData);
+  console.log("getWallData:", handledWallData, isLoadData);
   useEffect(() => {
     if (errData) {
       setError(errData);
@@ -116,24 +118,36 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
+  const goBacktoManager = () => {
+    setCurrentProject({id: 0, name: ""});
+    console.log("Hello", currentProject);
+    return <Redirect to="/projects" />;
+  };
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
   return (
-    <CardGroup className="projectManager">
-      <CardColumns>
-        <Manager
-          currentProject={currentProject}
-          setCurrentProject={(project) => setCurrentProject(project)}
-          setIsAuthenticated={setIsAuthenticated}
-        />
-      </CardColumns>
+    <CardGroup className="dashboard">
       <Card>
         <Card.Header>
-          <h1>Carpentry Project Manager</h1>
+          <h1>
+            You are working on &nbsp;
+            {currentProject.name}
+          </h1>
           <Button onClick={toggleUnits} variant="warning">
             Swap Between Imperial and Metric
+          </Button>
+          <Button onClick={goBacktoManager} variant="secondary">
+            &lt;&lt; Go Back
+          </Button>
+          <Button
+            onClick={() => {
+              setIsAuthenticated(false);
+              localStorage.removeItem("Token");
+            }}
+          >
+            Logout
           </Button>
         </Card.Header>
         <Card.Body>
@@ -209,4 +223,12 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
 Dashboard.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
+  currentProject: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  }),
+  setCurrentProject: PropTypes.func.isRequired,
+};
+Dashboard.defaultProps = {
+  currentProject: {id: undefined, name: ""},
 };

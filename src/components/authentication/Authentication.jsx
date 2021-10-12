@@ -70,7 +70,7 @@ export default function RegisterUser({
     }));
   };
   if (isAuthenticated) {
-    return <Redirect to="/manager" />;
+    return <Redirect to="/projects" />;
   }
   return (
     <Card>
