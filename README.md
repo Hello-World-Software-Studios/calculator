@@ -1,4 +1,5 @@
 # Construction Project Manager
+* Version 0.7: Reworking app flow.
 * Version 0.6: API schema being finalized using JWT for authorization.
 * Version 0.5: successful integration with server.
 
@@ -14,7 +15,7 @@ These routes are used to login existing users, and to post new users to the data
 ### /users/verify
 Compares values received from the login component to the values stored in the database.
 ### /users/current
-Retrieves the authenticated user's name.
+GETs the authenticated user's name.
 ### /projects
 GET and POST projects using user id.
 ### /walls
