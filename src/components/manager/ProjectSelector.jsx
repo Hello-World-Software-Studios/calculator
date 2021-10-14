@@ -13,7 +13,7 @@ export default function ProjectSelector({setCurrentProject}) {
     data: incomingProjectData,
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/projects`);
+  } = useAPI(`http://localhost:3000/projects/list`);
   const handledProjectData = errorAndLoadingHandler(
     incomingProjectData,
     isLoadData,

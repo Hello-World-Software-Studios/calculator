@@ -38,7 +38,7 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
   const submitProject = async (event) => {
     event.preventDefault();
     // TODO
-    const projectResponse = await callAPI(`http://localhost:3000/projects`, {
+    const projectResponse = await callAPI(`http://localhost:3000/projects/list`, {
       projectInput,
     });
     console.log("projectResponse:", projectResponse, loadingBool);
@@ -58,12 +58,10 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
   }
   if (currentProject.id) {
     return (
-      <Route path={`:${currentProject.id}`}>
+      <Route path="/:id">
         <Dashboard
           isAuthenticated={isAuthenticated}
           setIsAuthenticated={setIsAuthenticated}
-          currentProject={currentProject}
-          setCurrentProject={() => setCurrentProject}
         />
       </Route>
     );

@@ -1,22 +1,19 @@
 import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {Redirect} from "react-router-dom";
+import {Redirect, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import useAPIWithCallback from "../../hooks/useAPIWithCallback";
 import usePostAPI from "../../hooks/usePostAPI";
 import {errorAndLoadingHandler, newListGenerator} from "../utils/utilities";
 import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import ListOfWalls from "./ListOfWalls";
-import LumberPrice from "./LumberPrice";
+import LumberPrice, {twoByFourPrice} from "./LumberPrice";
 import Calculator, {getListOfMeasurements} from "./Calculator";
 
-export default function Dashboard({
-  isAuthenticated,
-  setIsAuthenticated,
-  currentProject,
-  setCurrentProject,
-}) {
+export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
+  const {id} = useParams();
+  const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -25,6 +22,7 @@ export default function Dashboard({
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
+  console.log("currentProject:", currentProject);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -33,10 +31,24 @@ export default function Dashboard({
     : `${numberOfFeetOfPlate} metres `;
   const studHeightDivisor = isImperialUnit ? 8 : 2.4;
   // TODO import from LumberPrice
-  const studCost = 7;
+  const studCost = twoByFourPrice;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
-
+  const {
+    data: getProject,
+    isLoading: isProjectLoadData,
+    errorAPI: errProjectData,
+  } = useAPI(`http://localhost:3000/projects?projectID=${id}`);
+  const handledProjectData = errorAndLoadingHandler(
+    getProject,
+    isProjectLoadData,
+    errProjectData,
+    <Spinner animation="border" />
+  );
+  useEffect(() => {
+    setCurrentProject(handledProjectData);
+    console.log("useEffectProject:", handledProjectData);
+  }, [handledProjectData]);
   const {
     data: getWallData,
     isLoading: isLoadData,
@@ -223,12 +235,12 @@ export default function Dashboard({
 Dashboard.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
-  currentProject: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
-  setCurrentProject: PropTypes.func.isRequired,
+  // currentProject: PropTypes.shape({
+  //   id: PropTypes.number,
+  //   name: PropTypes.string,
+  // }),
+  // setCurrentProject: PropTypes.func.isRequired,
 };
-Dashboard.defaultProps = {
-  currentProject: {id: undefined, name: ""},
-};
+// Dashboard.defaultProps = {
+//   currentProject: {id: undefined, name: ""},
+// };
