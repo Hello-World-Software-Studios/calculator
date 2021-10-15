@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Form, Spinner} from "react-bootstrap";
-import {Redirect, Route} from "react-router-dom";
+import {Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
 import PropTypes from "prop-types";
 import useAPI from "../../hooks/useAPI";
 import usePostAPI from "../../hooks/usePostAPI";
@@ -9,6 +9,7 @@ import ProjectSelector from "./ProjectSelector";
 import Dashboard from "../calculator/Dashboard";
 
 export default function Manager({isAuthenticated, setIsAuthenticated}) {
+  const {path} = useRouteMatch();
   const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [projectInput, setProjectInput] = useState("");
   const [error, setError] = useState(null);
@@ -57,16 +58,18 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
     return <Redirect to="/login" />;
   }
   if (currentProject.id) {
-    console.log("currentProject Routing:", currentProject);
+    console.log("currentProject Routing:", currentProject, "Path:", path);
     return (
-      <Route path="/:id">
-        <Dashboard
-          isAuthenticated={isAuthenticated}
-          setIsAuthenticated={setIsAuthenticated}
-          // currentProject={currentProject}
-          // setCurrentProject={setCurrentProject}
-        />
-      </Route>
+      <Switch>
+        <Route path={`${path}/:id`}>
+          <Dashboard
+            isAuthenticated={isAuthenticated}
+            setIsAuthenticated={setIsAuthenticated}
+            // currentProject={currentProject}
+            // setCurrentProject={setCurrentProject}
+          />
+        </Route>
+      </Switch>
     );
   }
   return (
