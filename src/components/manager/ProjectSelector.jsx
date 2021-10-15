@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import {Dropdown, DropdownButton, Spinner} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import {errorAndLoadingHandler, newListGenerator} from "../utils/utilities";
 
-export default function ProjectSelector({setCurrentProject}) {
+export default function ProjectSelector() {
+  const history = useHistory();
   const [listOfProjects, setListOfProjects] = useState([]);
   const [error, setError] = useState(null);
   console.log("Error:", error);
@@ -46,7 +48,10 @@ export default function ProjectSelector({setCurrentProject}) {
         <Dropdown.Item>No Saved Projects</Dropdown.Item>
       ) : (
         listOfProjects.map((item) => (
-          <Dropdown.Item onClick={() => setCurrentProject(item)} key={item.id}>
+          <Dropdown.Item
+            onClick={() => history.push(`/projects/${item.id}`)}
+            key={item.id}
+          >
             {item.name}
           </Dropdown.Item>
         ))
@@ -55,6 +60,6 @@ export default function ProjectSelector({setCurrentProject}) {
   );
 }
 
-ProjectSelector.propTypes = {
-  setCurrentProject: PropTypes.func.isRequired,
-};
+// ProjectSelector.propTypes = {
+//   setCurrentProject: PropTypes.func.isRequired,
+// };

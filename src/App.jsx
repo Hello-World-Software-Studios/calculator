@@ -38,13 +38,12 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route exact path="/projects">
+          <Route path="/projects">
             <Manager
               isAuthenticated={isAuthenticated}
               setIsAuthenticated={setIsAuthCallback}
             />
           </Route>
-
           <Route exact path="/register">
             <Authentication
               isAuthenticated={isAuthenticated}

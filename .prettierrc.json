@@ -1,6 +1,6 @@
 {
   "arrowParens": "always",
-  "bracketSpacing": "true",
+  "bracketSpacing": true,
   "printWidth": 85,
   "semi": false,
   "tabWidth": 2

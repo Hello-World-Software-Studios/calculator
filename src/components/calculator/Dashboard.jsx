@@ -35,6 +35,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const studCost = twoByFourPrice;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+
   const {
     data: getProject,
     isLoading: isProjectLoadData,
@@ -59,7 +60,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     data: getWallData,
     isLoading: isLoadData,
     errorAPI: errData,
-  } = useAPI(`http://localhost:3000/walls?projectID=${currentProject.id}`);
+  } = useAPI(`http://localhost:3000/walls?projectID=${id}`);
   const handledWallData = errorAndLoadingHandler(
     getWallData,
     isLoadData,
@@ -136,6 +137,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
+
   const goBacktoManager = () => {
     setCurrentProject({id: 0, name: ""});
     console.log("Redirect to /projects:", currentProject);
