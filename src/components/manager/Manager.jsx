@@ -57,11 +57,14 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
     return <Redirect to="/login" />;
   }
   if (currentProject.id) {
+    console.log("currentProject Routing:", currentProject);
     return (
       <Route path="/:id">
         <Dashboard
           isAuthenticated={isAuthenticated}
           setIsAuthenticated={setIsAuthenticated}
+          // currentProject={currentProject}
+          // setCurrentProject={setCurrentProject}
         />
       </Route>
     );

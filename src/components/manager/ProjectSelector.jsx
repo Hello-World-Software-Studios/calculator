@@ -41,12 +41,12 @@ export default function ProjectSelector({setCurrentProject}) {
     );
   }
   return (
-    <DropdownButton id="dropdown-project" title="Your Saved Projects">
+    <DropdownButton title="Your Saved Projects">
       {listOfProjects.length === 0 ? (
         <Dropdown.Item>No Saved Projects</Dropdown.Item>
       ) : (
         listOfProjects.map((item) => (
-          <Dropdown.Item onClick={() => setCurrentProject(item)}>
+          <Dropdown.Item onClick={() => setCurrentProject(item)} key={item.id}>
             {item.name}
           </Dropdown.Item>
         ))

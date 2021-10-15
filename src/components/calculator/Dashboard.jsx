@@ -1,5 +1,5 @@
 import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
@@ -13,6 +13,7 @@ import Calculator, {getListOfMeasurements} from "./Calculator";
 
 export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const {id} = useParams();
+  console.log("ID:", id);
   const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     ? `${numberOfFeetOfPlate} feet `
     : `${numberOfFeetOfPlate} metres `;
   const studHeightDivisor = isImperialUnit ? 8 : 2.4;
-  // TODO import from LumberPrice
+  // TODO make this toggleable
   const studCost = twoByFourPrice;
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
@@ -39,16 +40,21 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     isLoading: isProjectLoadData,
     errorAPI: errProjectData,
   } = useAPI(`http://localhost:3000/projects?projectID=${id}`);
-  const handledProjectData = errorAndLoadingHandler(
-    getProject,
-    isProjectLoadData,
-    errProjectData,
-    <Spinner animation="border" />
+  const handledProjectData = useMemo(
+    () =>
+      errorAndLoadingHandler(
+        getProject,
+        isProjectLoadData,
+        errProjectData,
+        <Spinner animation="border" />
+      ),
+    [errProjectData, getProject, isProjectLoadData]
   );
   useEffect(() => {
     setCurrentProject(handledProjectData);
     console.log("useEffectProject:", handledProjectData);
-  }, [handledProjectData]);
+  }, [handledProjectData, setCurrentProject]);
+
   const {
     data: getWallData,
     isLoading: isLoadData,
@@ -132,7 +138,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const handleShow = () => setModalOpen(true);
   const goBacktoManager = () => {
     setCurrentProject({id: 0, name: ""});
-    console.log("Hello", currentProject);
+    console.log("Redirect to /projects:", currentProject);
     return <Redirect to="/projects" />;
   };
 
