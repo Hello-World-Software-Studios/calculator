@@ -51,6 +51,7 @@ function App() {
               isLoginComponent={false}
             />
           </Route>
+
           <Route exact path="/login">
             <Authentication
               isAuthenticated={isAuthenticated}
