@@ -59,7 +59,3 @@ export default function ProjectSelector() {
     </DropdownButton>
   );
 }
-
-// ProjectSelector.propTypes = {
-//   setCurrentProject: PropTypes.func.isRequired,
-// };

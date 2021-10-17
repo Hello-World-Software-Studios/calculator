@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Form, Spinner} from "react-bootstrap";
-import {Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
+import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import PropTypes from "prop-types";
 import useAPI from "../../hooks/useAPI";
 import usePostAPI from "../../hooks/usePostAPI";
@@ -9,12 +9,12 @@ import ProjectSelector from "./ProjectSelector";
 import Dashboard from "../calculator/Dashboard";
 
 export default function Manager({isAuthenticated, setIsAuthenticated}) {
+  const history = useHistory();
   const {path} = useRouteMatch();
-  const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [projectInput, setProjectInput] = useState("");
   const [error, setError] = useState(null);
 
-  console.log("Error:", error);
+  console.log("Manager Error:", error);
   console.log("projectInput:", projectInput);
 
   const {
@@ -39,16 +39,11 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
   const submitProject = async (event) => {
     event.preventDefault();
     // TODO
-    const projectResponse = await callAPI(`http://localhost:3000/projects/list`, {
+    const {id: returnID} = await callAPI(`http://localhost:3000/projects`, {
       projectInput,
     });
-    console.log("projectResponse:", projectResponse, loadingBool);
-    await setCurrentProject(() => {
-      if (projectResponse) {
-        return projectResponse;
-      }
-      return currentProject;
-    });
+    console.log("projectResponse:", returnID, loadingBool);
+    history.push(`/projects/${returnID}`);
     setError(postError);
   };
   const onChangeProject = (event) => {
@@ -64,8 +59,6 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
         <Dashboard
           isAuthenticated={isAuthenticated}
           setIsAuthenticated={setIsAuthenticated}
-          // currentProject={currentProject}
-          // setCurrentProject={setCurrentProject}
         />
       </Route>
       <Route path={path}>
@@ -101,7 +94,7 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
               </Button>
             </Form>
             <h5>Or, select one of your existing projects:</h5>
-            <ProjectSelector setCurrentProject={setCurrentProject} />
+            <ProjectSelector />
           </Card.Body>
         </Card>
       </Route>

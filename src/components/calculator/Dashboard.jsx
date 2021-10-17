@@ -1,5 +1,5 @@
 import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Redirect, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
@@ -40,21 +40,28 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     data: getProject,
     isLoading: isProjectLoadData,
     errorAPI: errProjectData,
-  } = useAPI(`http://localhost:3000/projects?projectID=${id}`);
-  const handledProjectData = useMemo(
-    () =>
-      errorAndLoadingHandler(
-        getProject,
-        isProjectLoadData,
-        errProjectData,
-        <Spinner animation="border" />
-      ),
-    [errProjectData, getProject, isProjectLoadData]
-  );
+  } = useAPI(`http://localhost:3000/projects?id=${id}`);
+  // const handledProjectData = useMemo(
+  //   () =>
+  //     errorAndLoadingHandler(
+  //       getProject,
+  //       isProjectLoadData,
+  //       errProjectData,
+  //       <Spinner animation="border" />
+  //     ),
+  //   [errProjectData, getProject, isProjectLoadData]
+  // );
   useEffect(() => {
-    setCurrentProject(handledProjectData);
-    console.log("useEffectProject:", handledProjectData);
-  }, [handledProjectData, setCurrentProject]);
+    const newProject = () => getProject;
+    setCurrentProject(newProject);
+    console.log(
+      "useEffectProject:",
+      getProject,
+      newProject,
+      isProjectLoadData,
+      errProjectData
+    );
+  }, [errProjectData, getProject, isProjectLoadData, setCurrentProject]);
 
   const {
     data: getWallData,
@@ -133,13 +140,13 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
       },
     ]);
   };
-  // TODO fix this
+
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
 
   const goBacktoManager = () => {
-    setCurrentProject({id: 0, name: ""});
+    // setCurrentProject({id: 0, name: ""});
     console.log("Redirect to /projects:", currentProject);
     return <Redirect to="/projects" />;
   };

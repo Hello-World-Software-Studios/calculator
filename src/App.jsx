@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Manager from "./components/manager/Manager";
 import Authentication from "./components/authentication/Authentication";
-// import Dashboard from "./components/calculator/Dashboard";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -51,7 +50,6 @@ function App() {
               isLoginComponent={false}
             />
           </Route>
-
           <Route exact path="/login">
             <Authentication
               isAuthenticated={isAuthenticated}

@@ -15,7 +15,7 @@ router.route("/").get(authorization, async (req, res) => {
       "SELECT projects.id, projects.name FROM projects WHERE projects.id = $1;",
       [req.query.id]
     );
-    res.json(selectProjects.rows);
+    res.json(selectProjects.rows[0]);
   } catch (err) {
     res.status(500).json({message: err.message});
   }
