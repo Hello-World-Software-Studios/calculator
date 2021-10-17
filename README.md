@@ -6,8 +6,9 @@
 A simple tool for carpenters. It will take the frustration out of laying out your wall by telling you exactly where to mark your lines, and how much lumber you'll need. 
 Built using React hooks and functional components, styled using react-bootstrap, using Node.js, Express.js, and PostgreSQL for back end.
 
-![Screenshot](public/calc_main.png)
-![Screenshot](public/calc_modal.png)
+![Screenshot](public/Manager.png)
+![Screenshot](public/Dashboard.png)
+![Screenshot](public/Modal.png)
 
 ## API Schema:
 ### /users/login & /users/register
