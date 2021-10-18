@@ -1,7 +1,7 @@
 import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {Redirect, useParams} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import useAPIWithCallback from "../../hooks/useAPIWithCallback";
 import usePostAPI from "../../hooks/usePostAPI";
@@ -14,6 +14,7 @@ import Calculator, {getListOfMeasurements} from "./Calculator";
 export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const {id} = useParams();
   console.log("ID:", id);
+  const history = useHistory();
   const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -41,16 +42,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     isLoading: isProjectLoadData,
     errorAPI: errProjectData,
   } = useAPI(`http://localhost:3000/projects?id=${id}`);
-  // const handledProjectData = useMemo(
-  //   () =>
-  //     errorAndLoadingHandler(
-  //       getProject,
-  //       isProjectLoadData,
-  //       errProjectData,
-  //       <Spinner animation="border" />
-  //     ),
-  //   [errProjectData, getProject, isProjectLoadData]
-  // );
+
   useEffect(() => {
     const newProject = () => getProject;
     setCurrentProject(newProject);
@@ -144,12 +136,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
-
-  const goBacktoManager = () => {
-    // setCurrentProject({id: 0, name: ""});
-    console.log("Redirect to /projects:", currentProject);
-    return <Redirect to="/projects" />;
-  };
+  const goBacktoManager = () => history.push("/projects");
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
@@ -250,12 +237,4 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
 Dashboard.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
-  // currentProject: PropTypes.shape({
-  //   id: PropTypes.number,
-  //   name: PropTypes.string,
-  // }),
-  // setCurrentProject: PropTypes.func.isRequired,
 };
-// Dashboard.defaultProps = {
-//   currentProject: {id: undefined, name: ""},
-// };

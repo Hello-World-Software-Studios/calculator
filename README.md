@@ -1,4 +1,5 @@
 # Construction Project Manager
+* Version 0.8: Bugfixes and finalization of project structure.
 * Version 0.7: Reworking app flow.
 * Version 0.6: API schema being finalized using JWT for authorization.
 * Version 0.5: successful integration with server.
