@@ -23,4 +23,4 @@ CREATE TABLE "walls" (
 
 ALTER TABLE "projects" ADD FOREIGN KEY ("owner_user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "walls" ADD FOREIGN KEY ("project_id") REFERENCES "projects" ("id");
+ALTER TABLE "walls" ADD FOREIGN KEY ("project_id") REFERENCES "projects" ("id") ON DELETE CASCADE;

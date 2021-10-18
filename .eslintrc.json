@@ -15,8 +15,8 @@
   "plugins": ["react", "react-hooks", "prettier"],
   "extends": ["eslint:all", "plugin:react/all", "airbnb", "prettier"],
   "rules": {
-    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "error", // Checks effect dependencies
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error", 
     "react/jsx-one-expression-per-line": "warn"
     
   }

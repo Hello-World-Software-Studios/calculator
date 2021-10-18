@@ -3,11 +3,6 @@ const pool = require("../db");
 const authorization = require("../utils/authorize");
 
 const router = express.Router();
-// const SQL_SELECT_PROJECTS = `
-// SELECT projects.id, projects.name
-// FROM projects
-// WHERE projects.owner_user_id = $1;
-// `;
 
 router.route("/").get(authorization, async (req, res) => {
   try {

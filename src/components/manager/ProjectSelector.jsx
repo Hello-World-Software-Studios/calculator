@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-// import PropTypes from "prop-types";
 import {Dropdown, DropdownButton, Spinner} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";

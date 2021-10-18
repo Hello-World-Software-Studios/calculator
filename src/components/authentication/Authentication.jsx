@@ -3,7 +3,7 @@ import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
 
-export default function RegisterUser({
+export default function Authentication({
   isAuthenticated,
   setIsAuthenticated,
   isLoginComponent,
@@ -14,7 +14,7 @@ export default function RegisterUser({
   });
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  // TODO usePostAPI for these  2 fns
+
   const addUser = async () => {
     const requestOptions = {
       method: "POST",
@@ -109,7 +109,7 @@ export default function RegisterUser({
   );
 }
 
-RegisterUser.propTypes = {
+Authentication.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   setIsAuthenticated: PropTypes.func.isRequired,
   isLoginComponent: PropTypes.bool.isRequired,
