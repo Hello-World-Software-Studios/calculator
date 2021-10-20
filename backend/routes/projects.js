@@ -43,4 +43,13 @@ router.route("/").post(authorization, async (req, res) => {
   }
 });
 
+router.route("/").delete(authorization, async (req, res) => {
+  try {
+    await pool.query("DELETE FROM projects WHERE id = $1", [req.query.id]);
+    res.json({status: "Deleted!"});
+  } catch (err) {
+    res.json({message: err.message});
+  }
+});
+
 module.exports = router;
