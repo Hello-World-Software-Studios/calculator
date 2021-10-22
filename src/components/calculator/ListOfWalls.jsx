@@ -35,10 +35,7 @@ export default function ListOfWalls({
           <ListGroup.Item key={item.id}>
             <Card bg="secondary">
               <Card.Body className="listGroupItem">
-                {item.wallLength}
-                &nbsp; 
-{' '}
-{isImperialUnit ? "inches." : "milimetres."}
+                {`${item.wallLength} ${isImperialUnit ? "inches." : "milimetres."}`}
                 <br />
                 {item.studs}
                 &nbsp; studs.
