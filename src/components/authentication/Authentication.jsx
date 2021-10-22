@@ -1,13 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {Button, Card, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
+import UserContext from "../../UserContext";
 
-export default function Authentication({
-  isAuthenticated,
-  setIsAuthenticated,
-  isLoginComponent,
-}) {
+export default function Authentication({isLoginComponent}) {
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
   const [userInformation, setuserInformation] = useState({
     username: "",
     password: "",
@@ -110,7 +108,5 @@ export default function Authentication({
 }
 
 Authentication.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  setIsAuthenticated: PropTypes.func.isRequired,
   isLoginComponent: PropTypes.bool.isRequired,
 };
