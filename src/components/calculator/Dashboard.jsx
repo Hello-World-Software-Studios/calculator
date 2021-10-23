@@ -84,7 +84,7 @@ export default function Dashboard() {
 
   const deleteRefreshCallback = useCallback(async () => {
     const refreshedListOfWalls = await callGetAPI(
-      `http://localhost:3000/walls?projectID=${currentProject.id}`
+      `http://localhost:3000/walls?projectID=${id}`
     );
     const newListOfWalls = newListGenerator(refreshedListOfWalls);
     const listOfWallsItemGenerator = (item) => {
@@ -97,7 +97,7 @@ export default function Dashboard() {
       };
     };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
-  }, [callGetAPI, currentProject.id, isImperialUnit]);
+  }, [callGetAPI, id, isImperialUnit]);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
@@ -121,7 +121,7 @@ export default function Dashboard() {
   const handlePostWall = async () => {
     const [wallData] = await callAPI(`http://localhost:3000/walls`, {
       wallLength,
-      currentProject,
+      id,
     });
     setListOfWalls([
       ...listOfWalls,
@@ -179,7 +179,8 @@ export default function Dashboard() {
                 {topAndBottomPlates}
                 of boards for your top and bottom plates.
                 <br />
-                It will cost about: ${(totalCost * 1.1).toFixed(2)}
+                It will cost about: $
+{(totalCost * 1.1).toFixed(2)}
               </Card.Body>
             </Card>
             <Card>

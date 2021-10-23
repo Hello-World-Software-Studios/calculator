@@ -15,19 +15,17 @@ router.route("/").get(authorization, async (req, res) => {
     res.status(500).json({message: err.message});
   }
 });
-router
-  .route("/")
-  .post(authorization, async ({body: {wallLength, currentProject}}, res) => {
-    try {
-      const newWall = await pool.query(
-        "INSERT INTO walls (wall_length, project_id) VALUES ($1, $2) RETURNING wall_length, id",
-        [wallLength, currentProject.id]
-      );
-      res.json(newWall.rows);
-    } catch (err) {
-      res.json({message: err.message});
-    }
-  });
+router.route("/").post(authorization, async ({body: {wallLength, id}}, res) => {
+  try {
+    const newWall = await pool.query(
+      "INSERT INTO walls (wall_length, project_id) VALUES ($1, $2) RETURNING wall_length, id",
+      [wallLength, id]
+    );
+    res.json(newWall.rows);
+  } catch (err) {
+    res.json({message: err.message});
+  }
+});
 
 module.exports = router;
 
