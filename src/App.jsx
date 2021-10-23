@@ -11,26 +11,27 @@ function App() {
   const [error, setError] = useState(null);
   console.log("Auth:", isAuthenticated, "Error:", error);
   // TODO refresh token.
-  const checkIfStillAuthenticated = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/users/verify", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.Token}`,
-        },
-      });
-      const refreshValid = await res.json();
-      if (refreshValid) {
-        setIsAuthenticated(true);
-      } else setIsAuthenticated(false);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+
   useEffect(() => {
+    const checkIfStillAuthenticated = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/users/verify", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.Token}`,
+          },
+        });
+        const refreshValid = await res.json();
+        if (refreshValid) {
+          setIsAuthenticated(true);
+        } else setIsAuthenticated(false);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
     checkIfStillAuthenticated();
-  }, []);
+  }, [setIsAuthenticated]);
 
   return (
     <UserContext.Provider value={authState}>
