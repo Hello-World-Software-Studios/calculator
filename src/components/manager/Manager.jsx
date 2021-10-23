@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Button, Card, Form, Spinner} from "react-bootstrap";
 import {Redirect, Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
-import PropTypes from "prop-types";
 import useAPI from "../../hooks/useAPI";
 import usePostAPI from "../../hooks/usePostAPI";
 import {errorAndLoadingHandler} from "../utils/utilities";
 import ProjectSelector from "./ProjectSelector";
 import Dashboard from "../calculator/Dashboard";
+import UserContext from "../../UserContext";
 
-export default function Manager({isAuthenticated, setIsAuthenticated}) {
+export default function Manager() {
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
   const history = useHistory();
   const {path} = useRouteMatch();
   const [projectInput, setProjectInput] = useState("");
@@ -56,10 +57,7 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
   return (
     <Switch>
       <Route path={`${path}/:id`}>
-        <Dashboard
-          isAuthenticated={isAuthenticated}
-          setIsAuthenticated={setIsAuthenticated}
-        />
+        <Dashboard />
       </Route>
       <Route path={path}>
         <Card>
@@ -101,8 +99,3 @@ export default function Manager({isAuthenticated, setIsAuthenticated}) {
     </Switch>
   );
 }
-
-Manager.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  setIsAuthenticated: PropTypes.func.isRequired,
-};

@@ -1,6 +1,5 @@
 import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
-import React, {useCallback, useEffect, useState} from "react";
-import PropTypes from "prop-types";
+import React, {useCallback, useEffect, useState, useContext} from "react";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import useAPIWithCallback from "../../hooks/useAPIWithCallback";
@@ -10,8 +9,10 @@ import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import ListOfWalls from "./ListOfWalls";
 import LumberPrice, {twoByFourPrice} from "./LumberPrice";
 import Calculator, {getListOfMeasurements} from "./Calculator";
+import UserContext from "../../UserContext";
 
-export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
+export default function Dashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
   const {id} = useParams();
   console.log("ID:", id);
   const history = useHistory();
@@ -178,8 +179,7 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
                 {topAndBottomPlates}
                 of boards for your top and bottom plates.
                 <br />
-                It will cost about: $
-{(totalCost * 1.1).toFixed(2)}
+                It will cost about: ${(totalCost * 1.1).toFixed(2)}
               </Card.Body>
             </Card>
             <Card>
@@ -233,8 +233,3 @@ export default function Dashboard({isAuthenticated, setIsAuthenticated}) {
     </CardGroup>
   );
 }
-
-Dashboard.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  setIsAuthenticated: PropTypes.func.isRequired,
-};
