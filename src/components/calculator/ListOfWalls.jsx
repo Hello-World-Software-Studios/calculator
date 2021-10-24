@@ -1,15 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Button, Card, ListGroup, Spinner} from "react-bootstrap";
-import {checkForNameToDisplay} from "../utils/utilities";
 import usePostAPI from "../../hooks/usePostAPI";
 
-export default function ListOfWalls({
-  listOfWalls,
-  currentProject,
-  isImperialUnit,
-  deleteCallback,
-}) {
+export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback}) {
   console.log("List of Walls:", listOfWalls);
 
   const [{isLoading: loadingBool, error: deleteError}, callAPI] = usePostAPI();
@@ -29,7 +23,7 @@ export default function ListOfWalls({
     <Spinner animation="border" />
   ) : (
     <ListGroup className="listGroup" variant="flush">
-      <h3 className="listGroupHeader">{checkForNameToDisplay(currentProject.name)}</h3>
+      <h3 className="listGroupHeader">Your Walls</h3>
       {listOfWalls.length > 0 ? (
         listOfWalls.map((item) => (
           <ListGroup.Item key={item.id}>
@@ -66,10 +60,6 @@ ListOfWalls.propTypes = {
       studs: PropTypes.number,
     })
   ).isRequired,
-  currentProject: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }).isRequired,
   isImperialUnit: PropTypes.bool.isRequired,
   deleteCallback: PropTypes.func.isRequired,
 };

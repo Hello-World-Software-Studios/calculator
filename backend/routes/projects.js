@@ -7,7 +7,7 @@ const router = express.Router();
 router.route("/").get(authorization, async (req, res) => {
   try {
     const selectProjects = await pool.query(
-      "SELECT projects.id, projects.name FROM projects WHERE projects.id = $1;",
+      "SELECT projects.name FROM projects WHERE projects.id = $1;",
       [req.query.id]
     );
     res.json(selectProjects.rows[0]);

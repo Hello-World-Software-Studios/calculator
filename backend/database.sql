@@ -21,6 +21,6 @@ CREATE TABLE "walls" (
   "date_created" timestamp DEFAULT now()
 );
 
-ALTER TABLE "projects" ADD FOREIGN KEY ("owner_user_id") REFERENCES "users" ("id");
+ALTER TABLE "projects" ADD FOREIGN KEY ("owner_user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "walls" ADD FOREIGN KEY ("project_id") REFERENCES "projects" ("id") ON DELETE CASCADE;

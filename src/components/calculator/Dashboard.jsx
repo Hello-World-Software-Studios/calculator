@@ -16,7 +16,7 @@ export default function Dashboard() {
   const {id} = useParams();
   console.log("ID:", id);
   const history = useHistory();
-  const [currentProject, setCurrentProject] = useState({id: undefined, name: ""});
+
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
@@ -25,7 +25,6 @@ export default function Dashboard() {
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log("currentProject:", currentProject);
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
     : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
@@ -38,23 +37,19 @@ export default function Dashboard() {
   const totalCost =
     numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
 
+  const [{isLoading: deleteBool, error: deleteError}, callDeleteAPI] = usePostAPI();
+  console.log("Delete Project:", deleteBool, deleteError);
   const {
-    data: getProject,
+    data: {name: getProjectName},
     isLoading: isProjectLoadData,
     errorAPI: errProjectData,
   } = useAPI(`http://localhost:3000/projects?id=${id}`);
-
-  useEffect(() => {
-    const newProject = () => getProject;
-    setCurrentProject(newProject);
-    console.log(
-      "useEffectProject:",
-      getProject,
-      newProject,
-      isProjectLoadData,
-      errProjectData
-    );
-  }, [errProjectData, getProject, isProjectLoadData, setCurrentProject]);
+  const handledProjectName = errorAndLoadingHandler(
+    getProjectName,
+    isProjectLoadData,
+    errProjectData,
+    <Spinner animation="border" />
+  );
 
   const {
     data: getWallData,
@@ -138,6 +133,15 @@ export default function Dashboard() {
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
   const goBacktoManager = () => history.push("/projects");
+  const deleteProject = async () => {
+    const {status: deleteRes} = await callDeleteAPI(
+      `http://localhost:3000/projects?id=${id}`
+    );
+
+    if (deleteRes === "Deleted!") {
+      goBacktoManager();
+    }
+  };
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
@@ -147,13 +151,16 @@ export default function Dashboard() {
       <Card>
         <Card.Header>
           <h1>
-            You are working on &nbsp;
-            {currentProject.name}
+            You are working on: &nbsp;
+            {handledProjectName}
           </h1>
           <Button onClick={toggleUnits} variant="warning">
             Swap Between Imperial and Metric
           </Button>
-          <Button onClick={goBacktoManager} variant="secondary">
+          <Button onClick={deleteProject} variant="dark">
+            Delete Project
+          </Button>
+          <Button onClick={goBacktoManager} variant="warning">
             &lt;&lt; Go Back
           </Button>
           <Button
@@ -161,6 +168,7 @@ export default function Dashboard() {
               setIsAuthenticated(false);
               localStorage.removeItem("Token");
             }}
+            variant="dark"
           >
             Logout
           </Button>
@@ -225,7 +233,6 @@ export default function Dashboard() {
           <ListOfWalls
             listOfWalls={listOfWalls}
             setListOfWalls={setListOfWalls}
-            currentProject={currentProject}
             isImperialUnit={isImperialUnit}
             deleteCallback={deleteRefreshCallback}
           />
