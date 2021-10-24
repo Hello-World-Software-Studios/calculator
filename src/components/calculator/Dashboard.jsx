@@ -152,6 +152,7 @@ export default function Dashboard() {
   return (
     <CardGroup className="dashboard">
       <Card>
+        <Card.Img variant="bottom" src="./public/tape.png" />
         <Card.Header>
           <h1>
             You are working on: &nbsp;
