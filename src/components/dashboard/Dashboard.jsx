@@ -78,36 +78,31 @@ export default function Dashboard() {
   console.log("PostWallData:", loadingBool, postError);
   console.log("refreshWallData:", loadingRefreshBool, refreshError);
 
+  const listOfWallsItemGenerator = useCallback(
+    (item) => {
+      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
+      return {
+        // TODO heres where wall length comes back from API
+        wallLength: item.wall_length,
+        list: gotList,
+        studs: gotList.length,
+        id: item.id,
+      };
+    },
+    [isImperialUnit]
+  );
   const deleteRefreshCallback = useCallback(async () => {
     const refreshedListOfWalls = await callGetAPI(
       `http://localhost:3000/walls?projectID=${id}`
     );
     const newListOfWalls = newListGenerator(refreshedListOfWalls);
-    const listOfWallsItemGenerator = (item) => {
-      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
-      return {
-        wallLength: item.wall_length,
-        list: gotList,
-        studs: gotList.length,
-        id: item.id,
-      };
-    };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
-  }, [callGetAPI, id, isImperialUnit]);
+  }, [callGetAPI, id, listOfWallsItemGenerator]);
 
   useEffect(() => {
     const newListOfWalls = newListGenerator(handledWallData);
-    const listOfWallsItemGenerator = (item) => {
-      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
-      return {
-        wallLength: item.wall_length,
-        list: gotList,
-        studs: gotList.length,
-        id: item.id,
-      };
-    };
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
-  }, [handledWallData, isImperialUnit]);
+  }, [handledWallData, isImperialUnit, listOfWallsItemGenerator]);
 
   useEffect(() => {
     const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);

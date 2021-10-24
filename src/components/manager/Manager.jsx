@@ -5,7 +5,7 @@ import useAPI from "../../hooks/useAPI";
 import usePostAPI from "../../hooks/usePostAPI";
 import {errorAndLoadingHandler} from "../utils/utilities";
 import ProjectSelector from "./ProjectSelector";
-import Dashboard from "../calculator/Dashboard";
+import Dashboard from "../dashboard/Dashboard";
 import UserContext from "../../UserContext";
 
 export default function Manager() {
