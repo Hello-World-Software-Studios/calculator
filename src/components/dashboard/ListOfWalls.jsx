@@ -29,6 +29,10 @@ export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback
           <ListGroup.Item key={item.id}>
             <Card bg="secondary">
               <Card.Body className="listGroupItem">
+                {`${isImperialUnit ? item.wallLength : item.wallLength * 25.4} ${
+                  isImperialUnit ? "inches." : "milimetres."
+                }`}
+                <br />
                 {`${item.wallLength} ${isImperialUnit ? "inches." : "milimetres."}`}
                 <br />
                 {item.studs}
@@ -55,7 +59,7 @@ export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback
 ListOfWalls.propTypes = {
   listOfWalls: PropTypes.arrayOf(
     PropTypes.shape({
-      wall_length: PropTypes.number,
+      wallLength: PropTypes.number,
       list: PropTypes.arrayOf(PropTypes.number),
       studs: PropTypes.number,
     })
