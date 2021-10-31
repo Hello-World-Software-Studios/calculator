@@ -17,7 +17,7 @@ CREATE TABLE "projects" (
 CREATE TABLE "walls" (
   "id" serial PRIMARY KEY,
   "project_id" int,
-  "wall_length" int,
+  "wall_length" decimal,
   "date_created" timestamp DEFAULT now()
 );
 

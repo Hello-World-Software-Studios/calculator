@@ -110,8 +110,9 @@ export default function Dashboard() {
   }, [listOfWalls]);
 
   const handlePostWall = async () => {
+    const postWallContextHelper = isImperialUnit ? wallLength : wallLength / 25.4;
     const [wallData] = await callAPI(`http://localhost:3000/walls`, {
-      wallLength,
+      postWallContextHelper,
       id,
     });
     setListOfWalls([
@@ -126,13 +127,6 @@ export default function Dashboard() {
   };
 
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
-  // useEffect(() => {
-  //   if (isImperialUnit) {
-  //     setListOfWalls(() => listOfWalls.map((item) => item.wall_length));
-  //   }
-  //   setListOfWalls(() => listOfWalls.map((item) => item.wall_length * 2.5));
-  // }, [isImperialUnit, listOfWalls]);
-
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
   const handleDeleteClose = () => setDeleteModalOpen(false);
@@ -154,7 +148,6 @@ export default function Dashboard() {
   return (
     <CardGroup className="dashboard">
       <Card>
-        <Card.Img variant="bottom" src="./public/tape.png" />
         <Card.Header>
           <h1>
             You are working on: &nbsp;
