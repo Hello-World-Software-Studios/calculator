@@ -20,7 +20,6 @@ export default function Dashboard() {
 
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  // const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
   const [numberOfStuds, setNumberOfStuds] = useState(0);
@@ -130,9 +129,8 @@ export default function Dashboard() {
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
-  // const handleDeleteClose = () => setDeleteModalOpen(false);
-  // const handleDeleteShow = () => setDeleteModalOpen(true);
   const goBacktoManager = () => history.push("/projects");
+
   const deleteProject = async () => {
     const {status: deleteRes} = await callDeleteAPI(
       `http://localhost:3000/projects?id=${id}`
@@ -158,25 +156,6 @@ export default function Dashboard() {
             Swap Between Imperial and Metric
           </Button>
           <DeleteProject deleteProject={deleteProject} />
-          {/* <Button onClick={handleDeleteShow} variant="dark">
-            Delete Project
-          </Button>
-          <>
-            <Modal show={isDeleteModalOpen} onHide={handleDeleteClose}>
-              <Modal.Header>
-                <Modal.Title>Delete Project</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Are you sure? This can&apos;t be undone.</Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleDeleteClose}>
-                  Close
-                </Button>
-                <Button onClick={deleteProject} variant="primary">
-                  Yes, delete this project!
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </> */}
           <Button onClick={goBacktoManager} variant="warning">
             &lt;&lt; Go Back
           </Button>
