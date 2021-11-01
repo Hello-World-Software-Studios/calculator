@@ -10,6 +10,7 @@ import ListOfWalls from "./ListOfWalls";
 import LumberPrice, {twoByFourPrice} from "./LumberPrice";
 import Calculator, {getListOfMeasurements} from "./Calculator";
 import UserContext from "../../UserContext";
+import DeleteProject from "./DeleteProject";
 
 export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
@@ -19,7 +20,7 @@ export default function Dashboard() {
 
   const [isImperialUnit, setImperialUnit] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  // const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
   const [numberOfStuds, setNumberOfStuds] = useState(0);
@@ -129,8 +130,8 @@ export default function Dashboard() {
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
   const handleClose = () => setModalOpen(false);
   const handleShow = () => setModalOpen(true);
-  const handleDeleteClose = () => setDeleteModalOpen(false);
-  const handleDeleteShow = () => setDeleteModalOpen(true);
+  // const handleDeleteClose = () => setDeleteModalOpen(false);
+  // const handleDeleteShow = () => setDeleteModalOpen(true);
   const goBacktoManager = () => history.push("/projects");
   const deleteProject = async () => {
     const {status: deleteRes} = await callDeleteAPI(
@@ -156,7 +157,8 @@ export default function Dashboard() {
           <Button onClick={toggleUnits} variant="warning">
             Swap Between Imperial and Metric
           </Button>
-          <Button onClick={handleDeleteShow} variant="dark">
+          <DeleteProject deleteProject={deleteProject} />
+          {/* <Button onClick={handleDeleteShow} variant="dark">
             Delete Project
           </Button>
           <>
@@ -174,7 +176,7 @@ export default function Dashboard() {
                 </Button>
               </Modal.Footer>
             </Modal>
-          </>
+          </> */}
           <Button onClick={goBacktoManager} variant="warning">
             &lt;&lt; Go Back
           </Button>

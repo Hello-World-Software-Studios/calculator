@@ -18,7 +18,7 @@ export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback
   if (deleteError) {
     return <div>{deleteError}</div>;
   }
-  const wallLengthWithContext = (length) => (isImperialUnit ? length : length * 25.4);
+  const wallLengthFromMetric = (length) => (isImperialUnit ? length : length * 25.4);
 
   return loadingBool ? (
     <Spinner animation="border" />
@@ -30,7 +30,7 @@ export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback
           <ListGroup.Item key={item.id}>
             <Card bg="secondary">
               <Card.Body className="listGroupItem">
-                {`${Math.round(wallLengthWithContext(item.wallLength))} ${
+                {`${Math.round(wallLengthFromMetric(item.wallLength))} ${
                   isImperialUnit ? "inches." : "milimetres."
                 }`}
                 <br />
