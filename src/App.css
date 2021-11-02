@@ -85,3 +85,6 @@ p {
 .dashboard {
   width: 100%;
 }
+.toolbelt {
+  align-items: center;
+}

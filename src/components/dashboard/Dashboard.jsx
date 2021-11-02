@@ -80,9 +80,10 @@ export default function Dashboard() {
 
   const listOfWallsItemGenerator = useCallback(
     (item) => {
-      const gotList = getListOfMeasurements(isImperialUnit, item.wall_length);
+      const contextHelper = isImperialUnit ? item.wall_length : item.wall_length * 25.4;
+      const gotList = getListOfMeasurements(isImperialUnit, contextHelper);
+      console.log("ContextHelper:", contextHelper);
       return {
-        // TODO heres where wall length comes back from API
         wallLength: item.wall_length,
         list: gotList,
         studs: gotList.length,
@@ -91,7 +92,7 @@ export default function Dashboard() {
     },
     [isImperialUnit]
   );
-  const deleteRefreshCallback = useCallback(async () => {
+  const refreshCallback = useCallback(async () => {
     const refreshedListOfWalls = await callGetAPI(
       `http://localhost:3000/walls?projectID=${id}`
     );
@@ -109,12 +110,17 @@ export default function Dashboard() {
     setNumberOfStuds(sumNumberOfStuds);
   }, [listOfWalls]);
 
+  useEffect(() => {
+    refreshCallback();
+  }, [isImperialUnit, refreshCallback]);
+
   const handlePostWall = async () => {
     const postWallContextHelper = isImperialUnit ? wallLength : wallLength / 25.4;
     const [wallData] = await callAPI(`http://localhost:3000/walls`, {
       postWallContextHelper,
       id,
     });
+    // TODO this needs to go. Find a better way!
     setListOfWalls([
       ...listOfWalls,
       {
@@ -147,13 +153,14 @@ export default function Dashboard() {
   return (
     <CardGroup className="dashboard">
       <Card>
-        <Card.Header>
+        <Card.Header className="toolbelt">
           <h1>
             You are working on: &nbsp;
             {handledProjectName}
           </h1>
           <Button onClick={toggleUnits} variant="warning">
-            Swap Between Imperial and Metric
+            Click Here to swap between imperial and metric! &nbsp;
+            {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
           </Button>
           <DeleteProject deleteProject={deleteProject} />
           <Button onClick={goBacktoManager} variant="warning">
@@ -230,7 +237,7 @@ export default function Dashboard() {
             listOfWalls={listOfWalls}
             setListOfWalls={setListOfWalls}
             isImperialUnit={isImperialUnit}
-            deleteCallback={deleteRefreshCallback}
+            deleteCallback={refreshCallback}
           />
         )}
       </Card>

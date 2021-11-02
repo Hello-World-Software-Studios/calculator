@@ -63,16 +63,13 @@ export default function Calculator({
             </Button>
 
             <Card.Text>
-              Now measuring in &nbsp;
-              {isImperialUnit ? "inches" : "milimetres"}
-.
-</Card.Text>
+              {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
+            </Card.Text>
 
             <Card.Body>
               <ListGroup>
                 <ListGroup.Item>
-                  Place your studs at: &nbsp;
-                  {listOfMeasurements.join(", ")}
+                  {`Place your studs at: ${listOfMeasurements.join(", ")}`}
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
