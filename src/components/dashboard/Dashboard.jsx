@@ -4,13 +4,18 @@ import {Redirect, useHistory, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import useAPIWithCallback from "../../hooks/useAPIWithCallback";
 import usePostAPI from "../../hooks/usePostAPI";
-import {errorAndLoadingHandler, newListGenerator} from "../utils/utilities";
-import {CONVERSION_COEFFICIENT} from "../utils/constants";
+import {
+  contextHelper,
+  errorAndLoadingHandler,
+  newListGenerator,
+} from "../utils/utilities";
+// import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import ListOfWalls from "./ListOfWalls";
-import LumberPrice, {twoByFourPrice} from "./LumberPrice";
+import LumberPrice from "./LumberPrice";
 import Calculator, {getListOfMeasurements} from "./Calculator";
 import UserContext from "../../UserContext";
 import DeleteProject from "./DeleteProject";
+import TotalModal from "./TotalModal";
 
 export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
@@ -22,21 +27,21 @@ export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
-  const [numberOfStuds, setNumberOfStuds] = useState(0);
+  // const [numberOfStuds, setNumberOfStuds] = useState(0);
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  const numberOfFeetOfPlate = isImperialUnit
-    ? Math.ceil(numberOfStuds * 3.3)
-    : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
-  const topAndBottomPlates = isImperialUnit
-    ? `${numberOfFeetOfPlate} feet `
-    : `${numberOfFeetOfPlate} metres `;
-  const studHeightDivisor = isImperialUnit ? 8 : 2.4;
-  // TODO make this toggleable
-  const studCost = twoByFourPrice;
-  const totalCost =
-    numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+  // const numberOfFeetOfPlate = isImperialUnit
+  //   ? Math.ceil(numberOfStuds * 3.3)
+  //   : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
+  // const topAndBottomPlates = isImperialUnit
+  //   ? `${numberOfFeetOfPlate} feet `
+  //   : `${numberOfFeetOfPlate} metres `;
+  // const studHeightDivisor = isImperialUnit ? 8 : 2.4;
+  // // TODO make this toggleable
+  // const studCost = twoByFourPrice;
+  // const totalCost =
+  //   numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
 
   const [{isLoading: deleteBool, error: deleteError}, callDeleteAPI] = usePostAPI();
   console.log("Delete Project:", deleteBool, deleteError);
@@ -80,8 +85,10 @@ export default function Dashboard() {
 
   const listOfWallsItemGenerator = useCallback(
     (item) => {
-      const contextHelper = isImperialUnit ? item.wall_length : item.wall_length * 25.4;
-      const gotList = getListOfMeasurements(isImperialUnit, contextHelper);
+      const gotList = getListOfMeasurements(
+        isImperialUnit,
+        contextHelper(isImperialUnit, item.wall_length)
+      );
       console.log("ContextHelper:", contextHelper);
       return {
         wallLength: item.wall_length,
@@ -105,10 +112,10 @@ export default function Dashboard() {
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
   }, [handledWallData, isImperialUnit, listOfWallsItemGenerator]);
 
-  useEffect(() => {
-    const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
-    setNumberOfStuds(sumNumberOfStuds);
-  }, [listOfWalls]);
+  // useEffect(() => {
+  //   const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
+  //   setNumberOfStuds(sumNumberOfStuds);
+  // }, [listOfWalls]);
 
   useEffect(() => {
     refreshCallback();
@@ -181,7 +188,8 @@ export default function Dashboard() {
             <LumberPrice />
             <Card>
               <Card.Header className="header">Project Total:</Card.Header>
-              <Card.Body>
+              <TotalModal isImperialUnit={isImperialUnit} listOfWalls={listOfWalls} />
+              {/* <Card.Body>
                 You need &nbsp;
                 {numberOfStuds}
                 &nbsp; studs.
@@ -192,7 +200,7 @@ export default function Dashboard() {
                 <br />
                 It will cost about: $
 {(totalCost * 1.1).toFixed(2)}
-              </Card.Body>
+              </Card.Body> */}
             </Card>
             <Card>
               <Card.Header className="header">Directions:</Card.Header>

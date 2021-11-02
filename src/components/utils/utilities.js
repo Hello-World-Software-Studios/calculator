@@ -16,3 +16,5 @@ export const newListGenerator = (array) => {
   }
   return arr;
 };
+
+export const contextHelper = (unit, length) => unit ? length : length * 25.4;
