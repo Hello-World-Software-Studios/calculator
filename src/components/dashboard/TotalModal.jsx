@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal} from "react-bootstrap";
+import {Button, Modal, Table} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import {twoByFourPrice} from "./LumberPrice";
 
-export default function TotalModal({isImperialUnit, listOfWalls}) {
+export default function TotalModal({isImperialUnit, listOfWalls, setReturnedTotalCost}) {
   const [numberOfStuds, setNumberOfStuds] = useState(0);
   const [isTotalModalOpen, setisTotalModalOpen] = useState(false);
-  const handleModal = () => setisTotalModalOpen((PrevUnit) => !PrevUnit);
 
   const numberOfFeetOfPlate = isImperialUnit
     ? Math.ceil(numberOfStuds * 3.3)
@@ -18,13 +17,22 @@ export default function TotalModal({isImperialUnit, listOfWalls}) {
   const studHeightDivisor = isImperialUnit ? 8 : 2.4;
   // TODO make this toggleable
   const studCost = twoByFourPrice;
-  const totalCost =
-    numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+  const studCostTotal = numberOfStuds * studCost;
+  const plateCost = (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+  const subTotal = studCostTotal + plateCost;
+  const totalCost = 1.1 * subTotal;
+
+  const handleModal = () => setisTotalModalOpen((PrevUnit) => !PrevUnit);
 
   useEffect(() => {
     const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
     setNumberOfStuds(sumNumberOfStuds);
   }, [listOfWalls]);
+
+  useEffect(() => {
+    const totalToReturn = totalCost;
+    setReturnedTotalCost(totalToReturn);
+  }, [setReturnedTotalCost, totalCost]);
 
   return (
     <>
@@ -44,9 +52,33 @@ export default function TotalModal({isImperialUnit, listOfWalls}) {
           You will also need &nbsp;
           {topAndBottomPlates}
           of boards for your top and bottom plates.
-          <br />
-          It will cost about: $
-{(totalCost * 1.1).toFixed(2)}
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>Here&apos;s Some Math!</tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{`Number of Studs: ${numberOfStuds} @ $${studCost} each`}</td>
+                <td>{`$${studCostTotal.toFixed(2)}`}</td>
+              </tr>
+              <tr>
+                <td>{`Add your top and bottom plates: ${topAndBottomPlates}`}</td>
+                <td>{`+$${plateCost.toFixed(2)}`}</td>
+              </tr>
+              <tr>
+                <td>Subtotal:</td>
+                <td>{`=$${subTotal.toFixed(2)}`}</td>
+              </tr>
+              <tr>
+                <td>Add ten percent just in case:</td>
+                <td>x1.1</td>
+              </tr>
+              <tr>
+                <td>Grand Total:</td>
+                <td>{`=$${totalCost.toFixed(2)}`}</td>
+              </tr>
+            </tbody>
+          </Table>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModal}>
@@ -67,4 +99,5 @@ TotalModal.propTypes = {
       studs: PropTypes.number,
     })
   ).isRequired,
+  setReturnedTotalCost: PropTypes.func.isRequired,
 };

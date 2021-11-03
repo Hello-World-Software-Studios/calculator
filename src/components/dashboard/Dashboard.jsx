@@ -27,21 +27,11 @@ export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
-  // const [numberOfStuds, setNumberOfStuds] = useState(0);
+  const [returnedTotalCost, setReturnedTotalCost] = useState(0);
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  // const numberOfFeetOfPlate = isImperialUnit
-  //   ? Math.ceil(numberOfStuds * 3.3)
-  //   : Math.ceil(numberOfStuds * (3.3 * CONVERSION_COEFFICIENT));
-  // const topAndBottomPlates = isImperialUnit
-  //   ? `${numberOfFeetOfPlate} feet `
-  //   : `${numberOfFeetOfPlate} metres `;
-  // const studHeightDivisor = isImperialUnit ? 8 : 2.4;
-  // // TODO make this toggleable
-  // const studCost = twoByFourPrice;
-  // const totalCost =
-  //   numberOfStuds * studCost + (numberOfFeetOfPlate / studHeightDivisor) * studCost;
+  console.log("totalReturned:", returnedTotalCost);
 
   const [{isLoading: deleteBool, error: deleteError}, callDeleteAPI] = usePostAPI();
   console.log("Delete Project:", deleteBool, deleteError);
@@ -111,11 +101,6 @@ export default function Dashboard() {
     const newListOfWalls = newListGenerator(handledWallData);
     setListOfWalls(() => newListOfWalls.map(listOfWallsItemGenerator));
   }, [handledWallData, isImperialUnit, listOfWallsItemGenerator]);
-
-  // useEffect(() => {
-  //   const sumNumberOfStuds = listOfWalls.reduce((total, item) => total + item.studs, 0);
-  //   setNumberOfStuds(sumNumberOfStuds);
-  // }, [listOfWalls]);
 
   useEffect(() => {
     refreshCallback();
@@ -188,19 +173,12 @@ export default function Dashboard() {
             <LumberPrice />
             <Card>
               <Card.Header className="header">Project Total:</Card.Header>
-              <TotalModal isImperialUnit={isImperialUnit} listOfWalls={listOfWalls} />
-              {/* <Card.Body>
-                You need &nbsp;
-                {numberOfStuds}
-                &nbsp; studs.
-                <br />
-                You will also need &nbsp;
-                {topAndBottomPlates}
-                of boards for your top and bottom plates.
-                <br />
-                It will cost about: $
-{(totalCost * 1.1).toFixed(2)}
-              </Card.Body> */}
+              <h1>{`$${returnedTotalCost}`}</h1>
+              <TotalModal
+                isImperialUnit={isImperialUnit}
+                listOfWalls={listOfWalls}
+                setReturnedTotalCost={() => setReturnedTotalCost}
+              />
             </Card>
             <Card>
               <Card.Header className="header">Directions:</Card.Header>

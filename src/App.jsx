@@ -1,6 +1,6 @@
 import "./App.css";
 import React, {useEffect, useState} from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Manager from "./components/manager/Manager";
 import Authentication from "./components/authentication/Authentication";
 import UserContext from "./UserContext";
@@ -38,6 +38,9 @@ function App() {
       <Router>
         <div>
           <Switch>
+            <Route exact path="/calculator">
+              <Redirect to="/login" />
+            </Route>
             <Route path="/projects">
               <Manager />
             </Route>
