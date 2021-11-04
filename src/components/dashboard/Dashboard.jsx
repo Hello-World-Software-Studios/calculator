@@ -27,11 +27,9 @@ export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
-  const [returnedTotalCost, setReturnedTotalCost] = useState(0);
   const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
-  console.log("totalReturned:", returnedTotalCost);
 
   const [{isLoading: deleteBool, error: deleteError}, callDeleteAPI] = usePostAPI();
   console.log("Delete Project:", deleteBool, deleteError);
@@ -171,15 +169,7 @@ export default function Dashboard() {
         <Card.Body>
           <CardGroup>
             <LumberPrice />
-            <Card>
-              <Card.Header className="header">Project Total:</Card.Header>
-              <h1>{`$${returnedTotalCost}`}</h1>
-              <TotalModal
-                isImperialUnit={isImperialUnit}
-                listOfWalls={listOfWalls}
-                setReturnedTotalCost={() => setReturnedTotalCost}
-              />
-            </Card>
+            <TotalModal isImperialUnit={isImperialUnit} listOfWalls={listOfWalls} />
             <Card>
               <Card.Header className="header">Directions:</Card.Header>
               <Card.Body>

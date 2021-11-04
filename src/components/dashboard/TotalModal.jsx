@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal, Table} from "react-bootstrap";
+import {Button, Card, Modal, Table} from "react-bootstrap";
 import PropTypes from "prop-types";
 import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import {twoByFourPrice} from "./LumberPrice";
 
-export default function TotalModal({isImperialUnit, listOfWalls, setReturnedTotalCost}) {
+export default function TotalModal({isImperialUnit, listOfWalls}) {
   const [numberOfStuds, setNumberOfStuds] = useState(0);
   const [isTotalModalOpen, setisTotalModalOpen] = useState(false);
 
@@ -29,13 +29,10 @@ export default function TotalModal({isImperialUnit, listOfWalls, setReturnedTota
     setNumberOfStuds(sumNumberOfStuds);
   }, [listOfWalls]);
 
-  useEffect(() => {
-    const totalToReturn = totalCost;
-    setReturnedTotalCost(totalToReturn);
-  }, [setReturnedTotalCost, totalCost]);
-
   return (
-    <>
+    <Card>
+      <Card.Header className="header">Project Total:</Card.Header>
+      <h1>{`$${totalCost.toFixed(2)}`}</h1>
       <Button onClick={handleModal} variant="dark">
         Detailed Totals
       </Button>
@@ -86,7 +83,7 @@ export default function TotalModal({isImperialUnit, listOfWalls, setReturnedTota
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </Card>
   );
 }
 
@@ -99,5 +96,4 @@ TotalModal.propTypes = {
       studs: PropTypes.number,
     })
   ).isRequired,
-  setReturnedTotalCost: PropTypes.func.isRequired,
 };
