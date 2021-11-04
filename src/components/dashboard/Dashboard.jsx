@@ -1,4 +1,4 @@
-import {Button, Card, CardGroup, Modal, Spinner} from "react-bootstrap";
+import {Button, Card, CardGroup, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState, useContext} from "react";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
@@ -9,13 +9,13 @@ import {
   errorAndLoadingHandler,
   newListGenerator,
 } from "../utils/utilities";
-// import {CONVERSION_COEFFICIENT} from "../utils/constants";
 import ListOfWalls from "./ListOfWalls";
 import LumberPrice from "./LumberPrice";
-import Calculator, {getListOfMeasurements} from "./Calculator";
+import {getListOfMeasurements} from "./Calculator";
 import UserContext from "../../UserContext";
 import DeleteProject from "./DeleteProject";
 import TotalModal from "./TotalModal";
+import CalculatorModal from "./CalculatorModal";
 
 export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
@@ -24,10 +24,7 @@ export default function Dashboard() {
   const history = useHistory();
 
   const [isImperialUnit, setImperialUnit] = useState(true);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [listOfMeasurements, setListOfMeasurements] = useState([]);
   const [listOfWalls, setListOfWalls] = useState([{wall_length: 0, list: [0], studs: 0}]);
-  const [wallLength, setWallLength] = useState(0);
   const [error, setError] = useState(null);
   console.log("Error:", error);
 
@@ -64,11 +61,9 @@ export default function Dashboard() {
     }
   }, [errData]);
 
-  const [{isLoading: loadingBool, error: postError}, callAPI] = usePostAPI();
   const [{isLoading: loadingRefreshBool, error: refreshError}, callGetAPI] =
     useAPIWithCallback();
 
-  console.log("PostWallData:", loadingBool, postError);
   console.log("refreshWallData:", loadingRefreshBool, refreshError);
 
   const listOfWallsItemGenerator = useCallback(
@@ -104,27 +99,7 @@ export default function Dashboard() {
     refreshCallback();
   }, [isImperialUnit, refreshCallback]);
 
-  const handlePostWall = async () => {
-    const postWallContextHelper = isImperialUnit ? wallLength : wallLength / 25.4;
-    const [wallData] = await callAPI(`http://localhost:3000/walls`, {
-      postWallContextHelper,
-      id,
-    });
-    // TODO this needs to go. Find a better way!
-    setListOfWalls([
-      ...listOfWalls,
-      {
-        wallLength: wallData.wall_length,
-        list: listOfMeasurements,
-        studs: listOfMeasurements.length,
-        id: wallData.id,
-      },
-    ]);
-  };
-
   const toggleUnits = () => setImperialUnit((prevUnit) => !prevUnit);
-  const handleClose = () => setModalOpen(false);
-  const handleShow = () => setModalOpen(true);
   const goBacktoManager = () => history.push("/projects");
 
   const deleteProject = async () => {
@@ -170,43 +145,13 @@ export default function Dashboard() {
           <CardGroup>
             <LumberPrice />
             <TotalModal isImperialUnit={isImperialUnit} listOfWalls={listOfWalls} />
-            <Card>
-              <Card.Header className="header">Directions:</Card.Header>
-              <Card.Body>
-                Use the Calculator component to layout a wall, and add the wall to your
-                project.
-                <br />
-                <Button onClick={handleShow}>Open Calculator</Button>
-                <>
-                  <Modal show={isModalOpen} onHide={handleClose}>
-                    <Modal.Header>
-                      <Modal.Title>Wall Stud Calculator</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <Calculator
-                        className="calcInstance"
-                        isImperialUnit={isImperialUnit}
-                        listOfMeasurements={listOfMeasurements}
-                        setListOfMeasurements={(e) => setListOfMeasurements(e)}
-                        setWallLength={(e) => setWallLength(e)}
-                        wallLength={wallLength}
-                      />
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
-                        Close
-                      </Button>
-                      <Button onClick={handlePostWall} variant="primary">
-                        Add Wall to Project
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </>
-              </Card.Body>
-            </Card>
+            <CalculatorModal
+              isImperialUnit={isImperialUnit}
+              refreshCallback={refreshCallback}
+            />
           </CardGroup>
         </Card.Body>
-        {loadingBool || loadingRefreshBool ? (
+        {loadingRefreshBool ? (
           <Spinner animation="border" />
         ) : (
           <ListOfWalls
