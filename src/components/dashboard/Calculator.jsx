@@ -22,7 +22,7 @@ export const getListOfMeasurements = (isImperial, wall) => {
   }
   newArray.push(wall - 2 * studOffset);
   return isImperial === true
-    ? newArray
+    ? newArray.map((toFixedItem) => toFixedItem.toFixed(2))
     : newArray.map((roundedItem) => Math.round(roundedItem));
 };
 
@@ -55,6 +55,7 @@ export default function Calculator({
               onChange={handleInputChange}
               required
               type="number"
+              step={0.01}
               value={wallLength}
             />
 

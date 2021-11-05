@@ -1,6 +1,7 @@
 import {Button, Card, CardGroup, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState, useContext} from "react";
 import {Redirect, useHistory, useParams} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import useAPI from "../../hooks/useAPI";
 import useAPIWithCallback from "../../hooks/useAPIWithCallback";
 import usePostAPI from "../../hooks/usePostAPI";
@@ -119,6 +120,7 @@ export default function Dashboard() {
     <CardGroup className="dashboard">
       <Card>
         <Card.Header className="toolbelt">
+          <FontAwesomeIcon icon="check-square" />
           <h1>
             You are working on: &nbsp;
             {handledProjectName}
