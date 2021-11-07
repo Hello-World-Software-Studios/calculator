@@ -58,9 +58,8 @@ input {
 .listGroup {
   align-items: center;
   font-size: medium;
-  height: fit-content;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 .listGroupHeader {
   align-self: center;
@@ -70,8 +69,10 @@ input {
   align-items: center;
   justify-content: center;
   font-size: large;
-  height: 90%;
-  width: 80%;
+}
+.listGroupCards {
+  color: yellow;
+  width: 100%;
 }
 .modalStyle {
   justify-content: center;
@@ -84,7 +85,32 @@ p {
 }
 .dashboard {
   width: 100%;
+  overflow: scroll;
 }
 .toolbelt {
   align-items: center;
+}
+.wallTable {
+  background-color: black;
+  overflow: scroll;
+}
+.wallTableCard {
+  border: yellow;
+  border-width: 2px;
+  color: yellow;
+  width: 100%;
+}
+.wallTableDeleteCard {
+  border: yellow;
+  border-width: 2px;
+  color: yellow;
+  width: 100%;
+  height: max-content;
+}
+.wallTableCardBody {
+  text-align: left;
+}
+.wallTableHead {
+  color: yellow;
+  text-align: center;
 }

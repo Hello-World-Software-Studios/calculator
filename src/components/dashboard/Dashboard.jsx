@@ -10,7 +10,8 @@ import {
   errorAndLoadingHandler,
   newListGenerator,
 } from "../utils/utilities";
-import ListOfWalls from "./ListOfWalls";
+// import ListOfWalls from "./ListOfWalls";
+import WallTable from "./WallTable";
 import LumberPrice from "./LumberPrice";
 import {getListOfMeasurements} from "./Calculator";
 import UserContext from "../../UserContext";
@@ -156,7 +157,13 @@ export default function Dashboard() {
         {loadingRefreshBool ? (
           <Spinner animation="border" />
         ) : (
-          <ListOfWalls
+          // <ListOfWalls
+          //   listOfWalls={listOfWalls}
+          //   setListOfWalls={setListOfWalls}
+          //   isImperialUnit={isImperialUnit}
+          //   deleteCallback={refreshCallback}
+          // />
+          <WallTable
             listOfWalls={listOfWalls}
             setListOfWalls={setListOfWalls}
             isImperialUnit={isImperialUnit}

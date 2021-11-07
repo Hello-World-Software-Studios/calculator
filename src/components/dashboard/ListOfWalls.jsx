@@ -27,9 +27,9 @@ export default function ListOfWalls({listOfWalls, isImperialUnit, deleteCallback
       <h3 className="listGroupHeader">Your Walls</h3>
       {listOfWalls.length > 0 ? (
         listOfWalls.map((item) => (
-          <ListGroup.Item key={item.id}>
-            <Card bg="secondary">
-              <Card.Body className="listGroupItem">
+          <ListGroup.Item key={item.id} className="listGroupItem">
+            <Card bg="dark" className="listGroupCards">
+              <Card.Body>
                 {`${Math.round(wallLengthFromMetric(item.wallLength))} ${
                   isImperialUnit ? "inches." : "milimetres."
                 }`}
