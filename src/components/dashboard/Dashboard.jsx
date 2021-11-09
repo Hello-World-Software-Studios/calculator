@@ -1,4 +1,4 @@
-import {Button, Card, CardGroup, Spinner} from "react-bootstrap";
+import {Button, Card, CardGroup, Form, Spinner} from "react-bootstrap";
 import React, {useCallback, useEffect, useState, useContext} from "react";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,7 +10,6 @@ import {
   errorAndLoadingHandler,
   newListGenerator,
 } from "../utils/utilities";
-// import ListOfWalls from "./ListOfWalls";
 import WallTable from "./WallTable";
 import LumberPrice from "./LumberPrice";
 import {getListOfMeasurements} from "./Calculator";
@@ -126,37 +125,18 @@ export default function Dashboard() {
             You are working on: &nbsp;
             {handledProjectName}
           </h1>
-          {/* <>
-            {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
-            <br />
-            <Button onClick={toggleUnits} variant="warning">
-              Swap Units
-            </Button>
-          </>
-          <DeleteProject deleteProject={deleteProject} />
-          <Button onClick={goBacktoManager} variant="warning">
-            &lt;&lt; Go Back
-          </Button>
-          <Button
-            onClick={() => {
-              setIsAuthenticated(false);
-              localStorage.removeItem("Token");
-            }}
-            variant="dark"
-          >
-            Logout
-          </Button> */}
         </Card.Header>
         <Card.Body>
           <CardGroup>
             <Card>
-              <div className="buttonCard">
-                {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
-                <br />
+              <Form className="buttonCard">
+                <Form.Label>
+                  {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
+                </Form.Label>
                 <Button className="buttonCard" onClick={toggleUnits} variant="warning">
                   Swap Units
                 </Button>
-              </div>
+              </Form>
               <DeleteProject deleteProject={deleteProject} />
               <Button className="buttonCard" onClick={goBacktoManager} variant="warning">
                 &lt;&lt; Go Back
