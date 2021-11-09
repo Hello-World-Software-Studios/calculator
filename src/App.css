@@ -12,12 +12,10 @@ input {
 .button:hover {
   opacity: 0.5;
 }
-.calculator {
-  align-items: center;
-  justify-content: center;
+.buttonCard {
   width: 100%;
 }
-.calcInstance {
+.calculator {
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -29,6 +27,10 @@ input {
   margin-right: 5px;
 }
 .column {
+  width: 100%;
+}
+.dashboard {
+  height: 100%;
   width: 100%;
 }
 .emptyList {
@@ -83,16 +85,12 @@ p {
   font-size: 20px;
   text-align: left;
 }
-.dashboard {
-  width: 100%;
-  overflow: scroll;
-}
 .toolbelt {
   align-items: center;
 }
 .wallTable {
   background-color: black;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .wallTableCard {
   border: yellow;

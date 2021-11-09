@@ -8,7 +8,7 @@ export default function DeleteProject({deleteProject}) {
 
   return (
     <>
-      <Button onClick={handleModal} variant="dark">
+      <Button className="buttonCard" onClick={handleModal} variant="dark">
         Delete Project
       </Button>
 

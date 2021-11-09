@@ -126,10 +126,13 @@ export default function Dashboard() {
             You are working on: &nbsp;
             {handledProjectName}
           </h1>
-          <Button onClick={toggleUnits} variant="warning">
-            Click Here to swap between imperial and metric! &nbsp;
+          {/* <>
             {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
-          </Button>
+            <br />
+            <Button onClick={toggleUnits} variant="warning">
+              Swap Units
+            </Button>
+          </>
           <DeleteProject deleteProject={deleteProject} />
           <Button onClick={goBacktoManager} variant="warning">
             &lt;&lt; Go Back
@@ -142,10 +145,33 @@ export default function Dashboard() {
             variant="dark"
           >
             Logout
-          </Button>
+          </Button> */}
         </Card.Header>
         <Card.Body>
           <CardGroup>
+            <Card>
+              <div className="buttonCard">
+                {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
+                <br />
+                <Button className="buttonCard" onClick={toggleUnits} variant="warning">
+                  Swap Units
+                </Button>
+              </div>
+              <DeleteProject deleteProject={deleteProject} />
+              <Button className="buttonCard" onClick={goBacktoManager} variant="warning">
+                &lt;&lt; Go Back
+              </Button>
+              <Button
+                className="buttonCard"
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  localStorage.removeItem("Token");
+                }}
+                variant="dark"
+              >
+                Logout
+              </Button>
+            </Card>
             <LumberPrice />
             <TotalModal isImperialUnit={isImperialUnit} listOfWalls={listOfWalls} />
             <CalculatorModal
@@ -157,12 +183,6 @@ export default function Dashboard() {
         {loadingRefreshBool ? (
           <Spinner animation="border" />
         ) : (
-          // <ListOfWalls
-          //   listOfWalls={listOfWalls}
-          //   setListOfWalls={setListOfWalls}
-          //   isImperialUnit={isImperialUnit}
-          //   deleteCallback={refreshCallback}
-          // />
           <WallTable
             listOfWalls={listOfWalls}
             setListOfWalls={setListOfWalls}

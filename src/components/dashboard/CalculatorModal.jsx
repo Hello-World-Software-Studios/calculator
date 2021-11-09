@@ -41,7 +41,7 @@ export default function CalculatorModal({isImperialUnit, refreshCallback}) {
             </Modal.Header>
             <Modal.Body>
               <Calculator
-                className="calcInstance"
+                className="calculator"
                 isImperialUnit={isImperialUnit}
                 listOfMeasurements={listOfMeasurements}
                 setListOfMeasurements={(e) => setListOfMeasurements(e)}
