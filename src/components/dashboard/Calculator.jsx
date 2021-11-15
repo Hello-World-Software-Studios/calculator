@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Button, Card, CardColumns, Form, ListGroup} from "react-bootstrap";
+import {Card, CardColumns, Form, ListGroup} from "react-bootstrap";
 import PropTypes from "prop-types";
 import HowToLayoutAWall from "./HowToLayoutAWall";
 import {
@@ -34,19 +34,16 @@ export default function Calculator({
   wallLength,
 }) {
   const handleInputChange = (event) => {
-    setWallLength(parseInt(event.target.value, 10));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setListOfMeasurements(getListOfMeasurements(isImperialUnit, wallLength));
+    const tempWallLength = parseInt(event.target.value, 10);
+    setWallLength(tempWallLength);
+    setListOfMeasurements(getListOfMeasurements(isImperialUnit, tempWallLength));
   };
 
   return (
     <>
       <CardColumns className="column">
         <Card bg="light">
-          <Form className="form" onSubmit={handleSubmit}>
+          <Form className="form">
             <Form.Label>Wall length</Form.Label>
 
             <Form.Control
@@ -58,10 +55,6 @@ export default function Calculator({
               step={0.01}
               value={wallLength}
             />
-
-            <Button type="submit" variant="primary">
-              Layout wall
-            </Button>
 
             <Card.Text>
               {`Now measuring in ${isImperialUnit ? "inches" : "milimetres"}.`}
